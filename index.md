@@ -3,3 +3,13 @@ a developing networker
 
 ## Building Network Tools with Scapy:
 1. [What is Scapy?](scapy/part01.md)
+2. [Installing Python and Scapy](scapy/part02.md)
+3. [Scapy Interactive Mode](scapy/part03.md)
+4. [Looking at Packets](scapy/part04.md)
+5. [Sending our First Packet; ARP Response](scapy/part05.md)
+6. [Sending and Receiving with Scapy](scapy/part06.md)
+7. [Monitoring ARP](scapy/part07.md)
+8. [Making a Christmas Tree Packet](scapy/part08.md)
+9. [Scapy and DNS](scapy/part09.md)
+10. [Emulating nmap Functions](scapy/part10.md)
+11. [Scapy Resources](scapy/part11.md)
