@@ -18,7 +18,7 @@
 
 
 ## Sniffing Packets with Custom Actions
-1. [Part 1](_posts/scapy/scapy-sniffing-with-custom-actions-part-1.md)
-1. [Part 2](_posts/scapy/scapy-sniffing-with-custom-actions-part-2.md)
+1. [Part 1](_posts/scapy-sniffing-with-custom-actions-part-1.md)
+1. [Part 2](_posts/scapy-sniffing-with-custom-actions-part-2.md)
 
 # PyShark
