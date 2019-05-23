@@ -3,3 +3,5 @@ title: thePacketGeek
 description: a developing networker
 google_analytics: UA-44238008-7
 url: https://thepacketgeek.com
+include: ['_pages', '_pages/scapy']
+relative_permalinks: false
