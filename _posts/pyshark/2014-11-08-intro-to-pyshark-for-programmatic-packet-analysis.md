@@ -1,22 +1,11 @@
 ---
-id: 334
 title: Intro to PyShark for Programmatic Packet Analysis
 date: 2014-11-08T17:12:54-07:00
 author: Mat
 layout: post
-guid: http://thepacketgeek.com/?p=334
-permalink: /intro-to-pyshark-for-programmatic-packet-analysis/
 categories:
-  - Coding
-tags:
   - PyShark
-  - Python
-series:
-  - Intro to PyShark
 ---
-<div class="seriesmeta">
-  This entry is part 1 of 4 in the series <a href="https://thepacketgeek.com/series/intro-to-pyshark/" class="series-20" title="Intro to PyShark">Intro to PyShark</a>
-</div>
 
 I can hardly believe it took me this long to find PyShark, but I am very glad I did! PyShark is a wrapper for the Wireshark CLI interface, tshark, so all of the Wireshark decoders are available to PyShark! It&#8217;s so amazing that I started a new project just so I could use this amazing new tool: <a title="Cloud-Pcap" href="https://github.com/thepacketgeek/cloud-pcap" target="_blank">Cloud-Pcap</a>.
 

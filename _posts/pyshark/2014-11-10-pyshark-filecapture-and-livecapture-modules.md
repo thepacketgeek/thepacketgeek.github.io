@@ -1,22 +1,11 @@
 ---
-id: 349
 title: 'PyShark &#8211; FileCapture and LiveCapture modules'
 date: 2014-11-10T12:04:33-07:00
 author: Mat
 layout: post
-guid: http://thepacketgeek.com/?p=349
-permalink: /pyshark-filecapture-and-livecapture-modules/
 categories:
-  - Coding
-tags:
   - PyShark
-  - Python
-series:
-  - Intro to PyShark
 ---
-<div class="seriesmeta">
-  This entry is part 2 of 4 in the series <a href="https://thepacketgeek.com/series/intro-to-pyshark/" class="series-20" title="Intro to PyShark">Intro to PyShark</a>
-</div>
 
 The two typical ways to start analyzing packets are via PyShark&#8217;s FileCapture and LiveCapture modules. The first will import packets from a saved capture file, and the latter will sniff from a network interface on the local machine. Running these modules will return a capture object which I will cover in depth in the next post. For now, let&#8217;s see what we can do with these two modules.
 

@@ -1,7 +1,35 @@
-theme: jekyll-theme-cayman
+url: https://thepacketgeek.com
 title: thePacketGeek
 description: a developing networker
+github: https://github.com/thepacketgeek
 google_analytics: UA-44238008-7
-url: https://thepacketgeek.com
-include: ['_pages', '_pages/scapy']
+
+
+social:
+    - icon: fa-twitter
+      link: "https://twitter.com/thepacketgeek"
+    - icon: fa-github
+      link: "https://github.com/thepacketgeek"
+
+include: [
+  '_posts',
+  '_posts/scapy',
+  '_posts/exabgp',
+  '_posts/pyshark',
+  '_posts/onepk',
+  '_posts/networking',
+]
 relative_permalinks: false
+
+urls:
+    - text: XML Feed
+      url: /feed.xml
+
+baseurl: ""
+paginate: 20
+per_page: 20
+paginate_path: "/page/:num/"
+markdown: kramdown
+gems:
+  - jekyll-paginate
+  - jekyll-gist

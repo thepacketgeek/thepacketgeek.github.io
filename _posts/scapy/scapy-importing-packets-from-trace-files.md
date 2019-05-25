@@ -1,15 +1,10 @@
 ---
-id: 303
 title: Importing packets from trace files with scapy
-date: 2014-09-25T22:23:59-07:00
+date: 2018-09-25T22:23:59-07:00
 author: Mat
 layout: post
-guid: http://thepacketgeek.com/?p=303
-permalink: /importing-packets-from-trace-files/
 categories:
-  - Coding
-tags:
-  - Scapy
+  - scapy
 ---
 Scapy is amazingly flexible when it comes to creating packets, but in some cases you may want to mangle or change packets that you&#8217;ve sniffed and saved in a trace file. Scapy currently supports .cap and .pcap files, but unfortunately no .pcapng files (yet&#8230;).  Reading these files are possible through the `rdpcap()` function:
 

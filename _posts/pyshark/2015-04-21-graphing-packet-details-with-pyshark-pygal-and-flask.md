@@ -1,16 +1,10 @@
 ---
-id: 498
 title: Graphing packet details with PyShark, pygal, and Flask
 date: 2015-04-21T08:00:12-07:00
 author: Mat
 layout: post
-guid: http://thepacketgeek.com/?p=498
-permalink: /graphing-packet-details-with-pyshark-pygal-and-flask/
 categories:
-  - Coding
-tags:
   - PyShark
-  - Python
 ---
 So you&#8217;ve used PyShark to get packet statistics out of your trace files but you want to represent them in a more friendly way than just text output? &nbsp;How about using Flask and pygal to get those statistics in a graph or chart for use in a web app!
 
