@@ -1,15 +1,10 @@
 ---
-id: 303
 title: Importing packets from trace files with scapy
-date: 2014-09-25T22:23:59-07:00
+date: 2018-09-25T22:23:59-07:00
 author: Mat
 layout: post
-guid: http://thepacketgeek.com/?p=303
-permalink: /importing-packets-from-trace-files/
 categories:
-  - Coding
-tags:
-  - Scapy
+  - scapy
 ---
 Scapy is amazingly flexible when it comes to creating packets, but in some cases you may want to mangle or change packets that you&#8217;ve sniffed and saved in a trace file. Scapy currently supports .cap and .pcap files, but unfortunately no .pcapng files (yet&#8230;).  Reading these files are possible through the `rdpcap()` function:
 
@@ -58,7 +53,7 @@ We can also use scapy&#8217;s `sniff()` function to read packets from a .pcap fi
 &gt;&gt;&gt; packets
 &lt;Sniffed: TCP:17 UDP:0 ICMP:0 Other:0&gt;</pre>
 
-This will allow us to use the prn() function to import the packets with custom functions, as covered in <a title="Scapy Sniffing with Custom Actions, Part 1" href="http://thepacketgeek.com/scapy-sniffing-with-custom-actions-part-1/" target="_blank" rel="noopener">this post</a>. Here we can count the packets as we import them from the .pcap file:
+This will allow us to use the prn() function to import the packets with custom functions, as covered in <a title="Scapy Sniffing with Custom Actions, Part 1" href="scapy-sniffing-with-custom-actions-part-1/" target="_blank" rel="noopener">this post</a>. Here we can count the packets as we import them from the .pcap file:
 
 <pre class="lang:default decode:true ">&gt;&gt;&gt; packetCount = 0
 &gt;&gt;&gt; def customAction(packet):

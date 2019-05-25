@@ -1,20 +1,14 @@
 ---
-id: 498
 title: Graphing packet details with PyShark, pygal, and Flask
 date: 2015-04-21T08:00:12-07:00
 author: Mat
 layout: post
-guid: http://thepacketgeek.com/?p=498
-permalink: /graphing-packet-details-with-pyshark-pygal-and-flask/
 categories:
-  - Coding
-tags:
   - PyShark
-  - Python
 ---
 So you&#8217;ve used PyShark to get packet statistics out of your trace files but you want to represent them in a more friendly way than just text output? &nbsp;How about using Flask and pygal to get those statistics in a graph or chart for use in a web app!
 
-<img class="aligncenter size-large wp-image-499" src="//thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-20.41.35-1024x578.png" alt="PyGal Example" width="650" height="367" srcset="https://thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-20.41.35-1024x578.png 1024w, https://thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-20.41.35-300x169.png 300w, https://thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-20.41.35.png 1190w" sizes="(max-width: 650px) 100vw, 650px" /> This blog post will be a brief overview of getting some packet data in a chart and on a webpage. Please note that this will be a very simple example and not a recommended production deployment of Flask. I highly recommend using templates, flask-bootstrap, and more advanced Flask topics which you can learn about <a title="Flask" href="http://flask.pocoo.org" target="_blank">here</a>.
+<img class="aligncenter size-large" src="{{ site.url }}/static/img/_posts/pyshark-graphing.png" alt="PyGal Example" width="650" height="367" sizes="(max-width: 650px) 100vw, 650px" /> This blog post will be a brief overview of getting some packet data in a chart and on a webpage. Please note that this will be a very simple example and not a recommended production deployment of Flask. I highly recommend using templates, flask-bootstrap, and more advanced Flask topics which you can learn about <a title="Flask" href="http://flask.pocoo.org" target="_blank">here</a>.
 
 <!--more-->
 
@@ -153,12 +147,12 @@ if __name__ == '__main__':
 
 
 <p>
-  <img class="aligncenter size-medium wp-image-503" src="//thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-21.07.48-300x84.png" alt="Upload Form" width="300" height="84" srcset="https://thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-21.07.48-300x84.png 300w, https://thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-21.07.48.png 666w" sizes="(max-width: 300px) 100vw, 300px" />When we upload a pcap, our `.graph_pcap()` function will go to work and present us with this beautiful graph:
+  <img class="aligncenter size-medium" src="{{ site.url }}/static/img/_posts/pyshark-graphing-upload.png" alt="Upload Form" width="300" height="84"  sizes="(max-width: 300px) 100vw, 300px" />When we upload a pcap, our `.graph_pcap()` function will go to work and present us with this beautiful graph:
 </p>
 
 
 <p>
-  <a href="http://thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-21.08.19.png"><img class="aligncenter size-medium wp-image-504" src="//thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-21.08.19-300x210.png" alt="Packet Size Graph" width="300" height="210" srcset="https://thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-21.08.19-300x210.png 300w, https://thepacketgeek.com/wp-content/uploads/2015/04/Screenshot-2015-04-20-21.08.19.png 788w" sizes="(max-width: 300px) 100vw, 300px" /></a>
+  <img class="aligncenter size-medium" src="{{ site.url }}/static/img/_posts/pyshark-chart-packet-sizes.png" alt="Packet Size Graph" width="300" height="210" sizes="(max-width: 300px) 100vw, 300px" /></a>
 </p>
 
 
