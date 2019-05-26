@@ -14,7 +14,6 @@ layout: compress
   <meta name="description" content="{% if page.title %}{{ page.title }}{% else %}{{ site.description }}{% endif %}" />
   <meta name="keywords"
     content="{% if page.title %}{{ page.title }}, {{ site.title }}, {% for categ in page.categories %}{{ categ }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% else %}{{ site.title }}, {% for category in site.categories %}{% capture categories_slug %}{{ category | first }}{% endcapture %}{% for categ in categories_slug %}{{ categ }}{% endfor %}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endif %}" />
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
   <meta content="{{ site.title }}" property="og:site_name">
 
   {% if page.noindex %}
@@ -127,13 +126,13 @@ layout: compress
           <ul class="search__results" id="js-search__results"></ul>
         </div>
         <hr />
-        <ul class="sidebar-nav">
+        <!-- <ul class="sidebar-nav">
           <strong>Navigation</strong>
           <li><a href="/">Home</a></li>
           {% for i in site.urls %}
           <li><a class="about" href="{{ i.url }}">{{ i.text }}</a></li>
           {% endfor %}
-        </ul>
+        </ul> -->
       </div>
       <!-- end /.fixed-condition -->
     </div>
