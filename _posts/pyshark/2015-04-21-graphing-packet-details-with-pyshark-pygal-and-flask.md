@@ -31,10 +31,10 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def graph_pcap():
 
-    if request.method == 'POST': 
+    if request.method == 'POST':
 
         # Save uploaded file   
-        
+
         # Process pcap, creating pygal chart with packet sizes
 
         # Create pygal chart instance
@@ -42,7 +42,7 @@ def graph_pcap():
         # Add points to chart, render chart, and return html
 
     elif request.method == 'GET:
-        
+
         # Return pcap upload form
 
 if __name__ == '__main__':
@@ -69,7 +69,7 @@ We need to create a list to store the plot points in and will use PyShark to ite
 <pre class="lang:default decode:true "># Create pygal instance
         pkt_size_chart = XY(width=400, height=300, style=LightGreenStyle, explicit_size=True)
         pkt_size_chart.title = 'Packet Sizes'
-        
+
         # Add points to chart and render chart html
         pkt_size_chart.add('Size', pkt_sizes)
         chart = pkt_size_chart.render()</pre>
@@ -90,7 +90,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def graph_pcap():
 
-    if request.method == 'POST': 
+    if request.method == 'POST':
 
         # Save uploaded file
         traceFile = request.files['file']
@@ -108,31 +108,31 @@ def graph_pcap():
         # Create pygal instance
         pkt_size_chart = XY(width=400, height=300, style=LightGreenStyle, explicit_size=True)
         pkt_size_chart.title = 'Packet Sizes'
-        
+
         # Add points to chart andrender html
         pkt_size_chart.add('Size', pkt_sizes)
         chart = pkt_size_chart.render()
 
         html = """Packet sizes over time
-                
-                
+
+
                     {}
-                
-            
+
+
             """.format(chart)
 
         return html
 
     else:
         html = """Upload PCAP
-                
-                
+
+
                     UploadPCAP:
 
 
 
 <pre class="lang:default decode:true " title="app.py">                
-            
+
             """
 
         return html

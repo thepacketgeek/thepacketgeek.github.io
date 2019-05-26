@@ -36,10 +36,10 @@ route-map OUTBOUND permit 20
 
 Here&#8217;s the important details:
 
-  * Peering with PE (172.16.2.1) goes through route-map OUTBOUND 
-      * This route-mapmatchesthecommunity-listEXABGP to match community 6553700 (or [100:100]) 
+  * Peering with PE (172.16.2.1) goes through route-map OUTBOUND
+      * This route-map matches the community-list EXABGP to match community 6553700 (or [100:100])
           * Any prefix with this community is dropped, all other prefixes are allowed
-  * PeeringwithExaBGP (10.0.0.3) 
+  * Peering with ExaBGP (10.0.0.3)
       * Setting the weight of learned routes from ExaBGP to 32768 ties with the default local sourced weight
       * By matching the Cisco-proprietary weight value, the higher local-preference will win out even on non-Cisco BGP routers
       * This must be an iBGP peering (same AS) so that local-preference passed with the UPDATE from ExaBGP

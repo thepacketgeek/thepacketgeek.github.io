@@ -9,27 +9,27 @@ categories:
 
 Now that you know how to advertise prefixes to BGP peers with ExaBGP and are familiar with how to use this to influence traffic in your network, let&#8217;s change gears and look at processing BGP messages between ExaBGP and its peers. Since ExaBGP uses JSON for message data, I figured it would be a good opportunity to use <a href="https://www.mongodb.org/" target="_blank">MongoDB</a> so the message information can easily be stored into a database for data collection and analysis.
 
-<img class="aligncenter size-large" src="{{ site.url }}/static/img/_posts/exabgp-mongo-db.png" alt="ExaBGP & MongoDB" width="650" height="304" sizes="(max-width: 650px) 100vw, 650px" /> 
+<img class="aligncenter size-large" src="{{ site.url }}/static/img/_posts/exabgp-mongo-db.png" alt="ExaBGP & MongoDB" width="650" height="304" sizes="(max-width: 650px) 100vw, 650px" />
 
 <!--more-->In the ExaBGP configuration file you can specify the types of messages you want to receive on STDOUT and also the encoding of the messages (text or JSON). Here&#8217;s an example of configuring ExaBGP to send all BGP messages to the script running in the process section:
 
-<pre class="lang:ini decode:true" title="conf.ini">group test { 
-    router-id 172.16.2.1; 
-    local-as 65000; 
-    local-address 172.16.2.1; 
+<pre class="lang:ini decode:true" title="conf.ini">group test {
+    router-id 172.16.2.1;
+    local-as 65000;
+    local-address 172.16.2.1;
 
-    process syslog { 
-        run /usr/bin/python path/to/syslog.py; 
+    process syslog {
+        run /usr/bin/python path/to/syslog.py;
         encoder json;
         receive {
             parsed;
             update;
             neighbor-changes;
         }
-    } 
+    }
 
-    neighbor 172.16.2.10 { 
-        peer-as 65000; 
+    neighbor 172.16.2.10 {
+        peer-as 65000;
     }
 }</pre>
 
@@ -187,7 +187,7 @@ As you can see, there&#8217;s plenty of useful information provided in these mes
 
   * Details about ExaBGP are contained in each message (Version, localhost, process ID)
   * BGP Message type: State (related to OPEN), Notification, Update, and Keepalive
-  * ABGP neighbor section to show peer  associated with the message and the message content 
+  * ABGP neighbor section to show peer  associated with the message and the message content
       * This section will contain the route announcement/withdraw/EoR info
 
 Just to show the process of storing these messages in our MongoDB database, let&#8217;s pretend we&#8217;re working on an app that will monitor the status of ExaBGP peers and send alerts if a peer connection is shutdown or keepalives haven&#8217;t been received in a certain amount of time. For this app, we will only need to hold onto the state and keepalive messages. Go ahead and check out <a href="https://github.com/Exa-Networks/exabgp/blob/master/etc/exabgp/processes/syslog-1.py" target="_blank">this</a> example syslog script in the ExaBGP repo that reads from STDIN, as I will be using it as a base for this next example.
@@ -238,7 +238,7 @@ counter = 0
 while True:
     try:
         line = stdin.readline().strip()
-        
+
         # When the parent dies we are seeing continual newlines, so we only access so many before stopping
         if line == "":
             counter += 1
@@ -246,7 +246,7 @@ while True:
                 break
             continue
         counter = 0
-        
+
         # Parse message, and if it's the correct type, store in the database
         message = message_parser(line)
         if message:
