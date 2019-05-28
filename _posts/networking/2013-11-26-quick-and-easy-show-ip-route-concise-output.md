@@ -1,21 +1,17 @@
 ---
-id: 205
-title: 'Quick and Easy &#8220;show ip route&#8221; with Concise Output'
+title: 'Quick and Easy `show ip route` with Concise Output'
 date: 2013-11-26T16:38:50-07:00
 author: Mat
 layout: post
-guid: http://thepacketgeek.com/?p=205
 permalink: /quick-and-easy-show-ip-route-concise-output/
 categories:
   - Networking
-tags:
-  - Cisco IOS
 ---
-For those of you Cisco IOS ninjas that can differentiate the `show ip route` table codes in your sleep, the first several lines of this command output are just a nuisance. Here&#8217;s a quick way to remove that unnecessary text from the output so you can get straight to finding out where your traffic is headed. And all with just a few additional keystrokes to the end of the command:
+For those of you Cisco IOS ninjas that can differentiate the `show ip route` table codes in your sleep, the first several lines of this command output are just a nuisance. Here's a quick way to remove that unnecessary text from the output so you can get straight to finding out where your traffic is headed. And all with just a few additional keystrokes to the end of the command:
 
 `# show ip route | e -`
 
-<!--more-->Cleans up this table&#8230;
+Cleans up this table...
 
     R6#sh ip route
     Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -42,7 +38,7 @@ For those of you Cisco IOS ninjas that can differentiate the `show ip route` tab
     L        10.1.36.6/32 is directly connected, FastEthernet0/1
     D        10.1.45.0/24 [90/33280] via 10.1.36.3, 00:07:22, FastEthernet0/1
 
-&#8230;so it looks like this:
+...so it looks like this:
 
     R6#sh ip route | e -
     
@@ -64,7 +60,7 @@ For those of you Cisco IOS ninjas that can differentiate the `show ip route` tab
 
 Much cleaner, right?!?
 
-Also, this works when you&#8217;re printing out RIBs for multiple VRFs. In just a small MPLS VPN lab the routes can quickly get out of hand, but see how much nicer this is to look through:
+Also, this works when you're printing out RIBs for multiple VRFs. In just a small MPLS VPN lab the routes can quickly get out of hand, but see how much nicer this is to look through:
 
     R6#show ip route vrf * | e -
     

@@ -1,24 +1,18 @@
 ---
-id: 657
 title: Monitor your BGP Advertised Routes with Paramiko
 date: 2015-07-07T09:37:11-07:00
 author: Mat
 layout: post
-guid: https://thepacketgeek.com/?p=657
 permalink: /monitor-your-bgp-advertised-routes-with-paramiko/
 categories:
-  - Coding
-  - IOS
-  - Snippet
-tags:
-  - Cisco IOS
-  - Python
+  - Networking
 ---
 This post moves back to the basics and covers how to perform screen scraping using python and a helpful SSH library called <a href="http://www.paramiko.org" target="_blank">Paramiko</a>. Although the example below is about a specific task of checking the BGP outbound advertised routes of a device, the script can be reused to perform screen scraping for any output that the device offers. This example is for a Cisco IOS device, but it should work on many devices with a few tweaks in the commands sent and regex strings.
 
-I&#8217;ve used inline comments for the explanations in the example below, but feel free to ask questions about this example or screen scraping other specific data. Here&#8217;s the <a href="https://gist.github.com/thepacketgeek/9bdbc2e3818151b5c8ed" target="_blank">GitHub Gist version</a> if you want to fork and make your own changes.<!--more-->
+I've used inline comments for the explanations in the example below, but feel free to ask questions about this example or screen scraping other specific data. Here's the <a href="https://gist.github.com/thepacketgeek/9bdbc2e3818151b5c8ed" target="_blank">GitHub Gist version</a> if you want to fork and make your own changes.<!--more-->
 
-<pre class="theme:github lang:python decode:true  " title="get_advertised_routes.py">import paramiko
+```python
+import paramiko
 import re
 from time import sleep
 
@@ -77,19 +71,20 @@ for peer in peer_ips:
         print '\t%s' % prefix                                                                                           
                                                                                                                         
 ssh.close() 
-</pre>
+```
 
 The output of will look similar to this (depending on your actual peers and advertised prefixes of course):
 
-<pre class="lang:sh highlight:0 decode:true ">Peer 172.16.2.10:
+```
+Peer 172.16.2.10:
         100.10.10.0/24
         100.20.20.0/24
         200.0.0.0/16
 Peer 172.16.2.20:
         100.10.10.0/24
         100.20.20.0/24
-        200.0.0.0/16</pre>
+        200.0.0.0/16
+```
 
-&nbsp;
 
 I hope you found this interesting and helpful!
