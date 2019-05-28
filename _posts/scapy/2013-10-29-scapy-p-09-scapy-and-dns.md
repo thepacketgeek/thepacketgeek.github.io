@@ -1,19 +1,20 @@
 ---
 title: Scapy p.09 – Scapy and DNS
-date: 2018-10-29T16:59:51-07:00
+date: 2013-10-29T16:59:51-07:00
 author: Mat
 layout: post
+permalink: /scapy-p-09-scapy-and-dns/
 categories:
-  - scapy
+  - Scapy
 ---
-
 We've been able to work with Ethernet, ARP, IP, ICMP, and TCP pretty easily so far thanks to Scapy's built in protocol support. Next on our list of protocols to work with are UDP and DNS.
 
 #### DNS Request and Response
 
 Using the `sr1()` function, we can craft a DNS request and capture the returned DNS response. Since DNS runs over IP and UDP, we will need to use those in our packet:
 
-```
+
+```python
 #! /usr/bin/env python3
 
 from scapy.all import DNS, DNSQR, IP, sr1, UDP
@@ -56,7 +57,8 @@ Ok, so sending a DNS query was fun, but let's build on that. How about hand buil
 
 We're doing a lot of field replacements, especially on the handcrafted spoof response. All I did to figure out all those fields is capture a DNS response from a request I made and used the `show()` function to figure out what fields are expected in the DNS response.
 
-<pre class="lang:default decode:true">#! /usr/bin/env python3
+```python
+#! /usr/bin/env python3
 
 from scapy.all import DNS, DNSQR, DNSRR, IP, send, sniff, sr1, UDP
 
@@ -99,17 +101,19 @@ def dns_responder(local_ip: str):
     return get_response
 
 sniff(filter=BPF_FILTER, prn=dns_responder(DNS_SERVER_IP), iface=IFACE)
-</pre>
+```
+
 
 With this running on a host, I used the DNS `dig` utility to make some DNS requests:
 
-<pre class="lang:default decode:true  ">localhost:~ packetgeek$ dig @172.16.20.40 www.thepacketgeek.com
+```
+localhost:~ packetgeek$ dig @172.16.20.40 www.thepacketgeek.com
 
-; &lt;&lt;&gt;&gt; DiG 9.8.5-P1 &lt;&lt;&gt;&gt; @172.16.20.40 www.thepacketgeek.com
+; <<>> DiG 9.8.5-P1 <<>> @172.16.20.40 www.thepacketgeek.com
 ; (1 server found)
 ;; global options: +cmd
 ;; Got answer:
-;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 29980
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29980
 ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
 
 ;; QUESTION SECTION:
@@ -125,11 +129,11 @@ www.thepacketgeek.com.  20411 IN  A 198.71.55.197
 
 localhost:~ packetgeek$ dig @172.16.20.40 trailers.apple.com
 
-; &lt;&lt;&gt;&gt; DiG 9.8.5-P1 &lt;&lt;&gt;&gt; @172.16.20.40 trailers.apple.com
+; <<>> DiG 9.8.5-P1 <<>> @172.16.20.40 trailers.apple.com
 ; (1 server found)
 ;; global options: +cmd
 ;; Got answer:
-;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 12688
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 12688
 ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
 ;; WARNING: Messages has 34 extra bytes at end
 
@@ -142,10 +146,8 @@ trailers.apple.com. 20  IN  A 172.16.20.40
 ;; Query time: 561 msec
 ;; SERVER: 172.16.20.40#53(172.16.20.40)
 ;; WHEN: Thu Oct 10 19:39:45 PDT 2013
-;; MSG SIZE  rcvd: 104</pre>
+;; MSG SIZE  rcvd: 104<
+```
 
-&nbsp;
 
 This example uses a lot of Python, so if you're not familiar with that take some time to look at the code and look up anything you don't know in the <a href="http://docs.python.org/2.7/" target="_blank" rel="noopener noreferrer">Python Docs</a>.
-
-&nbsp;

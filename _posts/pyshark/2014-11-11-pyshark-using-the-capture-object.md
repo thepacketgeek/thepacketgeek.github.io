@@ -1,11 +1,22 @@
 ---
+id: 352
 title: 'PyShark &#8211; Using the capture Object'
 date: 2014-11-11T09:15:34-07:00
 author: Mat
 layout: post
+guid: http://thepacketgeek.com/?p=352
+permalink: /pyshark-using-the-capture-object/
 categories:
+  - Coding
+tags:
   - PyShark
+  - Python
+series:
+  - Intro to PyShark
 ---
+<div class="seriesmeta">
+  This entry is part 3 of 4 in the series <a href="https://thepacketgeek.com/series/intro-to-pyshark/" class="series-20" title="Intro to PyShark">Intro to PyShark</a>
+</div>
 
 Before we get started you should read a few things in this post about the <a title="Differences between PyShark 0.3.3 and Documentation" href="http://thepacketgeek.com/differences-between-pyshark-0-3-3-and-documentation/" target="_blank">differences here</a> between the current version of PyShark (0.3.3) and the documentation on the website. Everything I cover in this post will be things I&#8217;ve tested and confirmed work in the current version.
 

@@ -1,17 +1,17 @@
 ---
 title: 'Scapy p.11 &#8211; Scapy Resources'
-date: 2018-10-29T16:59:49-07:00
+date: 2013-10-29T16:59:49-07:00
 author: Mat
 layout: post
+permalink: /scapy-p-11-scapy-resources/
 categories:
-  - scapy
+  - Scapy
 ---
-
-I hope you had as much fun as I did getting started with Scapy. These are all starter ideas, but we&#8217;ve barely uncovered the tip of the iceberg. I&#8217;ll continue to write articles about cool Scapy tools I come up with but you should dig into the docs below and see what you find. If you have any questions or comments about this guide, feel free to contact me.
+I hope you had as much fun as I did getting started with Scapy. These are all starter ideas, but we've barely uncovered the tip of the iceberg. I'll continue to write articles about cool Scapy tools I come up with but you should dig into the docs below and see what you find. If you have any questions or comments about this guide, feel free to contact me.
 
 #### Online Resources
 
-<!--more-->These are the resources I used for this guide:
+These are the resources I used for this guide:
 
   * <a href="https://scapy.net/" target="_blank" rel="noopener noreferrer">scapy.net &#8211; Scapy Homepage</a>
   * <a href="https://scapy.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener noreferrer">Scapy Documentation</a>

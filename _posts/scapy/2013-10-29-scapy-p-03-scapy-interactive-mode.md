@@ -1,19 +1,23 @@
 ---
 title: Scapy p.03 – Scapy Interactive Mode
-date: 2018-10-29T16:59:57-07:00
+date: 2013-10-29T16:59:57-07:00
 author: Mat
 layout: post
+permalink: /scapy-p-03-scapy-interactive-mode/
+wp_last_modified_info:
+  - February 14, 2019 @ 1:11 pm
 categories:
-  - scapy
+  - Scapy
 ---
 
 #### Running Scapy
 
-Scapy can be run in two different modes, interactively from a terminal window and programmatically from a Python script. Let&#8217;s start getting familiar with Scapy using the interactive mode.
+Scapy can be run in two different modes, interactively from a terminal window and programmatically from a Python script. Let's start getting familiar with Scapy using the interactive mode.
 
 Scapy comes with a short script to start interactive mode so from your terminal you can just type `scapy`:
 
-<pre class="lang:default decode:true ">localhost:~ packetgeek$ scapy
+```
+localhost:~ packetgeek$ scapy
                      aSPY//YASa
              apyyyyCY//////////YCa       |
             sY//////YSpcs  scpCY//Pp     | Welcome to Scapy
@@ -32,13 +36,15 @@ Scapy comes with a short script to start interactive mode so from your terminal 
                   spCPY//////YPSps
                        ccaacs
                                        using IPython 7.2.0
-&gt;&gt;&gt;</pre>
+>>>
+```
 
-#### <!--more-->Basic Scapy Commands
+#### Basic Scapy Commands
 
 To see a list of what commands Scapy has available, run the `lsc()` function:
 
-<pre class="lang:default decode:true ">&gt;&gt;&gt; lsc()
+```python
+>>> lsc()
 arping              : Send ARP who-has requests to determine which hosts are up
 bind_layers         : Bind 2 layers on some specific fields' values
 fuzz                : Transform a layer into a fuzzy layer by replacing some default values by random objects
@@ -61,34 +67,38 @@ traceroute          : Instant TCP traceroute
 tshark              : Sniff packets and print them calling pkt.show(), a bit like text wireshark
 wireshark           : Run wireshark on a list of packets
 wrpcap              : Write a list of packets to a pcap file
-&gt;&gt;&gt;</pre>
+>>>
+```
 
 <p class="caption">
   Note: I truncated this list to show the commands we will be discussing in this guide.
 </p>
 
-Wow, what a great list of commands! I&#8217;ll at least introduce most of these commands, and there are a few that we&#8217;ll use extensively. For the next few topics, we&#8217;ll specifically be covering: `ls()`, `send()`, `sniff()`, and `sr*()`.
+Wow, what a great list of commands! I'll at least introduce most of these commands, and there are a few that we'll use extensively. For the next few topics, we'll specifically be covering: `ls()`, `send()`, `sniff()`, and `sr*()`.
 
-In fact, let&#8217;s go ahead and use one of those now to show off some of the amazing built in capabilities of Scapy! I&#8217;m going to sniff a single packet real quick and then we&#8217;ll play around with that.
+In fact, let's go ahead and use one of those now to show off some of the amazing built in capabilities of Scapy! I'm going to sniff a single packet real quick and then we'll play around with that.
 
-<pre class="lang:default decode:true ">&gt;&gt;&gt; pkt = sniff(count=1)
-&gt;&gt;&gt; type(pkt)
+```python
+>>> pkt = sniff(count=1)
+>>> type(pkt)
 scapy.plist.PacketList
-&gt;&gt;&gt; pkt
+>>> pkt
 
-&gt;&gt;&gt; pkt[0].summary()
-'Ether / IP / ICMP 172.16.20.10 &gt; 4.2.2.1 echo-request 0 / Raw'
-&gt;&gt;&gt;</pre>
+>>> pkt[0].summary()
+'Ether / IP / ICMP 172.16.20.10 >>> 4.2.2.1 echo-request 0 / Raw'
+>>>
+```
 
-So, what I&#8217;ve done here is defined a `pkt` variable that is equal to whatever `sniff()` returns. In this case, that will be a single packet since I&#8217;ve passed in the `count` argument with a value of 1. Our `pkt` now holds an array containing single packet. If we increased `count` to a value of 2 or greater, then `sniff()` will return an array of all those packets. I&#8217;ll show you how to access each packet individually a little bit later.
+So, what I've done here is defined a `pkt` variable that is equal to whatever `sniff()` returns. In this case, that will be a single packet since I've passed in the `count` argument with a value of 1. Our `pkt` now holds an array containing single packet. If we increased `count` to a value of 2 or greater, then `sniff()` will return an array of all those packets. I'll show you how to access each packet individually a little bit later.
 
-But wait, how does Scapy know that this packet contains Ethernet, IP and ICMP layers!? I&#8217;m glad you asked, Scapy has a wide range of built in protocol support. The list is much to long for me to print out here, so I&#8217;ll let you run this next command on your own.
+But wait, how does Scapy know that this packet contains Ethernet, IP and ICMP layers!? I'm glad you asked, Scapy has a wide range of built in protocol support. The list is much to long for me to print out here, so I'll let you run this next command on your own.
 
-The `explore()`&nbsp;function provides a GUI for viewing and selecting protocol layers:
+The `explore()` function provides a GUI for viewing and selecting protocol layers:
 
-<img class="aligncenter size-large" src="{{ site.url }}/static/img/_posts/scapy-explore.png" alt="" width="650" height="442" sizes="(max-width: 650px) 100vw, 650px" /> 
+<img class="aligncenter size-large" src="{{ site.url }}/static/img/scapy-explore.png" alt="" width="650" height="442" sizes="(max-width: 650px) 100vw, 650px" /> 
 
-<pre class="lang:default decode:true  ">Packets contained in scapy.layers.dns:
+```
+Packets contained in scapy.layers.dns:
 Class                    |Name
 -------------------------|------------------------------
 DNS                      |DNS
@@ -106,33 +116,41 @@ DNSRRSOA                 |DNS SOA Resource Record
 DNSRRSRV                 |DNS SRV Resource Record
 DNSRRTSIG                |DNS TSIG Resource Record
 EDNS0TLV                 |DNS EDNS0 TLV
-InheritOriginDNSStrPacket|</pre>
+InheritOriginDNSStrPacket|
+```
 
 Or directly explore a specific layer (without the GUI selector):
 
-<pre class="lang:default decode:true">&gt;&gt;&gt; explore(scapy.layers.dhcp)
+```
+>>> explore(scapy.layers.dhcp)
 Packets contained in scapy.layers.dhcp:
 Class|Name
 -----|------------
 BOOTP|BOOTP
-DHCP |DHCP options</pre>
+DHCP |DHCP options
+```
 
 You can also use the `ls()`&nbsp;command to view the available protocols and fields for each layer. In Scapy Interactive mode, run the `ls()` command and just look at ALL the supported protocols.
 
-<pre class="lang:default decode:true">&gt;&gt;&gt; ls()
+```
+>>> ls()
 ARP        : ARP
 ASN1_Packet : None
 BOOTP      : BOOTP
-...</pre>
+...
+```
 
-As you can see, Scapy has a huge range of supported protocols. We&#8217;ll only work with a handful of those in the upcoming topics but feel free to dig into them more for your own network tools. To see the fields and default values for any protocol, just run the `ls()` function on the protocol like this:
+As you can see, Scapy has a huge range of supported protocols. We'll only work with a handful of those in the upcoming topics but feel free to dig into them more for your own network tools. To see the fields and default values for any protocol, just run the `ls()` function on the protocol like this:
 
-<pre class="lang:default decode:true">&gt;&gt;&gt; ls(Ether)
+```
+>>> ls(Ether)
 dst        : DestMACField         = (None)
 src        : SourceMACField       = (None)
-type       : XShortEnumField      = (0)</pre>
+type       : XShortEnumField      = (0)
+```
 
-<pre class="lang:default decode:true ">&gt;&gt;&gt; ls(IP)
+```
+>>> ls(IP)
 version    : BitField             = (4)
 ihl        : BitField             = (None)
 tos        : XByteField           = (0)
@@ -145,12 +163,15 @@ proto      : ByteEnumField        = (0)
 chksum     : XShortField          = (None)
 src        : Emph                 = (None)
 dst        : Emph                 = ('127.0.0.1')
-options    : PacketListField      = ([])</pre>
+options    : PacketListField      = ([])
+```
 
-<pre class="lang:default decode:true ">&gt;&gt;&gt; ls(UDP)
+```
+>>> ls(UDP)
 sport      : ShortEnumField       = (53)
 dport      : ShortEnumField       = (53)
 len        : ShortField           = (None)
-chksum     : XShortField          = (None)</pre>
+chksum     : XShortField          = (None)
+```
 
-Now that we have a better idea of the Scapy commands and protocol support, let&#8217;s dig into some packets.
+Now that we have a better idea of the Scapy commands and protocol support, let's dig into some packets.

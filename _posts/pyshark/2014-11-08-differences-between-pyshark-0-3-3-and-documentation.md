@@ -1,10 +1,16 @@
 ---
+id: 340
 title: Differences between PyShark 0.3.3 and Documentation
 date: 2014-11-08T16:44:28-07:00
 author: Mat
 layout: post
+guid: http://thepacketgeek.com/?p=340
+permalink: /differences-between-pyshark-0-3-3-and-documentation/
 categories:
+  - Coding
+tags:
   - PyShark
+  - Python
 ---
 While working with Pyshark I&#8217;ve found that some of the documentation doesn&#8217;t quite line up so I&#8217;m writing this post to help people that might run into the same situation. The intro doc is found <a title="PyShark" href="http://kiminewt.github.io/pyshark/" target="_blank">here</a> and I&#8217;ll be comparing it to what actually happens when using the newest version (0.3.3) of Pyshark.
 

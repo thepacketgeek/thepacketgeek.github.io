@@ -1,11 +1,22 @@
 ---
+id: 370
 title: 'PyShark &#8211; Using the packet Object'
 date: 2014-11-12T08:30:57-07:00
 author: Mat
 layout: post
+guid: http://thepacketgeek.com/?p=370
+permalink: /pyshark-using-the-packet-object/
 categories:
+  - Coding
+tags:
   - PyShark
+  - Python
+series:
+  - Intro to PyShark
 ---
+<div class="seriesmeta">
+  This entry is part 4 of 4 in the series <a href="https://thepacketgeek.com/series/intro-to-pyshark/" class="series-20" title="Intro to PyShark">Intro to PyShark</a>
+</div>
 
 So far in this series we&#8217;ve done a lot with capturing packets and working with the capture object, but finally we&#8217;re going to get to the fun part and finally start playing with some PACKETS!!!!
 

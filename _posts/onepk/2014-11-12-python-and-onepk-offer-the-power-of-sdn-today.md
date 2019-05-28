@@ -1,11 +1,24 @@
 ---
+id: 403
 title: Python and onePK Offer the Power of SDN Today
 date: 2014-11-12T20:10:19-07:00
 author: Mat
 layout: post
+guid: http://thepacketgeek.com/?p=403
+permalink: /python-and-onepk-offer-the-power-of-sdn-today/
 categories:
+  - Coding
+  - Networking
+tags:
+  - CSR-1000V
   - OnePK
+  - Python
+series:
+  - Getting started with Cisco OnePK
 ---
+<div class="seriesmeta">
+  This entry is part 1 of 5 in the series <a href="https://thepacketgeek.com/series/cisco-onepk/" class="series-24" title="Getting started with Cisco OnePK">Getting started with Cisco OnePK</a>
+</div>
 
 Cisco announced their entry into the Software Defined Networking (SDN) arena with OnePK in early 2013. If you haven&#8217;t heard of Cisco&#8217;s OnePK yet, please read their introductions before continuing (only because they do a better job of explaining it than I do):
 

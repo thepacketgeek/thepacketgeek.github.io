@@ -1,11 +1,23 @@
 ---
-title: 'OnePK - Interacting with Interfaces'
+id: 424
+title: 'OnePK &#8211; Interacting with Interfaces'
 date: 2014-11-17T07:48:39-07:00
 author: Mat
 layout: post
+guid: http://thepacketgeek.com/?p=424
+permalink: /onepk-interacting-with-interfaces/
 categories:
+  - Coding
+  - Networking
+tags:
   - OnePK
+  - Python
+series:
+  - Getting started with Cisco OnePK
 ---
+<div class="seriesmeta">
+  This entry is part 4 of 5 in the series <a href="https://thepacketgeek.com/series/cisco-onepk/" class="series-24" title="Getting started with Cisco OnePK">Getting started with Cisco OnePK</a>
+</div>
 
 Getting information from your network devices is really helpful, but actually change device configurations is even more helpful! This post will have a few examples of how to do just that with scripts that will shutdown a specified interface and change an interface IP address. This is where the fun begins, so strap into your chairs and get ready for some network automation!<!--more-->
 
