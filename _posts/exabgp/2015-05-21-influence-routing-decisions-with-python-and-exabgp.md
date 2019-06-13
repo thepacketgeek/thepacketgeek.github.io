@@ -17,7 +17,7 @@ This post will cover basic setup of ExaBGP and peering with a router, as well as
 
 The installation is very simple, you just install via pip in your global python packages, or preferably in a virtualenv (or similar) to not interfere with your other projects:
 
-\`$ pip3 install exabgp\` (or \`pip\` if you're using python 2)
+    $ pip3 install exabgp\` (or \`pip\` if you're using python 2)
 
 This should work on OS X and *nix, but I did have some problems trying to run ExaBGP on Windows.
 
