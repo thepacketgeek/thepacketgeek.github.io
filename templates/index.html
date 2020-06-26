@@ -1,0 +1,22 @@
+{% extends "hyde/templates/index.html" %}
+
+{% block sidebar_about %}
+    <a href="{{ config.base_url }}"><h2>{{ config.title }}</h2></a>
+    {% if config.description %}
+    <p class="lead">{{config.description}}</p>
+    {% endif %}
+{% endblock sidebar_about %}
+
+{% block sidebar_nav %}
+<hr class="lead" />
+{% endblock sidebar_nav %}
+
+
+{% block sidebar_footer %}
+<hr class="lead" />
+{% for link in config.extra.hyde_links %}
+<li class="sidebar-nav-item">
+    <a style={"display: inline-block"} href="{{link.url}}">{{link.name}}</a>
+</li>
+{% endfor %}
+{% endblock sidebar %}

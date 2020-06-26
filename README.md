@@ -1,7 +1,7 @@
 # Sandbox
 
-Build and run the site with jekyll:
+Build and run the site with zola:
 
 ```
-$ bundle exec jekyll serve
+$ zola serve
 ```
