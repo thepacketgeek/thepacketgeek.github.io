@@ -9,6 +9,12 @@
 
 {% block sidebar_nav %}
 <hr class="lead" />
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
 {% endblock sidebar_nav %}
 
 
@@ -16,7 +22,7 @@
 <hr class="lead" />
 {% for link in config.extra.hyde_links %}
 <li class="sidebar-nav-item">
-    <a style={"display: inline-block"} href="{{link.url}}">{{link.name}}</a>
+    <a href="{{link.url}}">{{link.name}}</a>
 </li>
 {% endfor %}
 {% endblock sidebar %}

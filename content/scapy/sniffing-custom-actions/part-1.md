@@ -1,9 +1,14 @@
 +++
-title = "Scapy Sniffing with Custom Actions, Part 1"
+title = "Scapy Sniffing with Custom Actions"
+description = "Part 1"
 date = 2013-10-01
 author = "Mat"
-permalink = "/scapy-sniffing-with-custom-actions-part-1/"
-categories = ["scapy"]
+aliases = [
+    "/scapy-sniffing-with-custom-actions-part-1/"
+]
+
+[taxonomies]
+tags = ["scapy", "python"]
 +++
 
 Scapy has a `sniff` function that is great for getting packets off the wire, but there's much more to show off how great this function really is! `sniff` has  an argument `prn` that allows you to pass a function that executes with each packet sniffed. The intended purpose of this function is to control how the packet prints out in the console allowing you to replace the default packet printing display with a format of your choice.
@@ -12,9 +17,9 @@ The `prn` argument is defined as:
 
 > prn: function to apply to each packet. If something is returned, it is displayed. For instance you can use prn = lambda x: x.summary().
 
-In order for your program/script to format and return the packet info as you wish, the 
+<!-- more -->
 
-`sniff` function passes the packet object as the one and only argument into the function you specify in the sniff's `prn` argument. This gives us the option to do some fun stuff (not just formatting) with each packet sniffed 🙂
+In order for your program/script to format and return the packet info as you wish, the `sniff` function passes the packet object as the one and only argument into the function you specify in the sniff's `prn` argument. This gives us the option to do some fun stuff (not just formatting) with each packet sniffed 🙂
 
 For example, we can now perform custom actions with each sniffed packet. This can be anything from incrementing a packet count somewhere in the program, to doing some advanced packet parsing or manipulation, or even shipping that packet off into some sort of storage (.pcap appending or API POSTing anyone??).
 
@@ -96,7 +101,7 @@ Request: 172.16.20.200 is asking about 172.16.20.44
 ```
 
 
-## An important thing to keep in mind when using the `prn` argument
+### An important thing to keep in mind when using the `prn` argument
 
 In the case of the example above, you are passing the `custom_action` function **into** the `sniff` function. If you used `sniff(prn=custom_action())` instead, you would be passing the function's returned value to the sniff function. This will generate the returned text before the function has a packet to parse and will not give you the results you want.
 
