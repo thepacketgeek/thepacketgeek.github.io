@@ -82,9 +82,7 @@ Welcome to Scapy (2.4.3)
 'en0'
 ```
 
-<p class="caption">
-  Scapy on my computer is defaulted to my en0 (Wifi) interface
-</p>
+>  Scapy on my computer is defaulted to my en0 (Wifi) interface
 
 If the default interface is not the one you will use, you can change the value like this:
 
@@ -92,9 +90,7 @@ If the default interface is not the one you will use, you can change the value l
 >>> conf.iface="en3"
 ```
 
-<p class="caption">
-  *Instead of en3, use the interface you want to be your default
-</p>
+>  *Instead of en3, use the interface you want to be your default
 
 If you are constantly switching back and forth between interfaces, you can specify the interface to use when you run Scapy commands. Here are some Scapy functions and how you might use the `iface` argument. You'll learn more about these functions and other arguments soon.
 

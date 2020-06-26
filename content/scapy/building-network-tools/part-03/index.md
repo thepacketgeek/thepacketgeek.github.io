@@ -19,7 +19,7 @@ Scapy can be run in two different modes, interactively from a terminal window an
 <!-- more -->
 Scapy comes with a short script to start interactive mode so from your terminal you can just type `scapy`:
 
-```
+```sh
 localhost:~ packetgeek$ scapy
                      aSPY//YASa
              apyyyyCY//////////YCa       |
@@ -73,9 +73,7 @@ wrpcap              : Write a list of packets to a pcap file
 >>>
 ```
 
-<p class="caption">
-  Note: I truncated this list to show the commands we will be discussing in this guide.
-</p>
+>  Note: I truncated this list to show the commands we will be discussing in this guide.
 
 Wow, what a great list of commands! I'll at least introduce most of these commands, and there are a few that we'll use extensively. For the next few topics, we'll specifically be covering: `ls()`, `send()`, `sniff()`, and `sr*()`.
 
@@ -98,9 +96,9 @@ But wait, how does Scapy know that this packet contains Ethernet, IP and ICMP la
 
 The `explore()` function provides a GUI for viewing and selecting protocol layers:
 
-<img class="aligncenter size-large" src="{{ site.url }}/static/img/scapy-explore.png" alt="" width="650" height="442" sizes="(max-width: 650px) 100vw, 650px" /> 
+![](scapy-explore.png)
 
-```
+```sh
 Packets contained in scapy.layers.dns:
 Class                    |Name
 -------------------------|------------------------------
@@ -124,7 +122,7 @@ InheritOriginDNSStrPacket|
 
 Or directly explore a specific layer (without the GUI selector):
 
-```
+```sh
 >>> explore(scapy.layers.dhcp)
 Packets contained in scapy.layers.dhcp:
 Class|Name
@@ -135,7 +133,7 @@ DHCP |DHCP options
 
 You can also use the `ls()`&nbsp;command to view the available protocols and fields for each layer. In Scapy Interactive mode, run the `ls()` command and just look at ALL the supported protocols.
 
-```
+```sh
 >>> ls()
 ARP        : ARP
 ASN1_Packet : None
@@ -145,14 +143,14 @@ BOOTP      : BOOTP
 
 As you can see, Scapy has a huge range of supported protocols. We'll only work with a handful of those in the upcoming topics but feel free to dig into them more for your own network tools. To see the fields and default values for any protocol, just run the `ls()` function on the protocol like this:
 
-```
+```sh
 >>> ls(Ether)
 dst        : DestMACField         = (None)
 src        : SourceMACField       = (None)
 type       : XShortEnumField      = (0)
 ```
 
-```
+```sh
 >>> ls(IP)
 version    : BitField             = (4)
 ihl        : BitField             = (None)
@@ -169,7 +167,7 @@ dst        : Emph                 = ('127.0.0.1')
 options    : PacketListField      = ([])
 ```
 
-```
+```sh
 >>> ls(UDP)
 sport      : ShortEnumField       = (53)
 dport      : ShortEnumField       = (53)

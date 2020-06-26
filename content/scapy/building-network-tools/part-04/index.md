@@ -15,10 +15,11 @@ tags = ["scapy", "python"]
 #### Packets, Layers, and Fields. Oh My!
 
 Scapy uses Python dictionaries as the data structure for packets. Each packet is a collection of nested dictionaries with each layer being a child dictionary of the previous layer, built from the lowest layer up. Visualizing the nested packet layers would look something like this:  
-<img class="aligncenter size-full" src="{{ site.url }}/static/img/scapy-packet-layers.png" alt="pkt-layers" width="494" height="186" sizes="(max-width: 494px) 100vw, 494px" />
+
+![](scapy-packet-layers.png)
 
 <!-- more -->
-Each field (such as the Ethernet `dst' value or ICMP `type' value) is a key:value pair in the appropriate layer. These fields (and nested layers) are all mutable so we can reassign them in place using the assignment operator. Scapy has packet methods for viewing the layers and fields that I will introduce next.
+Each field (such as the Ethernet `dst` value or ICMP `type` value) is a key:value pair in the appropriate layer. These fields (and nested layers) are all mutable so we can reassign them in place using the assignment operator. Scapy has packet methods for viewing the layers and fields that I will introduce next.
 
 #### Packet summary() and show() Methods
 
@@ -70,9 +71,7 @@ Very cool, that's some good info. If you're familiar with Python you have probab
 <Sniffed: TCP:0 UDP:0 ICMP:10 Other:0>
 ```
 
-<p class="caption">
-  Getting the value of the list returns a quick glance at what type of packets were sniffed.
-</p>
+>  Getting the value of the list returns a quick glance at what type of packets were sniffed.
 
 ```python
 >>> pkts.summary()
@@ -95,9 +94,7 @@ And we can show the summary or packet contents of any single packet by using the
 <Ether  dst=00:00:16:aa:bb:cc src=00:24:97:2e:d6:c0 type=0x800 |<IP  version=4L ihl=5L tos=0x20 len=84 id=47340 flags= frag=0L ttl=57 proto=icmp chksum=0x3826 src=4.2.2.1 dst=172.16.20.10 options=[] |<ICMP  type=echo-reply code=0 chksum=0xcfbf id=0x3060 seq=0x1 |<Raw |>>>>
 ```
 
-<p class="caption">
-  Getting the value of a single packet returns a quick glance of the contents of that packet.
-</p>
+> Getting the value of a single packet returns a quick glance of the contents of that packet.
 
 The `show()` method will give us a cleaner print out:
 
