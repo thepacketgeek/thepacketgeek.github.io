@@ -6,7 +6,7 @@
   <hr />
   {% for section_name in section.subsections | reverse %}
     {% set section = get_section(path=section_name) %}
-    <h2><a href="{{ section.permalink }}">{{ section.title }}</a></h2>
+    <h3><a href="{{ section.permalink }}">{{ section.title }}</a></h3>
     <ul>
     {% for post in section.pages | reverse %}
       <li>
