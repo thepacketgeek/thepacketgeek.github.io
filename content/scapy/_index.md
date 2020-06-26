@@ -2,7 +2,7 @@
 title = "Scapy"
 template = "category.html"
 
-weight = 20
+weight = 40
 in_search_index = true
 
 aliases = [

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="section">
   <h1 class="section-title">{{ section.title }}</h1>
-  {% for category_name in section.subsections | reverse %}
+  {% for category_name in section.subsections %}
     {% set category = get_section(path=category_name) %}
     <h1><a href="{{ category.permalink }}">{{ category.title }}</a></h1>
     <hr />
@@ -22,6 +22,18 @@
         </ul>
         <hr />
     {% endfor %}
+    {% if category.pages %}
+        <ul>
+        {% for post in category.pages | reverse %}
+        <li>
+            <h4 style="display: inline;" class="title">
+            <a href="{{ post.permalink }}">{{ post.title }}</a>
+            </h4
+            <h4 style="display: inline;" class="subtitle">{{post.description}}</h4>
+        </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
   {% endfor %}
 </div>
 {% endblock content %}
