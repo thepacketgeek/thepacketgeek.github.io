@@ -14,8 +14,7 @@ The two typical ways to start analyzing packets are via PyShark's FileCapture an
 <!-- more -->
 Both modules offer similar parameters that affect packets returned in the capture object. These definitions are taken directly out of the docstrings for these modules:
 
-  * **interface**:** **[LiveCapture only]** **Name of the interface to sniff on. If not given, takes the first available.**  
-** 
+  * **interface**: **[LiveCapture only]** **Name of the interface to sniff on. If not given, takes the first available.**  
   * **bpf_filter**: [LiveCapture only] A BPF (tcpdump) filter to apply on the cap before reading.
   * **input_file**: [FileCapture only] File path of the capture (PCAP, PCAPNG)
   * **keep_packets**: Whether to keep packets after reading them via next(). Used to conserve memory when reading large caps.
