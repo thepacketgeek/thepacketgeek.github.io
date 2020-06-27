@@ -13,11 +13,14 @@ highlight_code = true
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
+generate_feed = true
 
 theme = "hyde"
 
 [extra]
+google_analytics = "UA-44238008-1"
 hyde_links = [
-    {url = "https://github.com/thepacketgeek", name = "GitHub", icon="images/github.png"},
+    {url = "https://github.com/thepacketgeek", name = "GitHub", icon_class = "fa-github"},
+    {url = "https://twitter.com/thepacketgeek", name = "Twitter", icon_class = "fa-twitter"},
 ]
-hyde_theme = "theme-base-0c"
+hyde_theme = "theme-base-0d"

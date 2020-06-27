@@ -2,19 +2,19 @@
 
 {% block content %}
 <div class="section">
-  <h1 class="section-title">{{ section.title }}</h1>
+  <h2 class="section-title">{{ section.title }}</h2>
   {% for category_name in section.subsections %}
     {% set category = get_section(path=category_name) %}
-    <h1><a href="{{ category.permalink }}">{{ category.title }}</a></h1>
+    <h2><a href="{{ category.permalink }}">{{ category.title }}</a></h2>
     <hr />
     {% for section_name in category.subsections | reverse %}
         {% set section = get_section(path=section_name) %}
-        <h2><a href="{{ section.permalink }}">{{ section.title }}</a></h2>
+        <h3><a href="{{ section.permalink }}">{{ section.title }}</a></h3>
         <ul>
         {% for post in section.pages | reverse %}
         <li>
             <h4 style="display: inline;" class="title">
-            <a href="{{ post.permalink }}">{{ post.title }}</a>
+                <a href="{{ post.permalink }}">{{ post.title }}</a>
             </h4
             <h4 style="display: inline;" class="subtitle">{{post.description}}</h4>
         </li>
