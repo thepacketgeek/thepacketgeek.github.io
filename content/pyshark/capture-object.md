@@ -61,4 +61,4 @@ def get_capture_count():
 print get_capture_count()
 ```
 
-Check out the [next PyShark article](packet-object "PyShark – Using the packet Object") that covers the methods and attributes of the PyShark `packet` object.
+Check out the [next PyShark article](../packet-object "PyShark – Using the packet Object") that covers the methods and attributes of the PyShark `packet` object.

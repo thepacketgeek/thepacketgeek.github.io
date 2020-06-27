@@ -94,4 +94,4 @@ DNS
 
 I discovered a strange behavior when trying to iterate through a LiveCapture returned capture object. It appears that when you try to iterate through the list, it starts the sniff over again and iterates in real time (as packets are received on the interface). There's no way (that I've found yet) to store the packets, the LiveCapture is meant to process packets in real time only.
 
-There are some powerful options for opening and sniffing packets for processing. Check out the next article [here](/capture-object/ "PyShark – Using the capture Object") where I explain what can be done with the capture object that is returned from these modules.
+There are some powerful options for opening and sniffing packets for processing. Check out the next article [here](../capture-object/ "PyShark – Using the capture Object") where I explain what can be done with the capture object that is returned from these modules.
