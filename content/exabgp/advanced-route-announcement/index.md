@@ -12,10 +12,10 @@ tags = ["exabgp", "python"]
 
 Now that you're familiar with the basics of setting up a peer with ExaBGP and advertising routes, let's look at expanding those concepts towards something that might actually be used in production.
 
-<!-- more -->
 ## Peering with Multiple BGP Routers
 
 ![](exabgp-multi-peer.png)
+<!-- more -->
 
 Networks running BGP tend to have more than one edge router that you would want to advertise routes to with ExaBGP, so first let's look at how to setup our `conf.ini` file to add peers. What I didn't mention in the previous articles is that the `group { }` object in the config file is similar to a peer-group in Cisco IOS. The difference is that you can only have one group per ExaBGP instance, but this makes sense since the use case seems to be advertising and receiving updates to/from one ASN. We can setup shared values such as router-id, our local AS and update source, and the peer AS. Then we `activate` each neighbor within the group:
 

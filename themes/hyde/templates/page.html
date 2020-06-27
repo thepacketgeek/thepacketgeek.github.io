@@ -2,11 +2,13 @@
 
 {% block content %}
 <div class="post">
-  <h1 style="display: inline;" class="title">{{ page.title }}</h1>
-  -
-  <h3 style="display: inline;" class="subtitle">{{ page.description }}</h3>
-  {# <span class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</span> #}
+  <h2 style="display: inline;" class="title">{{ page.title }}</h2>
+  <h4 style="display: inline;" class="subtitle">{{page.description}}</h4>
+  <div style="padding-top: 6px; padding-bottom: 8px; font-size: 0.8em;">
+    {{ page.date | date(format="%b - %Y") }}
+    <em>(~{{ page.reading_time }} minutes read time)</em>
+  </div>
+  <hr />
   {{ page.content | safe }}
 </div>
 {% endblock content %}
-

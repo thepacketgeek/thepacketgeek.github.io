@@ -1,7 +1,8 @@
 +++
 title = "Scapy p.11"
 description = "Scapy Resources"
-date = 2013-10-29
+#date = 2013-10-29
+date = 2019-05-11
 author = "Mat"
 weight = 90
 
@@ -12,6 +13,7 @@ tags = ["scapy", "python"]
 +++
 
 I hope you had as much fun as I did getting started with Scapy. These are all starter ideas, but we've barely uncovered the tip of the iceberg. I'll continue to write articles about cool Scapy tools I come up with but you should dig into the docs below and see what you find. If you have any questions or comments about this guide, feel free to contact me.
+<!-- more -->
 
 #### Online Resources
 

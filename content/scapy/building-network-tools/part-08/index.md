@@ -1,7 +1,8 @@
 +++
 title = "Scapy p.08"
 description = "Making a Christmas Tree Packet"
-date = 2013-10-29
+#date = 2013-10-29
+date = 2019-05-11
 author = "Mat"
 weight = 93
 
@@ -11,7 +12,7 @@ tags = ["scapy", "python"]
 +++
 
 We've doing a lot of packet sniffing, analysis, and even some basic packet crafting of our own. With the ICMP packets we created, we only set the destination we wanted to use and let Scapy take care of the rest.
-
+<!-- more -->
 #### Taking Control of Protocol Fields
 
 I want to show you how to take a bit more control over the packet creation process by creating a [TCP Christmas Tree packet](http://en.wikipedia.org/wiki/Christmas_tree_packet). I'll let you read the details, just know that the name of this packet comes from every TCP header flag bit turned on (set to 1), so it can be said the packet is "lit up like a Christmas Tree." Here's how we can build this with Scapy:

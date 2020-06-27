@@ -10,7 +10,8 @@ tags = ["pyshark", "python"]
 +++
 So far in this series we've done a lot with capturing packets and working with the capture object, but finally we're going to get to the fun part and finally start playing with some PACKETS!!!!
 
-When we have captured packets in a capture object, they are stored as a list of packet objects.  These packet objects will have methods and attributes that give us access to the header and payload info of each packet.  As stated in a previous post we have control for how much info about the packets we store in each packet option through the `only_summaries` argument in the LiveCapture and ReadCapture modules.<!--more-->
+When we have captured packets in a capture object, they are stored as a list of packet objects.  These packet objects will have methods and attributes that give us access to the header and payload info of each packet.  As stated in a previous post we have control for how much info about the packets we store in each packet option through the `only_summaries` argument in the LiveCapture and ReadCapture modules.
+<!-- more -->
 
 ### Packet Summary Attributes
 

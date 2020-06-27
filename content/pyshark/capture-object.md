@@ -24,7 +24,7 @@ Out[3]:
  'next_packet']
  ```
 
-<!--more-->
+<!-- more -->
 These are the methods/attributes that I feel are actually useful, most of the other ones are used for debugging or internally for the capture process. The `display_filter, encryption, input_filename` attributes are used for displaying parameters passed into  FileCapture or LiveCapture.
 
 The real magic here is the `apply_on_packets()` and `next()` methods. Iteration (via `for` loop) is available because of the `next()` method, and `apply_on_packets()` is another way to iterate through the packets, passing in a function to apply to each packet:

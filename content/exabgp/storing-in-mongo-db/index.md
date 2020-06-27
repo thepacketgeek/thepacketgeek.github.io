@@ -10,9 +10,9 @@ tags = ["exabgp", "python"]
 +++
 
 Now that you know how to advertise prefixes to BGP peers with ExaBGP and are familiar with how to use this to influence traffic in your network, let's change gears and look at processing BGP messages between ExaBGP and its peers. Since ExaBGP uses JSON for message data, I figured it would be a good opportunity to use <a href="https://www.mongodb.org/" target="_blank">MongoDB</a> so the message information can easily be stored into a database for data collection and analysis.
-<!-- more -->
 
 ![](exabgp-mongo-db.png)
+<!-- more -->
 
 In the ExaBGP configuration file you can specify the types of messages you want to receive on STDOUT and also the encoding of the messages (text or JSON). Here's an example of configuring ExaBGP to send all BGP messages to the script running in the process section:
 

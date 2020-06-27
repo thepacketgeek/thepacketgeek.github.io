@@ -1,7 +1,8 @@
 +++
 title = "Scapy p.03"
 description = "Scapy Interactive Mode"
-date = 2013-10-29
+#date = 2013-10-29
+date = 2019-05-11
 author = "Mat"
 weight = 98
 

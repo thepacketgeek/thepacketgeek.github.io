@@ -15,7 +15,7 @@ localhost:~ packetgeek$ scapy
 >>> packets
 <IBGP_adjacency.cap: TCP:17 UDP:0 ICMP:0 Other:0>
 ```
-
+<!-- more -->
 *Thanks to <a title="PacketLife.net" href="http://packetlife.net/captures/protocol/bgp/" target="_blank" rel="noopener">packetlife.net</a> for the iBGP capture found <a title="iBGP_adjacency.cap" href="https://www.cloudshark.org/captures/00249be4441f" target="_blank" rel="noopener">here.</a>
 
 

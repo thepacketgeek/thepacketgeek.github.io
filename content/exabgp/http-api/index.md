@@ -9,7 +9,7 @@ weight = 80
 tags = ["exabgp", "python"]
 +++
 
-We've covered how to setup ExaBGP and peer with a router, and then how to use python to add  and remove advertised routes in BGP either with static definitions or dynamically through health checking. There may be some of you out there with some sort of application that is already monitoring routes and you're trying to figure out how to connect it with ExaBGP for the actual interaction part? Well, what if we add an HTTP API to ExaBGP to give programmatic access to ExaBGP from some external utility? I'll go over two ways to do this using the python built-in SimpleHTTPServer or <a href="//flask.pocoo.org" target="_blank">Flask</a>.
+We've covered how to setup ExaBGP and peer with a router, and then how to use python to add  and remove advertised routes in BGP either with static definitions or dynamically through health checking. There may be some of you out there with some sort of application that is already monitoring routes and you're trying to figure out how to connect it with ExaBGP for the actual interaction part? Well, what if we add an HTTP API to ExaBGP to give programmatic access to ExaBGP from some external utility? I'll go over two ways to do this using the Python built-in `SimpleHTTPServer` or <a href="//flask.pocoo.org" target="_blank">Flask</a>.
 
 <!-- more -->
 ### Using SimpleHTTPServer

@@ -1,7 +1,8 @@
 +++
 title = "Scapy p.04"
 description = "Looking at Packets"
-date = 2013-10-29
+#date = 2013-10-29
+date = 2019-05-11
 author = "Mat"
 aliases = ["/scapy-p-04-looking-at-packets/"]
 weight = 97

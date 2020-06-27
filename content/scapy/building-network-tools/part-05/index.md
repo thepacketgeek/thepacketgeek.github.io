@@ -1,7 +1,8 @@
 +++
 title = "Scapy p.05"
 description = "Sending our First Packet; ARP Response"
-date = 2013-10-29
+# date = 2013-10-29
+date = 2019-05-11
 author = "Mat"
 weight = 96
 aliases = ["/scapy-p-05-sending-our-first-packet-arp-response/"]
@@ -13,10 +14,11 @@ tags = ["scapy", "python"]
 
 With a good understanding of how to view our packets we can now move onto some packet generation. Let's talk a bit about sniffing first and how existing packets are our best tool for creating new ones.
 
+<!-- more -->
 #### Sniff() function arguments
 
-We've used the `sniff()` function a couple times already to capture some packets for viewing. I'm going to explain a little bit more about the `sniff()` function and its arguments. <!--more--> The arguments we will be talking about are:
 
+We've used the `sniff()` function a couple times already to capture some packets for viewing. I'm going to explain a little bit more about the `sniff()` function and its arguments. The arguments we will be talking about are:
   * **count:** Number of packets to capture. 0 means infinity.
   * **iface:** Sniff for packets only on the provided interface.
   * **prn:** Function to apply to each packet. If something is returned, it is displayed. For instance you can use prn = lambda x: x.summary().

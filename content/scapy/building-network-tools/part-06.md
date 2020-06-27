@@ -11,7 +11,7 @@ tags = ["scapy", "python"]
 +++
 
 We've sniffed some packets, dig down into packet layers and fields, and even sent some packets. Great job! It's time to step up our game with Scapy and start really using some of the power Scapy contains. Please Note: this next example is for education and example only. Please be responsible on your network, especially at work!
-
+<!-- more -->
 #### Scapy Send/Receive Function
 
 Let's get familiar with the `sr()`, `sr1()`, `srp()`, and `srp1()` functions. Just like the `send()`, function, the `p` at the end of the function name means that we're sending at L2 instead of L3. The functions with a `1` in them mean that Scapy will send the specified packet and end after receiving 1 answer/response instead of continuing to listen for answers/responses. I'll reference both functions as `sr()`, but the examples will use the correct function.

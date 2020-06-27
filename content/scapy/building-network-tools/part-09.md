@@ -1,7 +1,8 @@
 +++
 title = "Scapy p.09"
 description = "Scapy and DNS"
-date = 2013-10-29
+#date = 2013-10-29
+date = 2019-05-11
 author = "Mat"
 weight = 92
 aliases = ["/scapy-p-09-scapy-and-dns/"]

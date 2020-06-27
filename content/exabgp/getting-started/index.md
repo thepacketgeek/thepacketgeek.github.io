@@ -12,9 +12,9 @@ tags = ["exabgp", "python"]
 
 I'm really excited about these next few posts. I've been doing some research on BGP and automating routing decisions with python, which led to my discovery of <a href="https://github.com/Exa-Networks/exabgp" target="_blank" rel="noopener">ExaBGP</a>. ExaBGP is dubbed "The BGP swiss army knife", and I'm early in my experimentation with this tool, but it seems to be a very easy way to peer with your BGP routers and control the advertisement of networks.
 
+<!-- more -->
 This post will cover basic setup of ExaBGP and peering with a router, as well as how you can tie in python to present control for the advertisement of routes. The next post will use the Flask web framework to offer a simple HTTP API for adding/removing routes. I hope the following posts will be along the lines of receiving the BGP UPDATE messages from peered routers to monitor and analyze advertised networks.
 
-<!-- more -->
 
 ## Step 1: Install ExaBGP
 

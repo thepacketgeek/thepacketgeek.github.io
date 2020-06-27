@@ -17,5 +17,5 @@ localhost:~ packetgeek$ scapy
 <Sniffed: TCP:0 UDP:3 ICMP:0 Other:7>
 >>> wrpcap('sniffed.pcap', packets)
 ```
-
+<!-- more -->
 Tada!  That's it. There's no options or special functions, you probably should do your packet processing before you write the packets to file.

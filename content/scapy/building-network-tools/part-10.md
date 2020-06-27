@@ -1,7 +1,8 @@
 +++
 title = "Scapy p.10"
 description = "Emulating nmap Functions"
-date = 2013-10-29
+#date = 2013-10-29
+date = 2019-05-11
 author = "Mat"
 weight = 91
 
@@ -16,7 +17,7 @@ We've seen a lot of cool applications for scapy in your network tools, but a goo
   * [ICMP Ping Sweep](#ping-sweep)
   * [Combining the Two](#sweep-and-scan)
 
-<!--more-->
+<!-- more -->
 
 #### TCP Port Range Scanner {#port-scanner}
 

@@ -27,7 +27,7 @@ capture.sniff(timeout=10)
 <LiveCapture (5 packets)>
 ```
 
-<!--more-->
+<!-- more -->
 
 Once a capture object is created, either from a LiveCapture or FileCapture method, several methods and attributes are available at both the capture and packet level.  The power of PyShark is the access to all of the packet decoders built into tshark.  I'm going to just give a sneak peek of some of the things you can do in this post and there will be a few accompanying posts that follow to go more in depth.
 

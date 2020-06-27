@@ -7,7 +7,12 @@
   {% for post in section.pages | reverse %}
     <h2 style="display: inline;" class="title"><a href="{{ post.permalink }}">{{ post.title }}</a></h2>
     <h4 style="display: inline;" class="subtitle">{{post.description}}</h4>
+    <div style="padding-left: 30px; padding-top: 6px; padding-bottom: 8px; font-size: 0.8em;">
+      {{ post.date | date(format="%b - %Y") }}
+      <em>(~{{ post.reading_time }} minutes read time)</em>
+    </div>
     <div style="padding-left: 30px;">{{ post.summary | safe }}</div>
+    <hr />
   {% endfor %}
 </div>
 {% endblock content %}

@@ -11,7 +11,7 @@ tags = ["pyshark", "python"]
 
 The two typical ways to start analyzing packets are via PyShark's FileCapture and LiveCapture modules. The first will import packets from a saved capture file, and the latter will sniff from a network interface on the local machine. Running these modules will return a capture object which I will cover in depth in the next post. For now, let's see what we can do with these two modules.
 
-<!--more-->
+<!-- more -->
 Both modules offer similar parameters that affect packets returned in the capture object. These definitions are taken directly out of the docstrings for these modules:
 
   * **interface**:** **[LiveCapture only]** **Name of the interface to sniff on. If not given, takes the first available.**  

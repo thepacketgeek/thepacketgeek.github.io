@@ -12,8 +12,8 @@ tags = ["exabgp", "python"]
 
 We know that ExaBGP can be used to inject BGP routes into an AS that you control. It's a very helpful feature that allows you to automate reachability and traffic flows within your network. But what if you want to you ExaBGP to influence what is advertised, or in this case, not advertised to external peers that are not willing to peer with your ExaBGP service?
 
-<!--more-->
 ![](exabgp-advertisements.png)
+<!-- more -->
 
 Our scenario is this: We have a 100.10.10.0/24 prefix attached to our SW. The CE router learns about this prefix from SW via OSPF, and then advertises the prefix out to the Internet via the PE router. This 100.10.10.0/24 prefix is anycasted so it is also advertised out of a different location. In order to withdraw the prefix from the PE and therefore the Internet we would need to manually filter the prefix outbound via route-map, or stop the advertisement from the SW which would also remove the resource from local resources.
 
