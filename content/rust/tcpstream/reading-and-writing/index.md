@@ -21,6 +21,7 @@ The [`write()`](https://doc.rust-lang.org/stable/std/io/trait.Write.html#tymetho
 
 After queuing the bytes in the TCP buffer, `flush()` signals to TCP that it should send the bytes. As the last bytes are sent, the **PSH** bit will be set to signal to the receiving TCP stack that this data is ready to send to the application.
 
+#### **`client.rs`**
 ```rust
 use std::io::{self, Write};
 use std::net::TcpStream;
@@ -40,6 +41,7 @@ fn main() -> io::Result<()> {
 
 To prevent missing data, the `bytes_written` should be validated and signaled if not all the data could be written, which could look like this:
 
+#### **`client.rs`**
 ```rust
 ...
     let data = b"Hello";
@@ -59,6 +61,7 @@ To prevent missing data, the `bytes_written` should be validated and signaled if
 #### write_all()
 Validating the bytes queued is a common enough pattern to warrant a dedicated method to save us some work: [`write_all()`](https://doc.rust-lang.org/stable/std/io/trait.Write.html#method.write_all). A simplified version of the example above becomes:
 
+#### **`client.rs`**
 ```rust
 use std::io::{self, Write};
 use std::net::TcpStream;
@@ -89,6 +92,7 @@ Error("failed to fill whole buffer")
 
 So, knowing how many bytes to read would be easy if we knew that the messages received are always a fixed size:
 
+#### **`server.rs`**
 ```rust
 use std::io::{self, Read};
 use std::net::TcpStream;
@@ -111,6 +115,7 @@ fn main() -> io::Result<()> {
 
 Yet we live in a world with variable length strings and the approach above doesn't quite work out. However `read()` returns a `usize` of bytes_read, so we can get fancy reading to our statically sized array repeatedly until we have no more bytes to read:
 
+#### **`server.rs`**
 ```rust
 ...
     let mut stream = TcpStream::connect("127.0.0.1:4000")?;
@@ -163,6 +168,7 @@ Instead of repeatedly trying to fill an array with bytes, `BufRead` offers a `fi
 
 `fill_buf()` does not free/drop the bytes read; a subsequent call to `consume()` is necessary to tell the `BufReader` that the bytes were successfully read and it can move its internal cursor. This combo is helpful in the case where TCP may not have received all the data yet, and your code needs to check for a delimiter (*cough* like a newline *cough*) or certain number of bytes:
 
+#### **`server.rs`**
 ```rust
 use std::io::{self, BufRead};
 use std::net::TcpStream;

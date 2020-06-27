@@ -18,6 +18,7 @@ To give our client and server more options for communicating we'll create:
 - A `Response` message for the server to respond with the successfully echo/jumbled `String`
 
 <!-- more -->
+#### **`lib.rs`**
 ```rust
 /// Request object (client -> server)
 #[derive(Debug)]
@@ -81,6 +82,7 @@ We know how to serialize a `String` with `as_bytes()`, but for number values we 
 #### Request Type
 As we can see above we need to codify our `Request` types (Echo and Jumble) into a number (`u8`, which allows us up to 255 types!). To make this definition clear we can implement `From` for `Request` -> `u8` to have a consistent way of serializing the type:
 
+#### **`lib.rs`**
 ```rust
 use std::convert::From;
 
@@ -101,6 +103,7 @@ impl From<&Request> for u8 {
 Let's finish the building blocks for serializing the `Request` with examples for writing the **length**/**value** for `String` and numbers:
 
 `String` is straightforward and we've used `as_bytes()` in previous demos, and `byteorder` adds extension methods to `Write` for numbers:
+
 ```rust
 use std::io::{self, Write};
 use byteorder::{NetworkEndian, WriteBytesExt};
@@ -116,6 +119,7 @@ bytes.write_all(message.as_bytes()).unwrap();
 #### Write Request
 We now have all the pieces to add a method for `Request` that receives a mutable reference to some buffer that implements `Write` (like our `TcpStream` :)), and serialize a `Request::Echo`:
 
+#### **`lib.rs`**
 ```rust
 /// Starts with a type, and then is an arbitrary length of (length/bytes) tuples
 impl Request {
@@ -143,6 +147,7 @@ impl Request {
 
 Now the `Request::Jumble` serialization is just a slight variation (adding the `amount` field after the `message`):
 
+#### **`lib.rs`**
 ```rust
 // ...
         match self {
@@ -168,6 +173,7 @@ Tada! A serialized `Request` in the bank! The `Response` struct is even simpler 
 ### Deserializing the Request struct
 We already have the byte layout figured out so deserializing should essentially be the reverse of our `Request::serialize()` method above. `byteorder` also gives us `ReadBytesExt` to add extensions to `Read` that `TcpStream` implements. The trickiest part is reading the variable length `String` and this will happen in a few places for `Request::Echo`, `Request::Jumble`, and `Response` so let's break out this logic into a function:
 
+#### **`lib.rs`**
 ```rust
 /// From a given readable buffer (TcpStream), read the next length (u16) and extract the string bytes ([u8])
 fn extract_string(buf: &mut impl Read) -> io::Result<String> {
@@ -185,6 +191,7 @@ fn extract_string(buf: &mut impl Read) -> io::Result<String> {
 
 Our `deserialize()` method should be straight-forward to read now especially with `extract_string` at our disposal:
 
+#### **`lib.rs`**
 ```rust
 use std::io::{self, Read};
 use byteorder::{NetworkEndian, ReadBytesExt};
@@ -218,6 +225,7 @@ impl Request {
 
 Wow! We now have the ability to test round-tripping of our structs!
 
+#### **`lib.rs`**
 ```rust
 use crate::*;
 use std::io::Cursor;
@@ -242,6 +250,7 @@ If you're still with me here, congrats! That was a lot of work and you're about 
 
 I'll leave it up as an exercise to check out the [full protocol implementation](https://github.com/thepacketgeek/rust-tcpstream-demo/blob/master/protocol/src/lib.rs) where we add `Serialize` and `Deserialize` traits for our methods above and make using our protocol as easy as:
 
+#### **`client.rs`**
 ```rust
 use std::io;
 

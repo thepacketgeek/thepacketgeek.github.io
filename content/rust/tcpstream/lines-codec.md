@@ -40,6 +40,7 @@ I'm choosing to use `LineWriter` because it seems like a better approach to what
 
 Great! Let's define our type and define `LinesCodec::new()` to build new instances:
 
+#### **`lib.rs`**
 ```rust
 use std::io::{self, BufRead, Write};
 use std::net::TcpStream;
@@ -65,6 +66,7 @@ impl LinesCodec {
 #### Reading and Writing
 With the `LinesCodec` struct and its buffered reader/writers, we can continue our implementation to borrow the reading and writing code from the previous post:
 
+#### **`lib.rs`**
 ```rust
 ...
 impl LinesCodec {
@@ -90,6 +92,7 @@ impl LinesCodec {
 ## Using LinesCodec in the client
 With the `TcpStream` out of the way, let's refactor our client code from the previous post and see how easy this can be:
 
+#### **`client.rs`**
 ```rust
 use std::io;
 use std::new::TcpStream;
@@ -121,6 +124,7 @@ And now we have some very similar work to update our server to use `LinesCodec`.
 - Receives a message (`String`) from the client and reverses it
 - Sends the message back to the client, again using `LinesCodec`
 
+#### **`server.rs`**
 ```rust
 use std::io;
 use std::net::TcpStream;
