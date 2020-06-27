@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="post">
+  <h2 style="display: inline;" class="title">{{ page.title }}</h2>
+  <h4 style="display: inline;" class="subtitle">{{page.description}}</h4>
+  <div style="padding-top: 6px; padding-bottom: 8px; font-size: 0.8em;">
+    {{ page.date | date(format="%b - %Y") }}
+    <em>(~{{ page.reading_time }} minutes read time)</em>
+  </div>
+  <hr />
+  {{ page.content | safe }}
+</div>
+{% endblock content %}
