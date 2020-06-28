@@ -52,7 +52,7 @@ html {
  * Flexible title box
  */
 .title-box {
-  background-color: #e3818a;
+  background-color: #66ae7f;
   box-shadow: 3px 2px 2px #00000026;
   color: white;
   display: inline-block;
@@ -186,7 +186,7 @@ a.sidebar-nav-item:focus {
 
 @media (min-width: 48em) {
   .content {
-    max-width: 38rem;
+    max-width: 56rem;
     margin-left: 20rem;
     margin-right: 2rem;
   }
@@ -243,6 +243,10 @@ a.sidebar-nav-item:focus {
 
 .float {
   float: right;
+}
+
+.limit-width {
+  max-width: 36em;
 }
 
 /*

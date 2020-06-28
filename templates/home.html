@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block content %}
-<div class="section">
+<div class="section limit-width">
   <h3 class="section-title">{{ section.title }}</h3>
   {% for category_name in section.subsections %}
     {% set category = get_section(path=category_name) %}

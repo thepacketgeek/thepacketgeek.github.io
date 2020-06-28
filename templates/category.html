@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block content %}
-<div class="section">
+<div class="section limit-width">
   <h1 class="section-title">{{ section.title }}</h1>
   <hr />
   {% for section_name in section.subsections | reverse %}
