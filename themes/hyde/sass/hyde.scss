@@ -47,6 +47,30 @@ html {
 
 
 /*
+ * Title
+ *
+ * Flexible title box
+ */
+.title-box {
+  background-color: #e3818a;
+  box-shadow: 3px 2px 2px #00000026;
+  color: white;
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 15px 60px;
+}
+@media (min-width: 48em) {
+  .title-box {
+    padding: 15px 80px;
+    margin-left: -40px;
+  }
+}
+
+.title-box h2 {
+  color: #fff;
+}
+
+ /*
  * Sidebar
  *
  * Flexible banner for housing site name, intro, and "footer" content. Starts
@@ -117,7 +141,6 @@ a.sidebar-nav-item:focus {
   .sidebar-sticky {
     position: absolute;
     right:  1rem;
-    // bottom: 1rem;
     left:   1rem;
   }
 
@@ -176,6 +199,51 @@ a.sidebar-nav-item:focus {
   }
 }
 
+
+/* Posts
+ *
+ */
+.post-details {
+  padding-top: 6px;
+  padding-bottom: 8px;
+  font-size: 0.8em;
+}
+
+.post-indent {
+  padding-left: 30px;
+}
+
+ /* Extras
+ *
+ * Utils for adding the occasional spacing
+ */
+.pad-bottom-12 {
+  padding-bottom: 12px;
+}
+
+.pad-right-6 {
+  padding-right: 6px;
+}
+
+.pad-left-8 {
+  padding-left: 8px;
+}
+
+.pad-top-10 {
+  padding-top: 10px;
+}
+
+.pad-all-10 {
+  padding: 10px;
+}
+
+.inline {
+  display: inline;
+}
+
+.float {
+  float: right;
+}
 
 /*
  * Reverse layout

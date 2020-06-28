@@ -5,13 +5,13 @@
   <h1 class="section-title">{{ section.title }}</h1>
   <hr />
   {% for post in section.pages | reverse %}
-    <h2 style="display: inline;" class="title"><a href="{{ post.permalink }}">{{ post.title }}</a></h2>
-    <h4 style="display: inline;" class="subtitle">{{post.description}}</h4>
-    <div style="padding-left: 30px; padding-top: 6px; padding-bottom: 8px; font-size: 0.8em;">
+    <h2 class="title inline"><a href="{{ post.permalink }}">{{ post.title }}</a></h2>
+    <h4 class="subtitle inline">{{post.description}}</h4>
+    <div class="post-details post-indent">
       {{ post.date | date(format="%b - %Y") }}
       <em>(~{{ post.reading_time }} minutes read time)</em>
     </div>
-    <div style="padding-left: 30px;">{{ post.summary | safe }}</div>
+    <div class="post-indent">{{ post.summary | safe }}</div>
     <hr />
   {% endfor %}
 </div>

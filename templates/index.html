@@ -1,6 +1,7 @@
 {% extends "hyde/templates/index.html" %}
 
 {% block extra_head %}
+<link rel="shortcut icon" type="image/jpg" href="{{ get_url(path="favicon.ico", trailing_slash=false) }}"/>
 {% if config.extra.google_analytics %}
 <script>
 (function (i, s, o, g, r, a, m) {
@@ -18,14 +19,16 @@ ga('send', 'pageview');
 <link rel="stylesheet" href="{{ get_url(path="css/brands.min.css", trailing_slash=false) }}">
 {% endblock extra_head %}
 
-
+{# comment  #e3c2a4 #}
 {% block sidebar_about %}
-    <a href="{{ config.base_url }}"><h3>{{ config.title }}</h3></a>
+    <div class="title-box">
+        <a href="{{ config.base_url }}"><h2>{{ config.title }}</h2></a>
+    </div>
     {% if config.description %}
     <p class="lead">{{config.description}}</p>
     {% endif %}
     {% for link in config.extra.hyde_links %}
-        <a style="padding-right: 6px;" href="{{link.url}}">
+        <a class="pad-right-6" href="{{link.url}}">
             {% if link.icon_class %}
             <i class="fab {{ link.icon_class }}"></i>
             {% else %}
@@ -37,6 +40,7 @@ ga('send', 'pageview');
 
 {% block sidebar_nav %}
 <hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
 <li class="sidebar-nav-item">
     <a href="/rust/">Rust</a>
 </li>
