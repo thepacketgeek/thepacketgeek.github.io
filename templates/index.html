@@ -17,6 +17,10 @@ ga('send', 'pageview');
 </script>
 <link rel="stylesheet" href="{{ get_url(path="css/fontawesome.min.css", trailing_slash=false) }}">
 <link rel="stylesheet" href="{{ get_url(path="css/brands.min.css", trailing_slash=false) }}">
+<link rel="stylesheet" href="{{ get_url(path="site.css", trailing_slash=false) }}">
+<script type="text/javascript" src="{{ get_url(path="elasticlunr.min.js") }}"></script>
+<script type="text/javascript" src="{{ get_url(path="search_index.en.js") }}"></script>
+<script type="text/javascript" src="{{ get_url(path="js/search.js") }}"></script>
 {% endblock extra_head %}
 
 {% block sidebar_about %}
@@ -52,6 +56,14 @@ ga('send', 'pageview');
 <li class="sidebar-nav-item">
     <a href="/pyshark/">PyShark</a>
 </li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
 {% endblock sidebar_nav %}
 
 

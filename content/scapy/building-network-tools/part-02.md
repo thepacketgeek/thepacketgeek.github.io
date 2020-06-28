@@ -5,7 +5,7 @@ description = "Installing Python and Scapy"
 date = 2019-05-11
 author = "Mat"
 weight = 99
-
+in_search_index = true
 aliases = ["/scapy-p-02-installing-python-and-scapy/"]
 #wp_last_modified_info:
 #  - February 14, 2019 @ 11:55 am

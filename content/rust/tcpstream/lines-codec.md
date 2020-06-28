@@ -3,7 +3,7 @@ title = "Building a LinesCodec"
 description = "for Rust's TcpStream"
 date = 2020-06-27
 author = "Mat"
-
+in_search_index = true
 [taxonomies]
 tags = ["rust"]
 +++

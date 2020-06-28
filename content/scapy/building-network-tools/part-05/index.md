@@ -5,9 +5,8 @@ description = "Sending our First Packet; ARP Response"
 date = 2019-05-11
 author = "Mat"
 weight = 96
+in_search_index = true
 aliases = ["/scapy-p-05-sending-our-first-packet-arp-response/"]
-#wp_last_modified_info:
-#  - May 3, 2019 @ 8:46 am
 [taxonomies]
 tags = ["scapy", "python"]
 +++

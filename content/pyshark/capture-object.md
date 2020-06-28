@@ -4,7 +4,7 @@ date = 2014-11-11
 author = "Mat"
 weight = 90
 aliases = ["/pyshark-using-the-capture-object/"]
-
+in_search_index = true
 [taxonomies]
 tags = ["pyshark", "python"]
 +++

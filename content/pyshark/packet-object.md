@@ -3,7 +3,7 @@ title = "Using the Packet Object"
 date = 2014-11-12
 author = "Mat"
 weight = 70
-
+in_search_index = true
 aliases = ["/pyshark-using-the-packet-object/"]
 [taxonomies]
 tags = ["pyshark", "python"]

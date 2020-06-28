@@ -3,7 +3,7 @@
 {% block content %}
 <div class="section limit-width">
   <h1 class="section-title">{{ section.title }}</h1>
-  <hr />
+  <hr class="lead" />
   {% for section_name in section.subsections | reverse %}
     {% set section = get_section(path=section_name) %}
     <h3 class="inline">Series: <a href="{{ section.permalink }}">{{ section.title }}</a></h3>
@@ -19,7 +19,7 @@
     </li>
     {% endfor %}
     </ul>
-    <hr />
+    <hr class="lead" />
   {% endfor %}
   {% for post in section.pages | reverse %}
     <h2 class="title inline"><a href="{{ post.permalink }}">{{ post.title }}</a></h2>
@@ -29,7 +29,7 @@
       <em>(~{{ post.reading_time }} minutes read time)</em>
     </div>
     <div class="post-indent">{{ post.summary | safe }}</div>
-    <hr />
+    <hr class="lead" />
   {% endfor %}
 </div>
 {% endblock content %}

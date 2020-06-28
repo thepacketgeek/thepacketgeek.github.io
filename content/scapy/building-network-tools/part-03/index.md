@@ -4,6 +4,7 @@ description = "Scapy Interactive Mode"
 #date = 2013-10-29
 date = 2019-05-11
 author = "Mat"
+in_search_index = true
 weight = 98
 
 aliases = ["/scapy-p-03-scapy-interactive-mode/"]

@@ -5,6 +5,7 @@ description = "Scapy and DNS"
 date = 2019-05-11
 author = "Mat"
 weight = 92
+in_search_index = true
 aliases = ["/scapy-p-09-scapy-and-dns/"]
 [taxonomies]
 tags = ["scapy", "python"]

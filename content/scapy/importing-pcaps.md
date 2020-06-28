@@ -2,6 +2,7 @@
 title = "Importing packets from trace files with Scapy"
 date = 2014-09-25
 author = "Mat"
+in_search_index = true
 aliases = ["/importing-packets-from-trace-files/"]
 [taxonomies]
 tags = ["scapy", "python"]

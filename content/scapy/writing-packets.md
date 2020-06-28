@@ -2,6 +2,7 @@
 title = "Writing Packets to Trace File with Scapy"
 date = 2015-05-20
 author = "Mat"
+in_search_index = true
 aliases = ["/writing-packets-to-trace-file-with-scapy/"]
 [taxonomies]
 tags = ["scapy", "python"]

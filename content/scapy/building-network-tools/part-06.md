@@ -4,7 +4,7 @@ description = "Sending and Receiving with Scapy"
 date = 2013-10-29
 author = "Mat"
 weight = 95
-
+in_search_index = true
 aliases = ["/scapy-p-06-sending-and-receiving-with-scapy/"]
 [taxonomies]
 tags = ["scapy", "python"]

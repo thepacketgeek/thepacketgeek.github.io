@@ -5,7 +5,7 @@ description = "Scapy Introduction and Overview"
 date = 2019-05-11
 author = "Mat"
 weight = 100
-
+in_search_index = true
 aliases = ["/scapy-p-01-scapy-introduction-and-overview/"]
 
 [taxonomies]

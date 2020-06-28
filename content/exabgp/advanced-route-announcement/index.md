@@ -4,8 +4,10 @@ description = "With multiple BGP Peers"
 date = 2015-05-24
 author = "Mat"
 weight = 70
+in_search_index = true
 
 aliases = ["/advanced-router-peering-and-route-announcement/"]
+
 [taxonomies]
 tags = ["exabgp", "python"]
 +++

@@ -4,7 +4,7 @@ date = 2015-05-22
 author = "Mat"
 aliases = ["/give-exabgp-an-http-api-with-flask/"]
 weight = 80
-
+in_search_index = true
 [taxonomies]
 tags = ["exabgp", "python"]
 +++

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="section">
   <h1 class="section-title">{{ section.title }}</h1>
-  <hr />
+  <hr class="lead" />
   {% for post in section.pages | reverse %}
     <h2 class="title inline"><a href="{{ post.permalink }}">{{ post.title }}</a></h2>
     <h4 class="subtitle inline">{{post.description}}</h4>
@@ -12,7 +12,7 @@
       <em>(~{{ post.reading_time }} minutes read time)</em>
     </div>
     <div class="post-indent">{{ post.summary | safe }}</div>
-    <hr />
+    <hr class="lead" />
   {% endfor %}
 </div>
 {% endblock content %}

@@ -4,7 +4,7 @@ date = 2014-11-10
 author = "Mat"
 weight = 80
 aliases = ["/pyshark-filecapture-and-livecapture-modules/"]
-
+in_search_index = true
 [taxonomies]
 tags = ["pyshark", "python"]
 +++

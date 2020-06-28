@@ -2,7 +2,7 @@
 title = "Using service health checks to automate ExaBGP"
 date = 2015-05-21
 author = "Mat"
-
+in_search_index = true
 weight = 90
 
 aliases = ["/using-service-health-checks-to-automate-exabgp/"]

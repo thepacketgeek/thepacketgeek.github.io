@@ -5,6 +5,7 @@ weight = 100
 
 sort_by = "date"
 render = true
+in_search_index = true
 
 [extra]
 date = 2020-06-27

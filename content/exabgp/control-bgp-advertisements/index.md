@@ -4,7 +4,7 @@ description = "to eBGP peers with ExaBGP"
 date = 2015-06-23
 author = "Mat"
 weight = 60
-
+in_search_index = true
 aliases = ["/control-bgp-advertisements-to-ebgp-peers-with-exabgp/"]
 [taxonomies]
 tags = ["exabgp", "python"]

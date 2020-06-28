@@ -249,6 +249,11 @@ a.sidebar-nav-item:focus {
   max-width: 36em;
 }
 
+// Divider <hr />
+hr.lead {
+  z-index: -10;
+}
+
 /*
  * Reverse layout
  *

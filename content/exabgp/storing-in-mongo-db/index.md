@@ -4,7 +4,7 @@ date = 2015-06-27
 author = "Mat"
 weight = 50
 aliases = ["/processing-and-storing-bgp-messages-in-mongodb/"]
-
+in_search_index = true
 [taxonomies]
 tags = ["exabgp", "python"]
 +++

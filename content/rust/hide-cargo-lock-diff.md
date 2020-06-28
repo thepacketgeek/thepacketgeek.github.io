@@ -2,6 +2,7 @@
 title = "Hide Cargo.lock in git Diff"
 date = 2020-06-28
 author = "Mat"
+in_search_index = true
 
 [taxonomies]
 tags = ["rust"]

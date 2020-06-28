@@ -5,7 +5,7 @@ date = 2014-11-08
 author = "Mat"
 weight = 100
 aliases = ["/intro-to-pyshark-for-programmatic-packet-analysis/"]
-
+in_search_index = true
 [taxonomies]
 tags = ["pyshark", "python"]
 

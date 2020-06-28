@@ -4,7 +4,7 @@ description = "Getting Started"
 date = 2015-05-20
 author = "Mat"
 weight = 100
-
+in_search_index = true
 aliases = ["/influence-routing-decisions-with-python-and-exabgp/"]
 [taxonomies]
 tags = ["exabgp", "python"]
