@@ -196,4 +196,106 @@ macro_rules! timeit {
 }
 ```
 
+And we can see the effect of our macro via `cargo-expand`, targeted at our macro tests:
+
+```rust
+#[test]
+fn test_simple() {
+    timeit!(|| { std::thread::sleep(std::time::Duration::from_secs(1)) });
+}
+```
+
+Becomes (comments added by me):
+
+#### **`$ cargo expand --lib --tests`**
+```rust
+fn test_simple() {
+//  v-- Start of our macro block
+    {
+        // This you should recognize
+        let _start = std::time::Instant::now();
+        // And this is `$e();` expanded
+        let _res = (|| std::thread::sleep(std::time::Duration::from_secs(1)))();
+        // Followed by the expansion of `eprintln!()`
+        {
+            ::std::io::_eprint(::core::fmt::Arguments::new_v1_formatted(
+                &["Took ", " ms\n"], // <-- This is us!
+                &match (&_start.elapsed().as_millis(),) {
+                    (arg0,) => [::core::fmt::ArgumentV1::new(
+                        arg0,
+                        ::core::fmt::Display::fmt,
+                    )],
+                },
+                &[::core::fmt::rt::v1::Argument {
+                    position: 0usize,
+                    format: ::core::fmt::rt::v1::FormatSpec {
+                        fill: ' ',
+                        align: ::core::fmt::rt::v1::Alignment::Unknown,
+                        flags: 0u32,
+                        precision: ::core::fmt::rt::v1::Count::Is(3usize),
+                        width: ::core::fmt::rt::v1::Count::Implied,
+                    },
+                }],
+            ));
+        };
+        _res
+    };
+}
+```
+
+And our function call example:
+```rust
+#[test]
+fn test_ext_multiple_args() {
+    fn slow_sum(a: u32, b: u32) -> u32 {
+        std::thread::sleep(std::time::Duration::from_secs(2));
+        a + b
+    }
+    let res = timeit!(slow_sum(5, 9));
+    eprintln!("Slow sum result: {}", res);
+}
+```
+
+Becomes (comments added by me):
+
+#### **`$ cargo expand --lib --tests`**
+```rust
+fn test_ext_multiple_args() {
+    fn slow_sum(a: u32, b: u32) -> u32 {
+        std::thread::sleep(std::time::Duration::from_secs(2));
+        a + b
+    }
+    //        v-- Start of our macro block
+    let res = {
+        let _start = std::time::Instant::now();
+        let _res = slow_sum(5, 9);
+        {
+            ::std::io::_eprint(::core::fmt::Arguments::new_v1_formatted(
+                &["\'", "\' took ", " ms\n"],
+                //        v-- The function name, after `stringify!()`
+                &match (&"slow_sum", &_start.elapsed().as_millis()) {
+                    (arg0, arg1) => [
+                        ::core::fmt::ArgumentV1::new(arg0, ::core::fmt::Display::fmt),
+                        ::core::fmt::ArgumentV1::new(arg1, ::core::fmt::Display::fmt),
+                    ],
+                },
+                //.. truncated for brevity
+            ));
+        };
+        _res  // <-- returning the function result
+    };  // <-- end of the macro block
+    {
+        ::std::io::_eprint(::core::fmt::Arguments::new_v1(
+            &["Slow sum result: ", "\n"],
+            &match (&res,) {
+                (arg0,) => [::core::fmt::ArgumentV1::new(
+                    arg0,
+                    ::core::fmt::Display::fmt,
+                )],
+            },
+        ));
+    };
+}
+```
+
 There we have it! Hopefully the macro syntax is a little more clear with this example. Check out [the full example](https://github.com/thepacketgeek/rust-macros-demo/blob/master/timeit/src/lib.rs) for even more details, along with some tests to show usage.
