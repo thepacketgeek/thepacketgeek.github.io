@@ -207,7 +207,7 @@ fn test_simple() {
 
 Becomes (comments added by me):
 
-#### **`$ cargo expand --lib --tests`**
+#### **`$ cargo expand --lib --tests tests::test_simple**
 ```rust
 fn test_simple() {
 //  v-- Start of our macro block
@@ -258,7 +258,7 @@ fn test_ext_multiple_args() {
 
 Becomes (comments added by me):
 
-#### **`$ cargo expand --lib --tests`**
+#### **`$ cargo expand --lib --tests tests::test_ext_multiple_args`**
 ```rust
 fn test_ext_multiple_args() {
     fn slow_sum(a: u32, b: u32) -> u32 {
