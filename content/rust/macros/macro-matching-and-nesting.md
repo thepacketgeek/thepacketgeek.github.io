@@ -1,9 +1,8 @@
 +++
-title = "retry! Macro with Matching and Nesting"
+title = "retry! Macro with Repetitive Matching and Nesting"
 date = 2020-07-19
 author = "Mat"
 in_search_index = true
-draft = true
 
 [taxonomies]
 tags = ["rust"]
@@ -12,7 +11,7 @@ tags = ["rust"]
 We [previously](@/rust/macros/intro.md) covered a very basic declarative macro that wrapped some timing logic around a function to be run. This article expands on that with some additional matching techinques to build a `retry!` macro to be used like:
 
 ```rust
-let res = retry!(|| { sometimes_fail(10) }; retries = 3);
+let res = retry!(|| { sometimes_fail(10) });
 assert!(res.is_ok());
 
 let res = retry!(sometimes_fail, 10; retries = 3);
@@ -42,24 +41,7 @@ fn sometimes_fail(failure_rate: u8) -> Result<(), ()> {
 }
 ```
 
-With a given failure rate of 50%, we could hope that retrying the function call would pass given 3 or more retries:
-```rust
-#[test]
-fn test_retry() {
-    // Closure invocation
-    let fallible = || {
-      sometimes_fail(10)
-    };
-    let res = retry!(fallible; retries = 3);
-    assert!(res.is_ok());
-
-    // Alternate func + args invocation
-    let res = retry!(sometimes_fail, 10; retries = 3);
-    assert!(res.is_ok());
-}
-```
-
-# A First Attempt
+# Retry Logic
 Before we dive into writing our `retry!` macro, let's look at what retrying a fallible function looks like in Rust. A helpful way to approach writing macros is to:
 
 - Write the code in non-macro form
@@ -67,7 +49,6 @@ Before we dive into writing our `retry!` macro, let's look at what retrying a fa
 - Build a macro for a specific use case
 - Expand to include additional use cases when it makes sense
 
-## Retry Logic
 A pre-req for our retryable logic is that the function or closure the code is retrying should return `Result`. This allows us to check the `Result` variant (`Ok`/`Err`) and retry accordingly. A [example of this is](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=1d7273b8ce7ac487ca5e1e23127c4c42):
 
 ```rust
@@ -91,10 +72,10 @@ let res = loop {
     break res;
 };
 
-assert!res.is_ok());
+assert!(res.is_ok());
 ```
 
-One very clear parameter for this macro is the function that's being called (in this case, `sometimes_fail`). Turning this into macro form would look something like:
+The first thing to parameterize for this macro is the function that's being called (in this case, `sometimes_fail`). Turning our logic into macro form would look something like:
 
 ```rust
 macro_rules! retry {
@@ -210,4 +191,80 @@ Which expands to:
 my_func(10, 20,)
 ```
 
-With these two match rules inside `_wrapper!`, we can now successfully use `retry!` with all of the use cases! Check out the [final implementation](https://github.com/thepacketgeek/rust-macros-demo/blob/master/retryable/src/lib.rs#L39) and [accompanying tests here](https://github.com/thepacketgeek/rust-macros-demo/blob/master/retryable/src/lib.rs#L326).
+With these two match rules inside `_wrapper!`, we can now successfully use `retry!` with all of the use cases! Check out the [final implementation of `_wrapper!`](https://github.com/thepacketgeek/rust-macros-demo/blob/master/retryable/src/lib.rs#L39) and [accompanying tests here](https://github.com/thepacketgeek/rust-macros-demo/blob/master/retryable/src/lib.rs#L326).
+
+We'll need to update the `retry!` macro to accept a variable number of args to use `_wrapper!` correctly, which looks like:
+
+```rust
+macro_rules! retry {
+    ($( $args:expr$(,)? )+) => {{
+        let mut retries = 3;
+        loop {
+            let res = _wrapper!($( $args, )*);
+            if res.is_ok() {
+                break res;
+            }
+            if retries > 0 {
+                retries -= 1;
+                continue;
+            }
+            break res;
+        }
+    }};
+}
+```
+
+The match rule for `retry!` should now be a bit more familiar, and what this rule is doing is passing along whatever `$args` are passed in `retry!` along to `_wrapper!`.
+
+## Recursive Macros
+The next item in the macro that makes sense for parameterization is the number of retries. We've been using 3 as a default, but should allow that to be specified where `retry!` is used. For the purpose of [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself), I'll show you how macros can be used recursively to allow multiple match rules using the same code expansion.
+
+Let's consider how one might specify the number of retries to use. The `retry!` macro currently takes an arbitrary number of arguments separated by commas, so we'll need a new separator to prevent ambiguity. A possible future of this macro might support additional parameters like delay time, so we should make the retries parameter explicit to avoid confusion and allow macro changes down the road.
+
+Here's the macro with a `;` separator, and note that we are matching `retries=` which will be explicity used in the macro call.
+
+```rust
+macro_rules! retry {
+    ($( $args:expr$(,)? )+; retries=$r:literal) => {{
+        let mut retries = 3;
+        loop {
+            let res = _wrapper!($( $args, )*);
+            if res.is_ok() {
+                break res;
+            }
+            if retries > 0 {
+                retries -= 1;
+                continue;
+            }
+            break res;
+        }
+    }};
+}
+```
+
+For which usage looks like:
+
+```rust
+let res = retry!(sometimes_fail, 10; retries = 3);
+assert!(res.is_ok());
+```
+
+With this addition of `; retries=$r:literal`, we're now requiring this syntax to exist in the macro call. But what if 3 is a good default and we want to give the user an option to not specify retries? We could duplicate the match rules and use the same retry logic in each, but this isn't **DRY** and there must be a better way! Fortunately for us there is! We can provide a match rule that doesn't require `; retries=X` and provide a default value like:
+
+```rust
+macro_rules! retry {
+    ($( $args:expr$(,)? )+; retries=$r:literal) => {{
+        /* existing retry logic */
+    }};
+    // Function & args only, use default of 3 retries
+    ($( $args:expr$(,)? )+) => {{
+        retry!($( $args, )*; retries = 3)
+    }};
+}
+```
+
+This works just like you think it would, a usage of `retry!(my_func, 10)` skips the first rule and matches the second rule, where `; retries = 3` is added to a recursive call that now matches the first rule.
+
+---
+
+We've greatly progressed in macro_rules abilities from the previous `timeit!` macro and these techniques will get you far! A future article will dive further into retry logic, using macros to instantiate some structs to allow for more flexible retry options.
