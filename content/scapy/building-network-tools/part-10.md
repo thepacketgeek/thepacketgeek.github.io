@@ -78,7 +78,7 @@ Console Output:
 
 #### ICMP Ping Sweep {#ping-sweep}
 
-This script is an extension of our ICMP ping utility from the [Sending and Receiving](06-sending-and-receiving.html) example. We will use a network given with a CIDR mask to specify the hosts to run the ping scan on. Then, using a Python `for` loop we iterate through each address and try pinging. If the response times out or returns an ICMP error (such as unreachable or admin deny), we know that the host is not up or is blocking ICMP. Otherwise, if we receive a response we know that host is online. Check out the code here:
+This script is an extension of our ICMP ping utility from the [Sending and Receiving](@/scapy/building-network-tools/part-06.md) example. We will use a network given with a CIDR mask to specify the hosts to run the ping scan on. Then, using a Python `for` loop we iterate through each address and try pinging. If the response times out or returns an ICMP error (such as unreachable or admin deny), we know that the host is not up or is blocking ICMP. Otherwise, if we receive a response we know that host is online. Check out the code here:
 
 ```python
 #! /usr/bin/env python3

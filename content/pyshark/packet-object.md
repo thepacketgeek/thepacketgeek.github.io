@@ -17,7 +17,7 @@ When we have captured packets in a capture object, they are stored as a list of 
 
 Setting `only_summaries` to True during capture will give us a fixed set of attributes, regardless of the protocols present in the packet. The most useful attributes available are:
 
-```python
+```sh
 >>> cap = pyshark.FileCapture('test.pcap', only_summaries=True)
 >>>
 >>> dir(cap[0])
@@ -43,7 +43,7 @@ There's a lot that you can do with just these items; printing out packet summari
 
 If you're wanting to get more than just the summary info out of the capture packets then you're in the right place. Using the dissectors available in Wireshark and tshark, PyShark is able to break out all packet details by layer. For example, let's dig into this DNS packet first by looking at the attributes of the parent packet object:
 
-```py
+```sh
 >>> cap = pyshark.LiveCapture(interface='en0', bpf_filter='udp port 53')
 >>> cap.sniff(packet_count=50)
 

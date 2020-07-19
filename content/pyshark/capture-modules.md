@@ -27,7 +27,7 @@ Both modules offer similar parameters that affect packets returned in the captur
 
 Using `only_summaries` will return packets in the capture object with just the summary info of each packet (similar to the default output of tshark):
 
-```python
+```sh
 >>> cap = pyshark.FileCapture('test.pcap', only_summaries=True)
 >>> print cap[0]
 2 0.512323 0.512323 fe80::f141:48a9:9a2c:73e5 ff02::c SSDP 208 M-SEARCH * HTTP/
@@ -35,7 +35,7 @@ Using `only_summaries` will return packets in the capture object with just the
 
 This option makes the capture file reading much faster, although each packet will only have the attributes shown below available. This info can be plenty if you're just wanting to get the IP addresses to build a conversation list in the sniff, or maybe some bandwidth statistics with the time and packet lengths:
 
-```python
+```sh
 >>> pkt.     #(tab auto-complete)
 pkt.delta         pkt.info          pkt.no            pkt.stream        pkt.window
 pkt.destination   pkt.ip id         pkt.protocol      pkt.summary_line
@@ -50,7 +50,7 @@ PyShark only reads packets into memory when it's about to do something with the 
 
 The filters available in these modules can be helpful in keeping your application focused on the traffic you're wanting to analyze. Similar to Wireshark or tshark sniffing, a BPF filter can be used to specify interesting traffic that makes it into the returned capture object. BPF filters don't offer as much flexibility as Wireshark's display filters, but you'd be surprised how creative you can be with the available keywords and offset filters. For help with BPF filters used in capturing packets, check out <a title="Wireshark Capture Filters" href="http://wiki.wireshark.org/CaptureFilters" target="_blank">Wireshark's guide here</a>. Here's an example of using a BPF filter when sniffing to target HTTP traffic:
 
-```python
+```sh
 >>> cap = pyshark.LiveCapture(interface='en0', bpf_filter='ip and tcp port 80')
 >>> cap.sniff(timeout=5)
 >>> cap
@@ -61,7 +61,7 @@ HTTP
 
 When reading in a saved capture file, you can use the `display_filter` option to harness Wireshark's amazing dissectors to limit the packets returned. Here's the first few packets in my test.pcap file without a filter:
 
-```python
+```sh
 >>> cap = pyshark.FileCapture('test.pcap')
 >>> for pkt in cap:
 ...:    print pkt.highest_layer
@@ -76,7 +76,7 @@ HTTP
 
 And with a display filter for DNS traffic only:
 
-```python
+```sh
 >>> cap = pyshark.FileCapture('test.pcap', display_filter="dns")
 >>> for pkt in cap:
 ...:    print pkt.highest_layer
@@ -93,4 +93,4 @@ DNS
 
 I discovered a strange behavior when trying to iterate through a LiveCapture returned capture object. It appears that when you try to iterate through the list, it starts the sniff over again and iterates in real time (as packets are received on the interface). There's no way (that I've found yet) to store the packets, the LiveCapture is meant to process packets in real time only.
 
-There are some powerful options for opening and sniffing packets for processing. Check out the next article [here](../capture-object/ "PyShark – Using the capture Object") where I explain what can be done with the capture object that is returned from these modules.
+There are some powerful options for opening and sniffing packets for processing. Check out the next article [here](@/pyshark/capture-object.md "PyShark – Using the capture Object") where I explain what can be done with the capture object that is returned from these modules.

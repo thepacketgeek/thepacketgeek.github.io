@@ -9,7 +9,7 @@ in_search_index = true
 tags = ["exabgp", "python"]
 +++
 
-We've covered how to setup ExaBGP and peer with a router, and then how to use python to add  and remove advertised routes in BGP either with static definitions or dynamically through health checking. There may be some of you out there with some sort of application that is already monitoring routes and you're trying to figure out how to connect it with ExaBGP for the actual interaction part? Well, what if we add an HTTP API to ExaBGP to give programmatic access to ExaBGP from some external utility? I'll go over two ways to do this using the Python built-in `SimpleHTTPServer` or <a href="//flask.pocoo.org" target="_blank">Flask</a>.
+We've covered how to setup ExaBGP and peer with a router, and then how to use python to add  and remove advertised routes in BGP either with static definitions or dynamically through health checking. There may be some of you out there with some sort of application that is already monitoring routes and you're trying to figure out how to connect it with ExaBGP for the actual interaction part? Well, what if we add an HTTP API to ExaBGP to give programmatic access to ExaBGP from some external utility? I'll go over two ways to do this using the Python built-in `SimpleHTTPServer` or <a href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">Flask</a>.
 
 <!-- more -->
 ### Using SimpleHTTPServer
@@ -54,7 +54,7 @@ httpd.serve_forever()
 
 ### Using Flask
 
-If you have bigger plans for the HTTP side of things and want to work with a web framework like Flask, this example is for you. The biggest difference is that you will have to install <a href="//flask.pocoo.org" target="_blank">Flask</a> and its dependencies, although that's easy:
+If you have bigger plans for the HTTP side of things and want to work with a web framework like Flask, this example is for you. The biggest difference is that you will have to install <a href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">Flask</a> and its dependencies, although that's easy:
 
 `$ pip install flask`
 
@@ -84,7 +84,7 @@ Before you run off and put this on your production systems I have a couple disc
 
   * This script uses the built-in Flask debug HTTP server. It's fine for lab use, but I would use gunicorn and nginx for real heavy lifting.
   * The script doesn't do any validation of the command. A better script would make sure it's a valid command and prefix.
-  * Flask defaults to listening on the localhost address on TCP port 5000. You can change this though and I highly recommend reading <a href="http://flask.pocoo.org/docs/0.10/quickstart/#quickstart" target="_blank">Flask's QuickStart article</a> to familiarize yourself with the many options.
+  * Flask defaults to listening on the localhost address on TCP port 5000. You can change this though and I highly recommend reading <a href="https://flask.palletsprojects.com/en/1.1.x/quickstart/" target="_blank">Flask's Quickstart</a> to familiarize yourself with the many options.
 
 ### Hooking the HTTP API up to the ExaBGP process
 

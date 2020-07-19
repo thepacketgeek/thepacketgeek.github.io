@@ -19,10 +19,10 @@ I hope you had as much fun as I did getting started with Scapy. These are all st
 
 These are the resources I used for this guide:
 
-  * <a href="https://scapy.net/" target="_blank" rel="noopener noreferrer">scapy.net &#8211; Scapy Homepage</a>
+  * <a href="https://scapy.net/" target="_blank" rel="noopener noreferrer">scapy.net - Scapy Homepage</a>
   * <a href="https://scapy.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener noreferrer">Scapy Documentation</a>
   * [Scapy on GitHub](https://github.com/secdev/scapy/)
-  * <a href="http://media.packetlife.net/media/library/36/scapy.pdf" target="_blank" rel="noopener noreferrer">Packetlife.net &#8211; Scapy Cheat Sheet</a>
+  * <a href="http://media.packetlife.net/media/library/36/scapy.pdf" target="_blank" rel="noopener noreferrer">Packetlife.net - Scapy Cheat Sheet</a>
 
 Here are some cool projects I found on GitHub that use Scapy:
 

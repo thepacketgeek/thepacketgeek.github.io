@@ -41,7 +41,7 @@ DNS Ans "198.71.55.197"
 
 > The DNS layer summary is printed showing the IP address of the hostname requested
 
-Without too much work we were able to write a short script to query some DNS name to IP address resolutions.&nbsp;Just think about what this means; we could read in a list of hostnames to resolve and send the IP addresses off to some function to do some more tests such as ping or TCP scans.
+Without too much work we were able to write a short script to query some DNS name to IP address resolutions. Just think about what this means; we could read in a list of hostnames to resolve and send the IP addresses off to some function to do some more tests such as ping or TCP scans.
 
 #### DNS Forwarding and Spoofing
 

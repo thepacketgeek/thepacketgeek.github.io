@@ -33,7 +33,7 @@ Once a capture object is created, either from a LiveCapture or FileCapture metho
 
 1. Getting packet summaries (similar to tshark capture output):
 
-```python
+```sh
 >>> for pkt in cap:
 ...:     print pkt
 ...:
@@ -47,7 +47,7 @@ This will give access to attributes like packet number, relative and delta times
 
 2. Drilling down into packet attributes by layer:
 
-```python
+```sh
 >>> pkt.   #(tab auto-complete)
 pkt.captured_length     pkt.highest_layer       pkt.ip                  pkt.pretty_print        pkt.transport_layer
 pkt.eth                 pkt.http                pkt.layers              pkt.sniff_time          pkt.udp
@@ -62,7 +62,7 @@ pkt_app.get_field        pkt_app.pretty_print     pkt_app.request_uri
 
 3. Iterating through the packets and applying a function to each:
 
-```python
+```sh
 >>> cap = pyshark.FileCapture('test.pcap', keep_packets=False)
 >>> def print_highest_layer(pkt)
 ...: print pkt.highest_layer

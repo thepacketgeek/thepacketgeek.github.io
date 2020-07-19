@@ -11,7 +11,7 @@ tags = ["pyshark", "python"]
 
 Now that we know how to use the FileCapture and LiveCapture modules to capture some packets, let's see what options we have with the returned capture object (truncated list for brevity):
 
-```python
+```sh
 >>> dir(cap)
 Out[3]:
 ['apply_on_packets',
@@ -29,7 +29,7 @@ These are the methods/attributes that I feel are actually useful, most of the ot
 
 The real magic here is the `apply_on_packets()` and `next()` methods. Iteration (via `for` loop) is available because of the `next()` method, and `apply_on_packets()` is another way to iterate through the packets, passing in a function to apply to each packet:
 
-```python
+```sh
 >>> cap = pyshark.FileCapture('test.pcap', keep_packets=False)
 >>> def print_highest_layer(pkt)
 ...: print pkt.highest_layer
@@ -61,4 +61,4 @@ def get_capture_count():
 print get_capture_count()
 ```
 
-Check out the [next PyShark article](../packet-object "PyShark – Using the packet Object") that covers the methods and attributes of the PyShark `packet` object.
+Check out the [next PyShark article](@/pyshark/packet-object.md "PyShark – Using the packet Object") that covers the methods and attributes of the PyShark `packet` object.

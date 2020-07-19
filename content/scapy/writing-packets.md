@@ -9,7 +9,7 @@ tags = ["scapy", "python"]
 
 +++
 
-This is a follow-up post to accompany the previous <a href="/importing-packets-from-trace-files/" target="_blank" rel="noopener">Importing packets from trace files with scapy</a> post. So you've sniffed or generated some packets with scapy and it's time to write them to file to analyze and double-check your work. Here's a simple example of how to save those packets.
+This is a follow-up post to accompany the previous [importing packets from trace files with scapy](@/scapy/importing-pcaps.md) post. So you've sniffed or generated some packets with scapy and it's time to write them to file to analyze and double-check your work. Here's a simple example of how to save those packets.
 
 ```python
 localhost:~ packetgeek$ scapy

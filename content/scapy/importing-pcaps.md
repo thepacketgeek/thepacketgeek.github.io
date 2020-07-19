@@ -10,7 +10,7 @@ tags = ["scapy", "python"]
 
 Scapy is amazingly flexible when it comes to creating packets, but in some cases you may want to mangle or change packets that you've sniffed and saved in a trace file. Scapy currently supports .cap, .pcap, and .pcapng files.  Reading these files are possible through the `rdpcap()` function:
 
-```
+```sh
 localhost:~ packetgeek$ scapy
 >>> packets = rdpcap('IBGP_adjacency.cap')
 >>> packets
@@ -22,7 +22,7 @@ localhost:~ packetgeek$ scapy
 
 Then we can view, edit, change the packets like we could with any other packets that were sniffed or created with scapy.
 
-```python
+```sh
 >>> packets.summary()
 Ether / IP / TCP 4.4.4.4:11965 > 3.3.3.3:bgp S / Padding
 Ether / IP / TCP 3.3.3.3:bgp > 4.4.4.4:11965 SA / Padding
@@ -52,7 +52,7 @@ Ether / IP / TCP 4.4.4.4:11965 > 3.3.3.3:bgp A / Padding
 
 We can also use scapy's `sniff()` function to read packets from a .pcap file using the `offline` argument as show here:
 
-```python
+```sh
 >>> packets = sniff(offline='IBGP_adjacency.cap')
 >>>
 >>> # packets is now the same list as in the previous example
@@ -60,9 +60,9 @@ We can also use scapy's `sniff()` function to read packets from a .pcap file usi
 <Sniffed: TCP:17 UDP:0 ICMP:0 Other:0>
 ```
 
-This will allow us to use the prn() function to import the packets with custom functions, as covered in <a title="Scapy Sniffing with Custom Actions, Part 1" href="http://thepacketgeek.com/scapy-sniffing-with-custom-actions-part-1/" target="_blank" rel="noopener">this post</a>. Here we can count the packets as we import them from the .pcap file:
+This will allow us to use the prn() function to import the packets with custom functions, as covered in [this post](@/scapy/sniffing-custom-actions/part-1.md). Here we can count the packets as we import them from the .pcap file:
 
-```python
+```sh
 >>> packetCount = 0
 >>> def customAction(packet):
 ...    return f"{packet[0][1].src} ==> {packet[0][1].dst}"
@@ -92,7 +92,7 @@ This will allow us to use the prn() function to import the packets with custom f
 
 We can also make a more useful function during import that changes the packets as we import.  This example below just will clear the MAC addresses to keep physical device information anonymous, but with the power of python and a little imagination the possibilities are endless!
 
-```python
+```sh
 >>> # create packet list
 >>> packets = []
 >>>

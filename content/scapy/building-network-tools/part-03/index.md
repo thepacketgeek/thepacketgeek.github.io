@@ -48,7 +48,7 @@ localhost:~ packetgeek$ scapy
 
 To see a list of what commands Scapy has available, run the `lsc()` function:
 
-```python
+```sh
 >>> lsc()
 arping              : Send ARP who-has requests to determine which hosts are up
 bind_layers         : Bind 2 layers on some specific fields' values
@@ -81,7 +81,7 @@ Wow, what a great list of commands! I'll at least introduce most of these comman
 
 In fact, let's go ahead and use one of those now to show off some of the amazing built in capabilities of Scapy! I'm going to sniff a single packet real quick and then we'll play around with that.
 
-```python
+```sh
 >>> pkt = sniff(count=1)
 >>> type(pkt)
 scapy.plist.PacketList

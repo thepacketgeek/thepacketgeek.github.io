@@ -24,11 +24,11 @@ We've used the `sniff()` function a couple times already to capture some packets
   * **store:** Whether to store sniffed packets or discard them. When you only want to monitor your network forever, set store to 0.
   * **timeout:** Stop sniffing after a given time (default: None).
 
-These should all be self-explanatory except for the `filter` and `prn` arguments. The `filter` argument takes <a href="http://biot.com/capstats/bpf.html" target="_blank" rel="noopener noreferrer">BPF syntax filters</a>, just like Wireshark or tcpdump capture filters. The `prn` argument is a very cool capability of the `sniff()` function and you can read more about it here: <a href="/scapy-sniffing-with-custom-actions-part-1/" target="_blank" rel="noopener noreferrer">Scapy and custom actions.</a>
+These should all be self-explanatory except for the `filter` and `prn` arguments. The `filter` argument takes <a href="http://biot.com/capstats/bpf.html" target="_blank" rel="noopener noreferrer">BPF syntax filters</a>, just like Wireshark or tcpdump capture filters. The `prn` argument is a very cool capability of the `sniff()` function and you can read more about it here: [Scapy and custom actions](@/scapy/sniffing-custom-actions/part-1.md).</a>
 
 Since we want to generate our first ARP packet we should go ahead and sniff one to see what it takes to recreate one using the `.show()` and `.command()` method. Here's a sniff using the `count` and `filter` arguments:
 
-```python
+```sh
 >>> pkts = sniff(count=5, filter="arp")
 >>> pkts.summary()
 Ether / ARP who has 172.16.20.255 says 172.16.20.40 / Padding
@@ -60,7 +60,7 @@ Ether / ARP who has 172.16.20.80 says 172.16.20.74 / Padding
 
 It looks like ARP packets only have 2 layers plus padding that we have to worry about. We can use the `ls()` function on the Ether and ARP layers to see what options are available to us:
 
-```python
+```sh
 >>> ls(Ether)
 dst        : DestMACField         = (None)
 src        : SourceMACField       = (None)
@@ -79,7 +79,7 @@ pdst       : IPField              = ('0.0.0.0')
 
 Let's create our ARP packet and start assigning some values. We construct a new ARP packet, and use the assignment operator customize specific fields of our packet:
 
-```python
+```sh
 >>> arppkt = Ether()/ARP()
 >>> arppkt[ARP].hwsrc = "00:11:22:aa:bb:cc"
 >>> arppkt[ARP].pdst = "172.16.20.1"
@@ -92,7 +92,7 @@ The layers we want are defined with the with the `Layer()` notation. This will w
 
 Note that the special glue holding these packets together is the `/` operator. If you happen to forget a layer when you're first defining the packet, you can add on a layer very easily using the existing packet and the `/` operator like this:
 
-```python
+```sh
 >>> tcppkt = Ether()/IP()
 >>> tcppkt
 <Ether  type=0x800 |<IP  |>>
@@ -105,7 +105,7 @@ Note that the special glue holding these packets together is the `/` operator. I
 
 Yup, you guessed it, its finally time to send this ARP packet out on the wire! Since ARP is a L2 protocol we're going to use the `sendp()` function as the `send()` function only works with L3 Packets (IP or IPv6 headers):
 
-```python
+```sh
 >>> arppkt
 <Ether  dst=ff:ff:ff:ff:ff:ff src=00:11:22:aa:bb:cc type=0x806 |<ARP  hwsrc=00:11:22:aa:bb:cc pdst=172.16.20.1 |>>
 >>> sendp(arppkt)
@@ -119,7 +119,7 @@ Sent 1 packets.
 
 What, what! Check that out! Our packet out from the scapy console and in the wire! Pretty cool, right? Well, here's a fun fact. We don't need to create and build the packet before sending it, we can define the packet right there in the `send()` or `sendp()` function like this:
 
-```python
+```sh
 >>> sendp(Ether(dst="ff:ff:ff:ff:ff:ff",src="00:11:22:aa:bb:cc")/ARP(hwsrc="00:11:22:aa:bb:cc",pdst="172.16.20.1"))
 .
 Sent 1 packets.
@@ -127,7 +127,7 @@ Sent 1 packets.
 
 In fact, we can do some other cool things with these send functions. If we had an array of packets (such as one created with Python loops and some random or incrementing values for IP address/TCP port), the send function would send each packet in that array:
 
-```python
+```sh
 >>> pkts
 <Sniffed: TCP:0 UDP:5 ICMP:4 Other:1>
 >>> send(pkts)

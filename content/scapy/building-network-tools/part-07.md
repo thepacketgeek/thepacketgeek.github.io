@@ -111,4 +111,4 @@ Request: 172.16.20.200 is asking about 172.16.20.44
 
 Basically, what the `prn` argument lets us do is replace the default Scapy printout of the packet summary and run our own function to determine how Scapy prints out. That's really cool! It works by passing the packet object to the defined function, in this case `arp_display()`, each time a packet is sniffed that matches the specified filter.
 
-We can do a lot more with that `prn` argument and passing more than just the packet object to the custom defined function using nested functions. That's outside the scope of this guide but feel free to read about it here: [Scapy Sniffing with Custom Actions](/scapy-sniffing-with-custom-actions-part-2/ "Scapy Sniffing with Custom Actions")
+We can do a lot more with that `prn` argument and passing more than just the packet object to the custom defined function using nested functions. That's outside the scope of this guide but feel free to read about it here: [Scapy Sniffing with Custom Actions](@/scapy/sniffing-custom-actions/part-2.md)

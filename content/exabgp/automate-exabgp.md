@@ -11,7 +11,7 @@ aliases = ["/using-service-health-checks-to-automate-exabgp/"]
 tags = ["exabgp", "python"]
 +++
 
-If you haven't read the intro post to this series, [Getting Started with ExaBGP](../getting-started), check that article out first as this post will be expanding on the previous example to show how to use python for more automated interaction with ExaBGP.
+If you haven't read the intro post to this series, [Getting Started with ExaBGP](@/exabgp/getting-started/index.md), check that article out first as this post will be expanding on the previous example to show how to use python for more automated interaction with ExaBGP.
 
 <!-- more -->
 The first example I'll cover is using a basic health check test to determine if a route should be announced or withdrawn from BGP. Here is our python script `healthcheck.py` with comments inline:
