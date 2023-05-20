@@ -17,6 +17,11 @@ generate_feed = true
 
 theme = "hyde"
 
+#
+taxonomies = [
+    { name = "tags", feed = true, render = false},
+]
+
 [extra]
 google_analytics = "UA-44238008-1"
 google_analytics_4_tag = "G-0JCBHFFH3Q"

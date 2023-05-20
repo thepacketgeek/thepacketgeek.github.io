@@ -13,16 +13,19 @@ i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
 
 ga('create', "{{ config.extra.google_analytics }}", 'auto');
 ga('send', 'pageview');
-{% endif %}
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.google_analytics }}"></script>
+{% endif %}
+
+{% if config.extra.google_analytics %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.google_analytics_4_tag }}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', '{{ config.extra.google_analytics }}');
+  gtag('config', '{{ config.extra.google_analytics_4_tag }}');
 </script>
+{% endif %}
 <link rel="stylesheet" href="{{ get_url(path="css/fontawesome.min.css", trailing_slash=false) }}">
 <link rel="stylesheet" href="{{ get_url(path="css/brands.min.css", trailing_slash=false) }}">
 <link rel="stylesheet" href="{{ get_url(path="site.css", trailing_slash=false) }}">
