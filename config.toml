@@ -19,6 +19,7 @@ theme = "hyde"
 
 [extra]
 google_analytics = "UA-44238008-1"
+google_analytics_4_tag = "G-0JCBHFFH3Q"
 hyde_links = [
     {url = "https://github.com/thepacketgeek", name = "GitHub", icon_class = "fa-github"},
     {url = "https://twitter.com/thepacketgeek", name = "Twitter", icon_class = "fa-twitter"},
