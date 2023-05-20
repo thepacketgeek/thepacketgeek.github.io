@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Scapy p.10</h2>
+  <h4 class="subtitle inline">Emulating nmap Functions</h4>
+  <div class="post-details">
+    May - 2019
+    <em>(~8 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>We've seen a lot of cool applications for scapy in your network tools, but a good inspiration for new tools is to look at existing tools to figure out how they do their job. We will be emulating some nmap &amp; Angry IP Scanner type features and creating the following tools:</p>
+<ul>
+<li><a href="https://thepacketgeek.com/scapy/building-network-tools/part-10/#port-scanner">TCP Port Range Scanner</a></li>
+<li><a href="https://thepacketgeek.com/scapy/building-network-tools/part-10/#ping-sweep">ICMP Ping Sweep</a></li>
+<li><a href="https://thepacketgeek.com/scapy/building-network-tools/part-10/#sweep-and-scan">Combining the Two</a></li>
+</ul>
+<span id="continue-reading"></span><h4 id="port-scanner">TCP Port Range Scanner</h4>
+<p>This is a fairly basic tool to test whether a host has specific TCP ports open and listening. We start out by defining our host and ports to scan and then move on to the fun stuff. Using a random TCP source port to help obfuscate the attack (although most firewalls are smarter than this nowadays), we send a TCP SYN packet to each destination TCP port specified. If we get no response or a TCP RST in return, we know that the host is filtering or not listening on that port. If we get an ICMP unreachable or error response, we also know the host is not willing to take requests on that port. But, if we get an expected TCP SYN/ACK response, we will send a RST so the host doesn't keep listening for our ACK since we already know the host is listening on that port. Here's the code:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+import random
+from scapy.all import ICMP, IP, sr1, TCP
+
+# Define end host and TCP port range
+host = &quot;192.168.40.1&quot;
+port_range = [22, 23, 80, 443, 3389]
+
+# Send SYN with random Src Port for each Dst port
+for dst_port in port_range:
+    src_port = random.randint(1025,65534)
+    resp = sr1(
+        IP(dst=host)&#x2F;TCP(sport=src_port,dport=dst_port,flags=&quot;S&quot;),timeout=1,
+        verbose=0,
+    )
+
+    if resp is None:
+        print(f&quot;{host}:{dst_port} is filtered (silently dropped).&quot;)
+
+    elif(resp.haslayer(TCP)):
+        if(resp.getlayer(TCP).flags == 0x12):
+            # Send a gratuitous RST to close the connection
+            send_rst = sr(
+                IP(dst=host)&#x2F;TCP(sport=src_port,dport=dst_port,flags=&#x27;R&#x27;),
+                timeout=1,
+                verbose=0,
+            )
+            print(f&quot;{host}:{dst_port} is open.&quot;)
+
+        elif (resp.getlayer(TCP).flags == 0x14):
+            print(f&quot;{host}:{dst_port} is closed.&quot;)
+
+    elif(resp.haslayer(ICMP)):
+        if(
+            int(resp.getlayer(ICMP).type) == 3 and
+            int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]
+        ):
+            print(f&quot;{host}:{dst_port} is filtered (silently dropped).&quot;)
+</code></pre>
+<p>Console Output:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">172.16.20.40:22 is filtered (silently dropped).
+172.16.20.40:23 is filtered (silently dropped).
+172.16.20.40:80 is open.
+172.16.20.40:443 is open.
+172.16.20.40:449 is filtered (silently dropped).
+</code></pre>
+<blockquote>
+<p>For more information on TCP behavior and how this was created, visit: <a href="http://resources.infosecinstitute.com/port-scanning-using-scapy/" target="_blank" rel="noopener">Port Scanning Using Scapy</a></p>
+</blockquote>
+<h4 id="ping-sweep">ICMP Ping Sweep</h4>
+<p>This script is an extension of our ICMP ping utility from the <a href="https://thepacketgeek.com/scapy/building-network-tools/part-06/">Sending and Receiving</a> example. We will use a network given with a CIDR mask to specify the hosts to run the ping scan on. Then, using a Python <code>for</code> loop we iterate through each address and try pinging. If the response times out or returns an ICMP error (such as unreachable or admin deny), we know that the host is not up or is blocking ICMP. Otherwise, if we receive a response we know that host is online. Check out the code here:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+from ipaddress import IPv4Network
+import random
+from scapy.all import ICMP, IP, sr1, TCP
+
+# Define IP range to ping
+network = &quot;192.168.40.0&#x2F;24&quot;
+
+# make list of addresses out of network, set live host counter
+addresses = IPv4Network(network)
+live_count = 0
+
+# Send ICMP ping request, wait for answer
+for host in addresses:
+    if (host in (addresses.network_address, addresses.broadcast_address)):
+        # Skip network and broadcast addresses
+        continue
+
+    resp = sr1(
+        IP(dst=str(host))&#x2F;ICMP(),
+        timeout=2,
+        verbose=0,
+    )
+
+    if resp is None:
+        print(f&quot;{host} is down or not responding.&quot;)
+    elif (
+        int(resp.getlayer(ICMP).type)==3 and
+        int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]
+    ):
+        print(f&quot;{host} is blocking ICMP.&quot;)
+    else:
+        print(f&quot;{host} is responding.&quot;)
+        live_count += 1
+
+print(f&quot;{live_count}&#x2F;{addresses.num_addresses} hosts are online.&quot;)
+</code></pre>
+<p>Console Output:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">172.16.20.1 is responding.
+WARNING: Mac address to reach destination not found. Using broadcast.
+172.16.20.2 is down or not responding.
+WARNING: Mac address to reach destination not found. Using broadcast.
+172.16.20.3 is down or not responding.
+172.16.20.4 is responding.
+172.16.20.5 is responding.
+172.16.20.6 is responding.
+172.16.20.7 is responding.
+WARNING: Mac address to reach destination not found. Using broadcast.
+172.16.20.8 is down or not responding.
+WARNING: Mac address to reach destination not found. Using broadcast.
+172.16.20.9 is down or not responding.
+172.16.20.10 is responding.
+172.16.20.11 is responding.
+... (truncated)
+19&#x2F;254 hosts are online.
+</code></pre>
+<p>NOTE: This could certainly be made much faster with threading since this is mostly IO bound (waiting for network responses), however that is outside the scope of this article.<br />
+In this example, the <code>WARNING: Mac address to reach destination not found. Using broadcast.</code> is telling us that Scapy doesn't know the destination ARP address to send the packet to. This is only showing up because I am running this test on my locally connected network. If I were running this scan on a different network, Scapy would use the gateway MAC address for the L2 destination.</p>
+<h4 id="sweep-and-scan">Combining the Two</h4>
+<p>Those first two tools are cool, but you know what would be cooler? Combining them! With a new tool that combines those two features, we can scan a subnet for online hosts and then also run a TCP scan on the online hosts.</p>
+<p>To get this new tool up and running, we can pretty much use the existing code with just a couple changes. We can get rid of the single <code>host</code> variable since we'll be using the network statment (this can define a single host using the /32 CIDR mask). Also, to keep the code clean and easy to understand we should move our TCP scan to it's own function so we can call that on any hosts that respond to the ICMP ping request. Here's the code and some example output:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+import random
+from ipaddress import IPv4Network
+from typing import List
+
+from scapy.all import ICMP, IP, sr1, TCP
+
+# Define IP range to scan
+network = &quot;192.168.40.0&#x2F;30&quot;
+# Define TCP port range
+port_range = [22,23,80,443,449]
+
+# make list of addresses out of network, set live host counter
+addresses = IPv4Network(network)
+live_count = 0
+
+def port_scan(host: str, ports: List[int]):
+    # Send SYN with random Src Port for each Dst port
+    for dst_port in ports:
+        src_port = random.randint(1025, 65534)
+        resp = sr1(
+            IP(dst=host)&#x2F;TCP(sport=src_port,dport=dst_port,flags=&quot;S&quot;),timeout=1,
+            verbose=0,
+        )
+        if resp is None:
+            print(f&quot;{host}:{dst_port} is filtered (silently dropped).&quot;)
+
+        elif(resp.haslayer(TCP)):
+            if(resp.getlayer(TCP).flags == 0x12):
+                send_rst = sr(
+                    IP(dst=host)&#x2F;TCP(sport=src_port,dport=dst_port,flags=&#x27;R&#x27;),
+                    timeout=1,
+                    verbose=0,
+                )
+                print(f&quot;{host}:{dst_port} is open.&quot;)
+
+            elif (resp.getlayer(TCP).flags == 0x14):
+                print(f&quot;{host}:{dst_port} is closed.&quot;)
+
+        elif(resp.haslayer(ICMP)):
+            if(
+                int(resp.getlayer(ICMP).type) == 3 and
+                int(resp.getlayer(ICMP).code) in (1, 2, 3, 9, 10, 13)
+            ):
+                print(f&quot;{host}:{dst_port} is filtered (silently dropped).&quot;)
+
+# Send ICMP ping request, wait for answer
+for host in addresses:
+    if (host in (addresses.network_address, addresses.broadcast_address)):
+        # Skip network and broadcast addresses
+        continue
+
+    resp = sr1(IP(dst=str(host))&#x2F;ICMP(), timeout=2, verbose=0)
+
+    if resp is None:
+        print(f&quot;{host} is down or not responding.&quot;)
+    elif (
+        int(resp.getlayer(ICMP).type)==3 and
+        int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]
+    ):
+        print(f&quot;{host} is blocking ICMP.&quot;)
+    else:
+        port_scan(str(host), port_range)
+        live_count += 1
+
+print(f&quot;{live_count}&#x2F;{addresses.num_addresses} hosts are online.&quot;)
+</code></pre>
+<p>Console Output:</p>
+<pre><code>172.16.20.1:22 is filtered (silently dropped).
+172.16.20.1:23 is filtered (silently dropped).
+172.16.20.1:80 is filtered (silently dropped).
+172.16.20.1:443 is filtered (silently dropped).
+172.16.20.1:449 is filtered (silently dropped).
+172.16.20.2:22 is closed.
+172.16.20.2:23 is closed.
+172.16.20.2:80 is open.
+172.16.20.2:443 is closed.
+172.16.20.2:449 is closed.
+172.16.20.3:22 is filtered (silently dropped).
+172.16.20.3:23 is filtered (silently dropped).
+172.16.20.3:80 is filtered (silently dropped).
+172.16.20.3:443 is filtered (silently dropped).
+172.16.20.3:449 is filtered (silently dropped).
+172.16.20.4 is down or not responding.
+172.16.20.5:22 is closed.
+172.16.20.5:23 is closed.
+172.16.20.5:80 is open.
+172.16.20.5:443 is open.
+172.16.20.5:449 is closed.
+172.16.20.6:22 is closed.
+172.16.20.6:23 is closed.
+172.16.20.6:80 is open.
+172.16.20.6:443 is closed.
+172.16.20.6:449 is closed.
+5&#x2F;8 hosts are online.
+</code></pre>
+<p>That output is a little noisy for my taste, so if we remove some of the print statements like in this example <a title="10-scan-and-sweep-2.py" href="https://gist.github.com/thepacketgeek/7125755" target="_blank" rel="noopener">here</a>, we get the following output:</p>
+<p>Console Output:
+```
+172.16.20.1 is responding.
+172.16.20.2 is responding.
+172.16.20.2:80 is open.
+172.16.20.3 is responding.
+172.16.20.5 is responding.
+172.16.20.5:80 is open.
+172.16.20.5:443 is open.
+172.16.20.6 is responding.
+172.16.20.6:80 is open.
+Out of 8 hosts, 5 are online.</p>
+<pre><code>
+This is just the basics for building tools like this. The formatting can be customized to print out how you want and you can scan more ports if needed. Use these as starting points to build The Ultimate Network Tool and let me know what you create!</code></pre>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

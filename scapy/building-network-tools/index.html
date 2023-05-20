@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="section">
+  <h1 class="section-title">Building Network Tools with Scapy</h1>
+  <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-01&#x2F;">Scapy p.01</a></h2>
+    <h4 class="subtitle inline">Scapy Introduction and Overview</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~2 minutes read time)</em>
+    </div>
+    <div class="post-indent"><h3 id="what-is-scapy">What is Scapy?</h3>
+<p>No one can introduce Scapy better than the creator of the project himself:</p>
+<blockquote>
+<p>Scapy is a powerful interactive packet manipulation program. It is able to forge or decode packets of a wide number of protocols, send them on the wire, capture them, match requests and replies, and much more. It can easily handle most classical tasks like scanning, tracerouting, probing, unit tests, attacks or network discovery</p>
+<p>It also performs very well at a lot of other specific tasks that most other tools can't handle, like sending invalid frames, injecting your own 802.11 frames, combining technics (VLAN hopping+ARP cache poisoning, VOIP decoding on WEP encrypted channel, ...), etc.</p>
+</blockquote>
+<ul>
+<li>Phil @  <a href="http://www.secdev.org/projects/scapy/" target="_blank">secdev.org</a></li>
+</ul>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-02&#x2F;">Scapy p.02</a></h2>
+    <h4 class="subtitle inline">Installing Python and Scapy</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~3 minutes read time)</em>
+    </div>
+    <div class="post-indent"><h4 id="installing-python">Installing Python</h4>
+<p>Scapy was originally written for Python 2, but since the 2.4 release (March 2018), you can now use Scapy with Python 3.4+! I will prefer Python 3 in examples but will also include notes about big differences between each python version and Scapy if they exist.</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-03&#x2F;">Scapy p.03</a></h2>
+    <h4 class="subtitle inline">Scapy Interactive Mode</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~5 minutes read time)</em>
+    </div>
+    <div class="post-indent"><h4 id="running-scapy">Running Scapy</h4>
+<p>Scapy can be run in two different modes, interactively from a terminal window and programmatically from a Python script. Let's start getting familiar with Scapy using the interactive mode.</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-04&#x2F;">Scapy p.04</a></h2>
+    <h4 class="subtitle inline">Looking at Packets</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~7 minutes read time)</em>
+    </div>
+    <div class="post-indent"><h4 id="packets-layers-and-fields-oh-my">Packets, Layers, and Fields. Oh My!</h4>
+<p>Scapy uses Python dictionaries as the data structure for packets. Each packet is a collection of nested dictionaries with each layer being a child dictionary of the previous layer, built from the lowest layer up. Visualizing the nested packet layers would look something like this:</p>
+<p><img src="https://thepacketgeek.com/scapy/building-network-tools/part-04/scapy-packet-layers.png" alt="" /></p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-05&#x2F;">Scapy p.05</a></h2>
+    <h4 class="subtitle inline">Sending our First Packet; ARP Response</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~5 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>With a good understanding of how to view our packets we can now move onto some packet generation. Let's talk a bit about sniffing first and how existing packets are our best tool for creating new ones.</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-06&#x2F;">Scapy p.06</a></h2>
+    <h4 class="subtitle inline">Sending and Receiving with Scapy</h4>
+    <div class="post-details post-indent">
+      Oct - 2013
+      <em>(~5 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>We've sniffed some packets, dig down into packet layers and fields, and even sent some packets. Great job! It's time to step up our game with Scapy and start really using some of the power Scapy contains. Please Note: this next example is for education and example only. Please be responsible on your network, especially at work!</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-07&#x2F;">Scapy p.07</a></h2>
+    <h4 class="subtitle inline">Monitoring ARP</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~4 minutes read time)</em>
+    </div>
+    <div class="post-indent"><h4 id="using-scapy-in-a-python-script">Using Scapy in a Python Script</h4>
+<p>So far we've been working with Scapy in interactive mode. It's very powerful but there are times when it would be easier to work with a Python script instead. In order to use Scapy, we have to import the Scapy module like this:</p>
+<pre data-lang="py" class="language-py "><code class="language-py" data-lang="py">from scapy.all import *
+</code></pre>
+<p>This will import all Scapy functions, but if you know that you will only need a few of the functions, you can import them individually as well like this:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">from scapy.all import sr1,IP,ICMP
+</code></pre>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-08&#x2F;">Scapy p.08</a></h2>
+    <h4 class="subtitle inline">Making a Christmas Tree Packet</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~2 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>We've doing a lot of packet sniffing, analysis, and even some basic packet crafting of our own. With the ICMP packets we created, we only set the destination we wanted to use and let Scapy take care of the rest.</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-09&#x2F;">Scapy p.09</a></h2>
+    <h4 class="subtitle inline">Scapy and DNS</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~5 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>We've been able to work with Ethernet, ARP, IP, ICMP, and TCP pretty easily so far thanks to Scapy's built in protocol support. Next on our list of protocols to work with are UDP and DNS.</p>
+<h4 id="dns-request-and-response">DNS Request and Response</h4>
+<p>Using the <code>sr1()</code> function, we can craft a DNS request and capture the returned DNS response. </div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-10&#x2F;">Scapy p.10</a></h2>
+    <h4 class="subtitle inline">Emulating nmap Functions</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~8 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>We've seen a lot of cool applications for scapy in your network tools, but a good inspiration for new tools is to look at existing tools to figure out how they do their job. We will be emulating some nmap &amp; Angry IP Scanner type features and creating the following tools:</p>
+<ul>
+<li><a href="https://thepacketgeek.com/scapy/building-network-tools/part-10/#port-scanner">TCP Port Range Scanner</a></li>
+<li><a href="https://thepacketgeek.com/scapy/building-network-tools/part-10/#ping-sweep">ICMP Ping Sweep</a></li>
+<li><a href="https://thepacketgeek.com/scapy/building-network-tools/part-10/#sweep-and-scan">Combining the Two</a></li>
+</ul>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-11&#x2F;">Scapy p.11</a></h2>
+    <h4 class="subtitle inline">Scapy Resources</h4>
+    <div class="post-details post-indent">
+      May - 2019
+      <em>(~2 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>I hope you had as much fun as I did getting started with Scapy. These are all starter ideas, but we've barely uncovered the tip of the iceberg. I'll continue to write articles about cool Scapy tools I come up with but you should dig into the docs below and see what you find. If you have any questions or comments about this guide, feel free to contact me.</p>
+</div>
+    <hr class="lead" />
+  
+</div>
+
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Scapy p.04</h2>
+  <h4 class="subtitle inline">Looking at Packets</h4>
+  <div class="post-details">
+    May - 2019
+    <em>(~7 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <h4 id="packets-layers-and-fields-oh-my">Packets, Layers, and Fields. Oh My!</h4>
+<p>Scapy uses Python dictionaries as the data structure for packets. Each packet is a collection of nested dictionaries with each layer being a child dictionary of the previous layer, built from the lowest layer up. Visualizing the nested packet layers would look something like this:</p>
+<p><img src="https://thepacketgeek.com/scapy/building-network-tools/part-04/scapy-packet-layers.png" alt="" /></p>
+<span id="continue-reading"></span>
+<p>Each field (such as the Ethernet <code>dst</code> value or ICMP <code>type</code> value) is a key:value pair in the appropriate layer. These fields (and nested layers) are all mutable so we can reassign them in place using the assignment operator. Scapy has packet methods for viewing the layers and fields that I will introduce next.</p>
+<h4 id="packet-summary-and-show-methods">Packet summary() and show() Methods</h4>
+<p>Now let's go back to our <code>pkt</code> and have some fun with it using Scapy's Interactive mode. We already know that using the <code>summary()</code> method will give us a quick look at the packet's layers:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkt[0].summary()
+&#x27;Ether &#x2F; IP &#x2F; ICMP 172.16.20.10 &gt; 4.2.2.1 echo-request 0 &#x2F; Raw&#x27;
+</code></pre>
+<p>But what if we want to see more of the packet contents? That's what the </p>
+<p><code>show()</code> method is for:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkt[0].show()
+###[ Ethernet ]###
+  dst= 00:24:97:2e:d6:c0
+  src= 00:00:16:aa:bb:cc
+  type= 0x800
+###[ IP ]###
+     version= 4L
+     ihl= 5L
+     tos= 0x0
+     len= 84
+     id= 57299
+     flags= 
+     frag= 0L
+     ttl= 64
+     proto= icmp
+     chksum= 0x0
+     src= 172.16.20.10
+     dst= 4.2.2.1
+     \options\
+###[ ICMP ]###
+        type= echo-request
+        code= 0
+        chksum= 0xd8af
+        id= 0x9057
+        seq= 0x0
+###[ Raw ]###
+</code></pre>
+<p>Very cool, that's some good info. If you're familiar with Python you have probably noticed the list index, <code>[0]</code>, after the <code>pkt</code> variable name. Remember that our sniff only returned a single packet, but if we increase the <code>count</code> argument value, we will get back an list with multiple packets:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts = sniff(count=10)
+&gt;&gt;&gt; pkts
+&lt;Sniffed: TCP:0 UDP:0 ICMP:10 Other:0&gt;
+</code></pre>
+<blockquote>
+<p>Getting the value of the list returns a quick glance at what type of packets were sniffed.</p>
+</blockquote>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts.summary()
+Ether &#x2F; IP &#x2F; ICMP 172.16.20.10 &gt; 4.2.2.1 echo-request 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 4.2.2.1 &gt; 172.16.20.10 echo-reply 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 172.16.20.10 &gt; 4.2.2.1 echo-request 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 4.2.2.1 &gt; 172.16.20.10 echo-reply 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 172.16.20.10 &gt; 4.2.2.1 echo-request 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 4.2.2.1 &gt; 172.16.20.10 echo-reply 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 172.16.20.10 &gt; 4.2.2.1 echo-request 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 4.2.2.1 &gt; 172.16.20.10 echo-reply 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 172.16.20.10 &gt; 4.2.2.1 echo-request 0 &#x2F; Raw
+Ether &#x2F; IP &#x2F; ICMP 4.2.2.1 &gt; 172.16.20.10 echo-reply 0 &#x2F; Raw
+</code></pre>
+<p>And we can show the summary or packet contents of any single packet by using the list index with that packet value. So, let's look at the contents of the 4th packet (Remember, list indexes start counting at 0):</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts[3]
+&lt;Ether  dst=00:00:16:aa:bb:cc src=00:24:97:2e:d6:c0 type=0x800 |&lt;IP  version=4L ihl=5L tos=0x20 len=84 id=47340 flags= frag=0L ttl=57 proto=icmp chksum=0x3826 src=4.2.2.1 dst=172.16.20.10 options=[] |&lt;ICMP  type=echo-reply code=0 chksum=0xcfbf id=0x3060 seq=0x1 |&lt;Raw |&gt;&gt;&gt;&gt;
+</code></pre>
+<blockquote>
+<p>Getting the value of a single packet returns a quick glance of the contents of that packet.</p>
+</blockquote>
+<p>The <code>show()</code> method will give us a cleaner print out:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts[3].show()
+###[ Ethernet ]###
+  dst= 00:00:16:aa:bb:cc
+  src= 00:24:97:2e:d6:c0
+  type= 0x800
+###[ IP ]###
+     version= 4L
+     ihl= 5L
+     tos= 0x20
+     len= 84
+     id= 47340
+     flags= 
+     frag= 0L
+     ttl= 57
+     proto= icmp
+     chksum= 0x3826
+     src= 4.2.2.1
+     dst= 172.16.20.10
+     \options\
+###[ ICMP ]###
+        type= echo-reply
+        code= 0
+        chksum= 0xcfbf
+        id= 0x3060
+        seq= 0x1
+###[ Raw ]###
+</code></pre>
+<h4 id="digging-into-packets-by-layer">Digging into Packets by Layer</h4>
+<p>Scapy builds and dissects packets by the layers contained in each packet, and then by the fields in each layer. Each layer is nested inside the parent layer as can be seen with the nesting of the &lt; and &gt; brackets:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts[4]
+&lt;Ether  dst=00:24:97:2e:d6:c0 src=00:00:16:aa:bb:cc type=0x800 |&lt;IP  version=4L ihl=5L tos=0x0 len=84 id=17811 flags= frag=0L ttl=64 proto=icmp chksum=0x0 src=192.168.201.203 dst=4.2.2.1 options=[] |&lt;ICMP  type=echo-request code=0 chksum=0xc378 id=0x3060 seq=0x2 |&lt;Raw |&gt;&gt;&gt;&gt;
+</code></pre>
+<p>You can also dig into a specific layer using an list index. If we wanted to get to the <code>ICMP</code> layer of <code>pkts[3]</code>, we could do that using the layer name or index number:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts[3][ICMP].summary()
+&#x27;ICMP 4.2.2.1 &gt; 192.168.201.203 echo-reply 0 &#x2F; Raw&#x27;
+&gt;&gt;&gt; pkts[3][2].summary()
+&#x27;ICMP 4.2.2.1 &gt; 192.168.201.203 echo-reply 0 &#x2F; Raw&#x27;
+</code></pre>
+<p>Since the first index chooses the packet out of the <code>pkts</code> list, the second index chooses the layer for that specific packet. Looking at the summary of this packet from an earlier example, we know that the <code>ICMP</code> layer is the 3rd layer.</p>
+<h4 id="packet-command-method">Packet .command() Method</h4>
+<p>If you're wanting to see a reference of how a packet that's been sniffed or received might look to create, Scapy has a packet method for you! Using the <code>.command()</code> packet method will return a string of the command necessary to recreate that packet, like this:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts[2].command()
+&#x27;Ether(src=\&#x27;00:11:22:aa:bb:cc\&#x27;, dst=\&#x27;c0:c1:c0:b7:ce:63\&#x27;, type=2048)&#x2F;IP(frag=0L, src=\&#x27;172.16.20.10\&#x27;, proto=1, tos=0, dst=\&#x27;4.2.2.1\&#x27;, chksum=51457, len=84, options=[], version=4L, flags=0L, ihl=5L, ttl=64, id=59755)&#x2F;ICMP(gw=None, code=0, ts_ori=None, addr_mask=None, seq=3, ptr=None, unused=None, ts_rx=None, chksum=50424, reserved=None, ts_tx=None, type=8, id=59999)&#x2F;Raw(load=\&#x27;Rk\\xe8\\x02\\x00\\x0c#\\\&#x27;\\x08\\t\\n\\x0b\\x0c\\r\\x0e\\x0f\\x10\\x11\\x12\\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f !&quot;#$%&amp;\\\&#x27;()*+,-.&#x2F;01234567\&#x27;)&#x27;
+</code></pre>
+<h4 id="digging-into-layers-by-field">Digging into Layers by Field</h4>
+<p>Within each layer, Scapy parses out the value of each field if it has support for the layer's protocol. Depending on the type of field, Scapy may replace the value with a more friendly text value for the summary views, but not in the values returned for an individual field. Here are some examples:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts[3]
+&lt;Ether  dst=00:00:16:aa:bb:cc src=00:24:97:2e:d6:c0 type=0x800 |\
+&lt;IP  version=4L ihl=5L tos=0x20 len=84 id=47340 flags= frag=0L ttl=57 proto=icmp chksum=0x3826 src=4.2.2.1 dst=192.168.201.203 options=[] |\
+&lt;ICMP  type=echo-reply code=0 chksum=0xcfbf id=0x3060 seq=0x1 |&lt;Raw |&gt;&gt;&gt;&gt;
+&gt;&gt;&gt; pkts[3][Ether].src
+&#x27;00:24:97:2e:d6:c0&#x27;
+&gt;&gt;&gt; pkts[3][IP].ttl
+57
+&gt;&gt;&gt; pkts[3][IP].proto
+1
+&gt;&gt;&gt; pkts[3][ICMP].type
+0
+</code></pre>
+<h4 id="using-python-control-statements-with-scapy">Using Python control statements with Scapy</h4>
+<p>The awesome thing about Scapy being a module of Python is that we can use the power of Python to do stuff with our packets. Here's a tip of the iceberg example using a Python <code>for</code> statement along with some new Scapy packet methods:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; for packet in pkts:
+...     if (packet.haslayer(ICMP)):
+...         print(f&quot;ICMP code: {packet.getlayer(ICMP).code}&quot;)
+...
+ICMP code: 0
+ICMP code: 0
+ICMP code: 0
+ICMP code: 0
+ICMP code: 0
+ICMP code: 0
+ICMP code: 0
+ICMP code: 0
+ICMP code: 0
+ICMP code: 0
+</code></pre>
+<p>As you can guess, the <code>haslayer()</code> and <code>getlayer()</code> methods will test for the existence of a layer and return the layer (and any nested layers) respectively. This is just a very basic use of Python statements with Scapy and we'll see a lot more when it comes to packet generation and custom actions.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

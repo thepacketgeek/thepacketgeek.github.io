@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="section">
+  <h1 class="section-title">ExaBGP</h1>
+  <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;getting-started&#x2F;">ExaBGP and Python</a></h2>
+    <h4 class="subtitle inline">Getting Started</h4>
+    <div class="post-details post-indent">
+      May - 2015
+      <em>(~6 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>I'm really excited about these next few posts. I've been doing some research on BGP and automating routing decisions with python, which led to my discovery of <a href="https://github.com/Exa-Networks/exabgp" target="_blank" rel="noopener">ExaBGP</a>. ExaBGP is dubbed &quot;The BGP swiss army knife&quot;, and I'm early in my experimentation with this tool, but it seems to be a very easy way to peer with your BGP routers and control the advertisement of networks.</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;automate-exabgp&#x2F;">Using service health checks to automate ExaBGP</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      May - 2015
+      <em>(~4 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>If you haven't read the intro post to this series, <a href="https://thepacketgeek.com/exabgp/getting-started/">Getting Started with ExaBGP</a>, check that article out first as this post will be expanding on the previous example to show how to use python for more automated interaction with ExaBGP.</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;http-api&#x2F;">Give ExaBGP an HTTP API</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      May - 2015
+      <em>(~5 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>We've covered how to setup ExaBGP and peer with a router, and then how to use python to add  and remove advertised routes in BGP either with static definitions or dynamically through health checking. There may be some of you out there with some sort of application that is already monitoring routes and you're trying to figure out how to connect it with ExaBGP for the actual interaction part? Well, what if we add an HTTP API to ExaBGP to give programmatic access to ExaBGP from some external utility? I'll go over two ways to do this using the Python built-in <code>SimpleHTTPServer</code> or <a href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">Flask</a>.</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;advanced-route-announcement&#x2F;">Advanced Route Announcement</a></h2>
+    <h4 class="subtitle inline">With multiple BGP Peers</h4>
+    <div class="post-details post-indent">
+      May - 2015
+      <em>(~6 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>Now that you're familiar with the basics of setting up a peer with ExaBGP and advertising routes, let's look at expanding those concepts towards something that might actually be used in production.</p>
+<h2 id="peering-with-multiple-bgp-routers">Peering with Multiple BGP Routers</h2>
+<p><img src="https://thepacketgeek.com/exabgp/advanced-route-announcement/exabgp-multi-peer.png" alt="" /></p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;control-bgp-advertisements&#x2F;">Control BGP Advertisements</a></h2>
+    <h4 class="subtitle inline">to eBGP peers with ExaBGP</h4>
+    <div class="post-details post-indent">
+      Jun - 2015
+      <em>(~5 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>We know that ExaBGP can be used to inject BGP routes into an AS that you control. It's a very helpful feature that allows you to automate reachability and traffic flows within your network. But what if you want to you ExaBGP to influence what is advertised, or in this case, not advertised to external peers that are not willing to peer with your ExaBGP service?</p>
+<p><img src="https://thepacketgeek.com/exabgp/control-bgp-advertisements/exabgp-advertisements.png" alt="" /></p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;storing-in-mongo-db&#x2F;">Processing and Storing BGP Messages in MongoDB</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      Jun - 2015
+      <em>(~6 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>Now that you know how to advertise prefixes to BGP peers with ExaBGP and are familiar with how to use this to influence traffic in your network, let's change gears and look at processing BGP messages between ExaBGP and its peers. Since ExaBGP uses JSON for message data, I figured it would be a good opportunity to use <a href="https://www.mongodb.org/" target="_blank">MongoDB</a> so the message information can easily be stored into a database for data collection and analysis.</p>
+<p><img src="https://thepacketgeek.com/exabgp/storing-in-mongo-db/exabgp-mongo-db.png" alt="" /></p>
+</div>
+    <hr class="lead" />
+  
+</div>
+
+        </div>
+
+    </body>
+
+</html>

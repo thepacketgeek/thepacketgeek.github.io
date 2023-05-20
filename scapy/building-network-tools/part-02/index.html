@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Scapy p.02</h2>
+  <h4 class="subtitle inline">Installing Python and Scapy</h4>
+  <div class="post-details">
+    May - 2019
+    <em>(~3 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <h4 id="installing-python">Installing Python</h4>
+<p>Scapy was originally written for Python 2, but since the 2.4 release (March 2018), you can now use Scapy with Python 3.4+! I will prefer Python 3 in examples but will also include notes about big differences between each python version and Scapy if they exist.</p>
+<span id="continue-reading"></span>
+<p>If you're using a Mac or running some version of *nix you probably already have Python 2 (and maybe even Python 3) installed. To check, open a terminal and type <code>python3</code> or <code>python</code>. You should see something like this:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">localhost:~ packetgeek$ python3
+Python 3.7.2 (v3.7.2:9a3ffc0492, Dec 24 2018, 02:44:43)
+[Clang 6.0 (clang-600.0.57)] on darwin
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt;
+</code></pre>
+<p>If you are running Windows or for some other reason do not have Python installed already, go to the <a href="http://python.org/download/" target="_blank" rel="noopener noreferrer">Python download page</a> and grab the installer for your platform.</p>
+<hr />
+<h4 id="installing-scapy">Installing Scapy</h4>
+<p>There are multiple ways to install Scapy depending on your platform. Check out the <a href="https://scapy.readthedocs.io/en/latest/installation.html#installing-scapy-v2-x" target="_blank" rel="noopener noreferrer">Scapy installation guides</a> to find instructions and installer packages relevant to your platform. Once Scapy is installed, you should be able to run it from the terminal, just like we did with Python, and get something that looks like this:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">localhost:~ packetgeek$ scapy
+
+                     aSPY&#x2F;&#x2F;YASa
+             apyyyyCY&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;YCa       |
+            sY&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;YSpcs  scpCY&#x2F;&#x2F;Pp     | Welcome to Scapy
+ ayp ayyyyyyySCP&#x2F;&#x2F;Pp           syY&#x2F;&#x2F;C    | Version 2.4.2
+ AYAsAYYYYYYYY&#x2F;&#x2F;&#x2F;Ps              cY&#x2F;&#x2F;S   |
+         pCCCCY&#x2F;&#x2F;p          cSSps y&#x2F;&#x2F;Y   | https:&#x2F;&#x2F;github.com&#x2F;secdev&#x2F;scapy
+         SPPPP&#x2F;&#x2F;&#x2F;a          pP&#x2F;&#x2F;&#x2F;AC&#x2F;&#x2F;Y   |
+              A&#x2F;&#x2F;A            cyP&#x2F;&#x2F;&#x2F;&#x2F;C   | Have fun!
+              p&#x2F;&#x2F;&#x2F;Ac            sC&#x2F;&#x2F;&#x2F;a   |
+              P&#x2F;&#x2F;&#x2F;&#x2F;YCpc           A&#x2F;&#x2F;A   | We are in France, we say Skappee.
+       scccccp&#x2F;&#x2F;&#x2F;pSP&#x2F;&#x2F;&#x2F;p          p&#x2F;&#x2F;Y   | OK? Merci.
+      sY&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;y  caa           S&#x2F;&#x2F;P   |             -- Sebastien Chabal
+       cayCyayP&#x2F;&#x2F;Ya              pY&#x2F;Ya   |
+        sY&#x2F;PsY&#x2F;&#x2F;&#x2F;&#x2F;YCc          aC&#x2F;&#x2F;Yp
+         sc  sccaCY&#x2F;&#x2F;PCypaapyCP&#x2F;&#x2F;YSs
+                  spCPY&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;YPSps
+                       ccaacs
+                                       using IPython 7.2.0
+&gt;&gt;&gt;
+</code></pre>
+<p>I highly recommend install IPython in your scapy environment as it makes interactive mode much more enjoyable!</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">pip3 install ipython
+</code></pre>
+<hr />
+<h4 id="scapy-and-network-interfaces">Scapy and Network Interfaces</h4>
+<p>If you have multiple network interfaces on your computer, you might have to double check which interface Scapy will use by default. Run <code>scapy</code> from the terminal and run the <code>conf</code> command. See what interface Scapy will use by default by looking at the <code>iface</code> value:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">localhost:~ packetgeek$ scapy
+Welcome to Scapy (2.4.3)
+&gt;&gt;&gt; conf.iface
+&#x27;en0&#x27;
+</code></pre>
+<blockquote>
+<p>Scapy on my computer is defaulted to my en0 (Wifi) interface</p>
+</blockquote>
+<p>If the default interface is not the one you will use, you can change the value like this:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; conf.iface=&quot;en3&quot;
+</code></pre>
+<blockquote>
+<p>*Instead of en3, use the interface you want to be your default</p>
+</blockquote>
+<p>If you are constantly switching back and forth between interfaces, you can specify the interface to use when you run Scapy commands. Here are some Scapy functions and how you might use the <code>iface</code> argument. You'll learn more about these functions and other arguments soon.</p>
+<pre data-lang="py" class="language-py "><code class="language-py" data-lang="py">&gt;&gt;&gt; sniff(count=10, iface=&quot;en3&quot;)
+&gt;&gt;&gt; send(pkt, iface=&quot;en3&quot;)
+</code></pre>
+<h4 id="root-permissions">Root Permissions</h4>
+<p>For some of the Scapy functions dealing with sending traffic, you will need to be able to run Scapy as root. For example, on a Mac/Linux computer you can run interactive mode with root permissions by running <code>sudo scapy</code> from the CLI. Also, you can run the Python scripts with Scapy send functions as sudo like this:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">$ sudo python3 script.py
+</code></pre>
+<p>If you ever receive a Python error about not having the correct permissions or something not be allowed, try running Scapy with root permissions.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

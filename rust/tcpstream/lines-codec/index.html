@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Building a LinesCodec</h2>
+  <h4 class="subtitle inline">for Rust&#x27;s TcpStream</h4>
+  <div class="post-details">
+    Jun - 2020
+    <em>(~5 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>In the <a href="../reading-and-writing">previous post</a> we learned how to read &amp; write bytes with <code>TcpStream</code>, but the calling code had to be aware of that and do the serialization/deserialization.  In this demo, we'll continue using <code>BufRead</code> and <code>BufReader</code> to build:</p>
+<ul>
+<li>A <code>LinesCodec</code> that abstracts away <code>String</code> serialization/deserialization &amp; TcpStream I/O</li>
+<li>A client that uses the <code>LinesCodec</code> to send and print returned <code>String</code>s</li>
+<li>A server that also uses the <code>LinesCodec</code> and reverses <code>String</code>s before echoing them back</li>
+</ul>
+<span id="continue-reading"></span><h2 id="linescodec">LinesCodec</h2>
+<p>Our goals for this LinesCodec implementation are to abstract away:</p>
+<ul>
+<li><code>TcpStream</code> reading &amp; writing
+<ul>
+<li>We know enough about this now to know that the client &amp; server shouldn't worry about the correct incantation to send &amp; receive data</li>
+<li>Even copy/pasting the code around is bound to cause an issue (like a forgotten <code>stream.flush()</code>)</li>
+</ul>
+</li>
+<li><code>String</code> serialization &amp; deserialization
+<ul>
+<li>The client/server code shouldn't care how the data is represented on the wire, our codec will take care of that!</li>
+</ul>
+</li>
+</ul>
+<h3 id="a-type-to-the-rescue">A Type to the rescue!</h3>
+<p>Starting off with the I/O management abstraction, let's define a new type to own and interact with <code>TcpStream</code>. From the previous post, we know we'll want to use the <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html">BufReader</a> and its <code>read_line()</code> method for reading data.</p>
+<p>For writing data, we have three options:</p>
+<ul>
+<li>Use TcpStream directly, identical to what we did in the previous post</li>
+<li>Use <a href="https://doc.rust-lang.org/std/io/struct.BufWriter.html">BufWriter</a> which is a good logical jump given our use of <code>BufReader</code></li>
+<li>Use <a href="https://doc.rust-lang.org/stable/std/io/struct.LineWriter.html">LineWriter</a> which sounds like an even closer match to what we want</li>
+</ul>
+<p>I'm choosing to use <code>LineWriter</code> because it seems like a better approach to what we're wanting to do, based of of its documentation:</p>
+<blockquote>
+<p>Wraps a writer and buffers output to it, flushing whenever a newline (0x0a, <code>\n</code>) is detected.</p>
+<p>The <code>BufWriter</code> struct wraps a writer and buffers its output. But it only does this batched write when it goes out of scope, or when the internal buffer is full. Sometimes, you'd prefer to write each line as it's completed, rather than the entire buffer at once. Enter LineWriter. It does exactly that.</p>
+</blockquote>
+<p>Great! Let's define our type and define <code>LinesCodec::new()</code> to build new instances:</p>
+<h4 id="lib-rs"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io::{self, BufRead, Write};
+use std::net::TcpStream;
+
+pub struct LinesCodec {
+    &#x2F;&#x2F; Our buffered reader &amp; writers
+    reader: io::BufReader&lt;TcpStream&gt;,
+    writer: io::LineWriter&lt;TcpStream&gt;,
+}
+
+impl LinesCodec {
+    &#x2F;&#x2F;&#x2F; Encapsulate a TcpStream with buffered reader&#x2F;writer functionality
+    pub fn new(stream: TcpStream) -&gt; io::Result&lt;Self&gt; {
+        &#x2F;&#x2F; Both BufReader and LineWriter need to own a stream
+        &#x2F;&#x2F; We can clone the stream to simulate splitting Tx &amp; Rx with `try_clone()`
+        let writer = io::LineWriter::new(stream.try_clone()?);
+        let reader = io::BufReader::new(stream);
+        Ok(Self { reader, writer })
+    }
+}
+</code></pre>
+<h4 id="reading-and-writing">Reading and Writing</h4>
+<p>With the <code>LinesCodec</code> struct and its buffered reader/writers, we can continue our implementation to borrow the reading and writing code from the previous post:</p>
+<h4 id="lib-rs-1"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">...
+impl LinesCodec {
+    &#x2F;&#x2F;&#x2F; Write the given message (appending a newline) to the TcpStream
+    pub fn send_message(&amp;mut self, message: &amp;str) -&gt; io::Result&lt;()&gt; {
+        self.writer.write(&amp;message.as_bytes())?;
+        &#x2F;&#x2F; This will also signal a `writer.flush()` for us; thanks LineWriter!
+        self.writer.write(&amp;[&#x27;\n&#x27; as u8])?;
+        Ok(())
+    }
+
+    &#x2F;&#x2F;&#x2F; Read a received message from the TcpStream
+    pub fn read_message(&amp;mut self) -&gt; io::Result&lt;String&gt; {
+        let mut line = String::new();
+        &#x2F;&#x2F; Use `BufRead::read_line()` to read a line from the TcpStream
+        self.reader.read_line(&amp;mut line)?;
+        line.pop(); &#x2F;&#x2F; Remove the trailing &quot;\n&quot;
+        Ok(line)
+    }
+}
+</code></pre>
+<h2 id="using-linescodec-in-the-client">Using LinesCodec in the client</h2>
+<p>With the <code>TcpStream</code> out of the way, let's refactor our client code from the previous post and see how easy this can be:</p>
+<h4 id="client-rs"><strong><code>client.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io;
+use std::new::TcpStream;
+
+use crate::LinesCodec;
+
+
+fn main() -&gt; io::Result&lt;()&gt; {
+    &#x2F;&#x2F; Establish a TCP connection with the farend
+    let mut stream = TcpStream::connect(&quot;127.0.0.1:4000&quot;)?;
+
+    &#x2F;&#x2F; Codec is our interface for reading&#x2F;writing messages.
+    &#x2F;&#x2F; No need to handle reading&#x2F;writing directly
+    let mut codec = LinesCodec::new(stream)?;
+
+    &#x2F;&#x2F; Serializing &amp; Sending is now just one line
+    codec.send_message(&quot;Hello&quot;)?;
+
+    &#x2F;&#x2F; And same with receiving the response!
+    println!(&quot;{}&quot;, codec.read_message()?);
+    Ok(())
+
+}
+</code></pre>
+<h2 id="using-linescodec-in-the-server">Using LinesCodec in the server</h2>
+<p>And now we have some very similar work to update our server to use <code>LinesCodec</code>. We'll define a <code>handle_connection</code> function that:</p>
+<ul>
+<li>Takes ownership of a <code>TcpStream</code> and wraps it in <code>LinesCodec</code></li>
+<li>Receives a message (<code>String</code>) from the client and reverses it</li>
+<li>Sends the message back to the client, again using <code>LinesCodec</code></li>
+</ul>
+<h4 id="server-rs"><strong><code>server.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io;
+use std::net::TcpStream;
+
+use crate:LinesCodec;
+
+&#x2F;&#x2F;&#x2F; Given a TcpStream:
+&#x2F;&#x2F;&#x2F; - Deserialize the message
+&#x2F;&#x2F;&#x2F; - Serialize and write the echo message to the stream
+fn handle_connection(stream: TcpStream) -&gt; io::Result&lt;()&gt; {
+    let mut codec = LinesCodec::new(stream)?;
+
+    &#x2F;&#x2F; Read &amp; reverse the received message
+    let message: String = codec
+        .read_message()
+        &#x2F;&#x2F; Reverse message
+        .map(|m| m.chars().rev().collect())?;
+
+    &#x2F;&#x2F; And use the codec to return it
+    codec.send_message(&amp;message)?;
+    Ok(())
+}
+</code></pre>
+<p>Using the codec makes the business logic code much clearer and there are fewer opportunities to mis-manage newlines or forget <code>flush()</code>. Check out the demo <a href="https://github.com/thepacketgeek/rust-tcpstream-demo/blob/master/lines/src/bin/client.rs">client</a> and <a href="https://github.com/thepacketgeek/rust-tcpstream-demo/blob/master/lines/src/bin/server.rs">server</a> code for a full runnable example.</p>
+<p>In the <a href="../create-a-protocol">next post</a> we dive even deeper to build a custom protocol with our own serialization/deserialization!</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

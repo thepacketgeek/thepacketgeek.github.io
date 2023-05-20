@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Scapy p.09</h2>
+  <h4 class="subtitle inline">Scapy and DNS</h4>
+  <div class="post-details">
+    May - 2019
+    <em>(~5 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>We've been able to work with Ethernet, ARP, IP, ICMP, and TCP pretty easily so far thanks to Scapy's built in protocol support. Next on our list of protocols to work with are UDP and DNS.</p>
+<h4 id="dns-request-and-response">DNS Request and Response</h4>
+<p>Using the <code>sr1()</code> function, we can craft a DNS request and capture the returned DNS response. <span id="continue-reading"></span>Since DNS runs over IP and UDP, we will need to use those in our packet:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+from scapy.all import DNS, DNSQR, IP, sr1, UDP
+
+dns_req = IP(dst=&#x27;8.8.8.8&#x27;)&#x2F;
+    UDP(dport=53)&#x2F;
+    DNS(rd=1, qd=DNSQR(qname=&#x27;www.thepacketgeek.com&#x27;))
+answer = sr1(dns_req, verbose=0)
+
+print(answer[DNS].summary())
+</code></pre>
+<p>Console Output:</p>
+<pre><code>Begin emission:
+..Finished to send 1 packets.
+..*
+Received 5 packets, got 1 answers, remaining 0 packets
+DNS Ans &quot;198.71.55.197&quot;
+</code></pre>
+<blockquote>
+<p>The DNS layer summary is printed showing the IP address of the hostname requested</p>
+</blockquote>
+<p>Without too much work we were able to write a short script to query some DNS name to IP address resolutions. Just think about what this means; we could read in a list of hostnames to resolve and send the IP addresses off to some function to do some more tests such as ping or TCP scans.</p>
+<h4 id="dns-forwarding-and-spoofing">DNS Forwarding and Spoofing</h4>
+<p>Ok, so sending a DNS query was fun, but let's build on that. How about hand building a DNS service that can handle DNS forwarding, but with the added functionality of handing out a custom IP address for a certain domain name. This is similar to how the DNS server part of the <a href="https://github.com/iBaa/PlexConnect" target="_blank" rel="noopener noreferrer">PlexConnect</a> utility works to hijack some communications from the AppleTV. This is going to jump up in complexity quite a bit from our previous example but the process is still pretty simple:</p>
+<ul>
+<li>Sniff with Scapy to listen for incoming DNS requests 
+<ul>
+<li>Filtering for UDP port 53 destined to the server's IP address</li>
+</ul>
+</li>
+<li>If the request is for our special domain name, send a spoofed DNS response 
+<ul>
+<li>Swap source/dest UDP ports and IP addresses</li>
+<li>Match DNS request ID</li>
+</ul>
+</li>
+<li>Otherwise, make a new DNS request and send the response back to the requesting host 
+<ul>
+<li>Make a new request, and save the DNS Response</li>
+<li>Send a response back to the client matching the same fields as above</li>
+</ul>
+</li>
+</ul>
+<p>We're doing a lot of field replacements, especially on the handcrafted spoof response. All I did to figure out all those fields is capture a DNS response from a request I made and used the <code>show()</code> function to figure out what fields are expected in the DNS response.</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+from scapy.all import DNS, DNSQR, DNSRR, IP, send, sniff, sr1, UDP
+
+IFACE = &quot;lo0&quot;   # Or your default interface
+DNS_SERVER_IP = &quot;127.0.0.1&quot;  # Your local IP
+
+BPF_FILTER = f&quot;udp port 53 and ip dst {DNS_SERVER_IP}&quot;
+
+
+def dns_responder(local_ip: str):
+
+    def forward_dns(orig_pkt: IP):
+        print(f&quot;Forwarding: {orig_pkt[DNSQR].qname}&quot;)
+        response = sr1(
+            IP(dst=&#x27;8.8.8.8&#x27;)&#x2F;
+                UDP(sport=orig_pkt[UDP].sport)&#x2F;
+                DNS(rd=1, id=orig_pkt[DNS].id, qd=DNSQR(qname=orig_pkt[DNSQR].qname)),
+            verbose=0,
+        )
+        resp_pkt = IP(dst=orig_pkt[IP].src, src=DNS_SERVER_IP)&#x2F;UDP(dport=orig_pkt[UDP].sport)&#x2F;DNS()
+        resp_pkt[DNS] = response[DNS]
+        send(resp_pkt, verbose=0)
+        return f&quot;Responding to {orig_pkt[IP].src}&quot;
+
+    def get_response(pkt: IP):
+        if (
+            DNS in pkt and
+            pkt[DNS].opcode == 0 and
+            pkt[DNS].ancount == 0
+        ):
+            if &quot;trailers.apple.com&quot; in str(pkt[&quot;DNS Question Record&quot;].qname):
+                spf_resp = IP(dst=pkt[IP].src)&#x2F;UDP(dport=pkt[UDP].sport, sport=53)&#x2F;DNS(id=pkt[DNS].id,ancount=1,an=DNSRR(rrname=pkt[DNSQR].qname, rdata=local_ip)&#x2F;DNSRR(rrname=&quot;trailers.apple.com&quot;,rdata=local_ip))
+                send(spf_resp, verbose=0, iface=IFACE)
+                return f&quot;Spoofed DNS Response Sent: {pkt[IP].src}&quot;
+
+            else:
+                # make DNS query, capturing the answer and send the answer
+                return forward_dns(pkt)
+
+    return get_response
+
+sniff(filter=BPF_FILTER, prn=dns_responder(DNS_SERVER_IP), iface=IFACE)
+</code></pre>
+<p>With this running on a host, I used the DNS <code>dig</code> utility to make some DNS requests:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">localhost:~ packetgeek$ dig @172.16.20.40 www.thepacketgeek.com
+
+; &lt;&lt;&gt;&gt; DiG 9.8.5-P1 &lt;&lt;&gt;&gt; @172.16.20.40 www.thepacketgeek.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 29980
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;www.thepacketgeek.com.   IN  A
+
+;; ANSWER SECTION:
+www.thepacketgeek.com.  20411 IN  A 198.71.55.197
+
+;; Query time: 90 msec
+;; SERVER: 172.16.20.40#53(172.16.20.40)
+;; WHEN: Thu Oct 10 19:39:38 PDT 2013
+;; MSG SIZE  rcvd: 76
+
+localhost:~ packetgeek$ dig @172.16.20.40 trailers.apple.com
+
+; &lt;&lt;&gt;&gt; DiG 9.8.5-P1 &lt;&lt;&gt;&gt; @172.16.20.40 trailers.apple.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 12688
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+;; WARNING: Messages has 34 extra bytes at end
+
+;; QUESTION SECTION:
+;trailers.apple.com.    IN  A
+
+;; ANSWER SECTION:
+trailers.apple.com. 20  IN  A 172.16.20.40
+
+;; Query time: 561 msec
+;; SERVER: 172.16.20.40#53(172.16.20.40)
+;; WHEN: Thu Oct 10 19:39:45 PDT 2013
+;; MSG SIZE  rcvd: 104&lt;
+</code></pre>
+<p>This example uses a lot of Python, so if you're not familiar with that take some time to look at the code and look up anything you don't know in the <a href="https://docs.python.org/3.8/" target="_blank" rel="noopener noreferrer">Python Docs</a>.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

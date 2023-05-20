@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Reading and Writing Data</h2>
+  <h4 class="subtitle inline">with Rust&#x27;s TcpStream</h4>
+  <div class="post-details">
+    Jun - 2020
+    <em>(~7 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>For the start of our journey with <a href="https://doc.rust-lang.org/stable/std/net/struct.TcpStream.html">TcpStream</a> we'll take a look at what it takes to send and receive raw bytes.</p>
+<p>This demo is going to build up some concepts that result in a <a href="https://github.com/thepacketgeek/rust-tcpstream-demo/tree/master/raw">demo found here</a>. The working concept is that we want to have a client send some data (a <code>String</code>) to a server that will echo the message back to the client. In further demos, we'll progress this concept to do slightly more interesting things with the data on the server before sending back.</p>
+<span id="continue-reading"></span><h2 id="writing-data">Writing Data</h2>
+<p>Let's start with our client and figuring out how to send the message bytes (<code>String</code> characters) to the server. <code>TcpStream</code>'s implementation of the <a href="https://doc.rust-lang.org/stable/std/io/trait.Write.html">Write</a> trait gives us functionality to write data to the stream (allowing TCP to send bytes across the wire).</p>
+<h4 id="write">write()</h4>
+<p>The <a href="https://doc.rust-lang.org/stable/std/io/trait.Write.html#tymethod.write"><code>write()</code></a> method takes a slice of bytes (<code>&amp;[u8]</code>) and attempts to queue them in the <code>TcpStream</code>'s buffer (without sending on the wire yet) and returns the number of bytes successfully written as a <code>usize</code>. If more bytes are written than can be buffered, <code>write()</code> signals this with a <code>usize</code> less than the length of bytes sent (which you can see with the <code>bytes_written</code> variable in examples coming soon).</p>
+<p>After queuing the bytes in the TCP buffer, <code>flush()</code> signals to TCP that it should send the bytes. As the last bytes are sent, the <strong>PSH</strong> bit will be set to signal to the receiving TCP stack that this data is ready to send to the application.</p>
+<h4 id="client-rs"><strong><code>client.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io::{self, Write};
+use std::net::TcpStream;
+
+fn main() -&gt; io::Result&lt;()&gt; {
+    &#x2F;&#x2F; Establish a TCP connection with the farend
+    let mut stream = TcpStream::connect(&quot;127.0.0.1:4000&quot;)?;
+
+    &#x2F;&#x2F; Buffer the bytes
+    let _bytes_written = stream.write(b&quot;Hello&quot;)?;
+    &#x2F;&#x2F; Tell TCP to send the buffered data on the wire
+    stream.flush()?;
+
+    Ok(())
+}
+</code></pre>
+<p>To prevent missing data, the <code>bytes_written</code> should be validated and signaled if not all the data could be written, which could look like this:</p>
+<h4 id="client-rs-1"><strong><code>client.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">...
+    let data = b&quot;Hello&quot;;
+    let bytes_written = stream.write(data)?;
+
+    if bytes_written &lt; data.len() {
+        return Err(io::Error::new(
+            io::ErrorKind::Interrupted,
+            format!(&quot;Sent {}&#x2F;{} bytes&quot;, bytes_written, data.len()),
+        ));
+    }
+
+    stream.flush()?;
+...
+</code></pre>
+<h4 id="write-all">write_all()</h4>
+<p>Validating the bytes queued is a common enough pattern to warrant a dedicated method to save us some work: <a href="https://doc.rust-lang.org/stable/std/io/trait.Write.html#method.write_all"><code>write_all()</code></a>. A simplified version of the example above becomes:</p>
+<h4 id="client-rs-2"><strong><code>client.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io::{self, Write};
+use std::net::TcpStream;
+
+fn main() -&gt; io::Result&lt;()&gt; {
+    let mut stream = TcpStream::connect(&quot;127.0.0.1:4000&quot;)?;
+    
+    &#x2F;&#x2F; write_all() will return Err(io::Error(io::ErrorKind::Interrupted))
+    &#x2F;&#x2F; if it is unable to queue all bytes
+    stream.write_all(b&quot;Hello&quot;)?;
+    stream.flush()
+}
+</code></pre>
+<p>This is what the the TcpStream looks like in Wireshark. Notice the <strong>PSH</strong> bit set on the packet 5 (carrying the data segment &quot;Hello&quot;):</p>
+<p><img src="https://thepacketgeek.com/rust/tcpstream/reading-and-writing/tcpstream_raw.png" alt="tcp in wireshark" /></p>
+<h2 id="reading-data">Reading Data</h2>
+<p>Counterpart to the <code>Write</code> trait's <code>write()</code>/<code>write_all()</code>, the <a href="https://doc.rust-lang.org/stable/std/io/trait.Read.html">Read</a> trait gives us <code>read()</code> for the ability to read received bytes from a <code>TcpStream</code>. It can be a bit more nuanced than <code>Write</code> and I'll show you why you'll tend to want to use the <a href="https://doc.rust-lang.org/stable/std/io/trait.BufRead.html">BufRead</a> trait with <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html">BufReader</a>.</p>
+<h4 id="read">read()</h4>
+<p>The <code>read()</code> method takes a mutable reference (<code>&amp;mut</code>) to a buffer (like a <code>Vec&lt;u8&gt;</code> or <code>[u8]</code>) and will attempt to fill this buffer with received bytes. The nuanced side of <code>read()</code> is knowing <strong>how many</strong> bytes to read, as reading to a growable array will cause an error since it can't be filled:</p>
+<pre><code>Error(&quot;failed to fill whole buffer&quot;)
+</code></pre>
+<p>So, knowing how many bytes to read would be easy if we knew that the messages received are always a fixed size:</p>
+<h4 id="server-rs"><strong><code>server.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io::{self, Read};
+use std::net::TcpStream;
+
+const MESSAGE_SIZE: usize = 5;
+
+fn main() -&gt; io::Result&lt;()&gt; {
+    let mut stream = TcpStream::connect(&quot;127.0.0.1:4000&quot;)?;
+
+    &#x2F;&#x2F; Array with a fixed size
+    let mut rx_bytes = [0u8; MESSAGE_SIZE];
+    &#x2F;&#x2F; Read from the current data in the TcpStream
+    stream.read(&amp;mut rx_bytes)?;
+
+    let received = std::str::from_utf8(&amp;rx_bytes).expect(&quot;valid utf8&quot;);
+    eprintln!(&quot;{}&quot;, received);
+    Ok(())
+}
+</code></pre>
+<p>Yet we live in a world with variable length strings and the approach above doesn't quite work out. However <code>read()</code> returns a <code>usize</code> of bytes_read, so we can get fancy reading to our statically sized array repeatedly until we have no more bytes to read:</p>
+<h4 id="server-rs-1"><strong><code>server.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">...
+    let mut stream = TcpStream::connect(&quot;127.0.0.1:4000&quot;)?;
+
+    &#x2F;&#x2F; Store all the bytes for our received String
+    let mut received: Vec&lt;u8&gt; = vec![];
+
+    &#x2F;&#x2F; Array with a fixed size
+    let mut rx_bytes = [0u8; MESSAGE_SIZE];
+    loop {
+        &#x2F;&#x2F; Read from the current data in the TcpStream
+        let bytes_read = stream.read(&amp;mut rx_bytes)?;
+
+        &#x2F;&#x2F; However many bytes we read, extend the `received` string bytes
+        received.extend_from_slice(&amp;rx_bytes[..bytes_read]);
+
+        &#x2F;&#x2F; If we didn&#x27;t fill the array
+        &#x2F;&#x2F; stop reading because there&#x27;s no more data (we hope!)
+        if bytes_read &lt; MESSAGE_SIZE {
+            break;
+        }
+    }
+
+    String::from_utf8(received)
+        .map(|msg| println!(&quot;{}&quot;, msg))
+        .map_err(|_| {
+            io::Error::new(
+                io::ErrorKind::InvalidData,
+                &quot;Couldn&#x27;t parse received string as utf8&quot;,
+            )
+        })
+...
+</code></pre>
+<p>Alas, there are some issues with this code. Each time <code>read()</code> is called can be a syscall to fetch bytes from the TCP stack and we're also stuck with the decision of how to size the fixed length array:</p>
+<ul>
+<li>A large array (E.g. &gt; 512 bytes) can waste stack space for bytes we may never read</li>
+<li>A small array results in more calls to <code>read()</code>, which may be expensive</li>
+</ul>
+<p>Fortunately though there's a solution for us...</p>
+<h3 id="bufread-and-bufreader">BufRead and BufReader</h3>
+<p>The <a href="https://doc.rust-lang.org/stable/std/io/trait.BufRead.html">BufRead</a> trait and <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html">BufReader</a> give us some really convenient read capabilities:</p>
+<ul>
+<li><code>fill_buf()</code> and <code>consume()</code> - a tag team of methods to read &amp; verify data</li>
+<li><code>read_line()</code> (or the <code>Iterator</code> version: <code>lines()</code>) allow us to read by line (String ending with a newline)
+<ul>
+<li><em>You can see this one in action to create a <code>LinesCodec</code> in the <a href="../lines-codec">next article</a></em></li>
+</ul>
+</li>
+</ul>
+<h4 id="fill-buff-and-consume">fill_buff() and consume()</h4>
+<p>Instead of repeatedly trying to fill an array with bytes, <code>BufRead</code> offers a <code>fill_buf()</code> method which returns a slice to all the bytes in the buffer, super convenient!</p>
+<p><code>fill_buf()</code> does not free/drop the bytes read; a subsequent call to <code>consume()</code> is necessary to tell the <code>BufReader</code> that the bytes were successfully read and it can move its internal cursor. This combo is helpful in the case where TCP may not have received all the data yet, and your code needs to check for a delimiter (<em>cough</em> like a newline <em>cough</em>) or certain number of bytes:</p>
+<h4 id="server-rs-2"><strong><code>server.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io::{self, BufRead};
+use std::net::TcpStream;
+
+fn main() -&gt; io::Result&lt;()&gt; {
+    let mut stream = TcpStream::connect(&quot;127.0.0.1:4000&quot;)?;
+    
+    &#x2F;&#x2F; Wrap the stream in a BufReader, so we can use the BufRead methods
+    let mut reader = io::BufReader::new(&amp;mut stream);
+
+    &#x2F;&#x2F; Read current current data in the TcpStream
+    let received: Vec&lt;u8&gt; = reader.fill_buf()?.to_vec();
+
+    &#x2F;&#x2F; Do some processing or validation to make sure the whole line is present?
+    &#x2F;&#x2F; ...
+
+    &#x2F;&#x2F; Mark the bytes read as consumed so the buffer will not return them in a subsequent read
+    reader.consume(received.len());
+
+    String::from_utf8(received)
+        .map(|msg| println!(&quot;{}&quot;, msg))
+        .map_err(|_| {
+            io::Error::new(
+                io::ErrorKind::InvalidData,
+                &quot;Couldn&#x27;t parse received string as utf8&quot;,
+            )
+        })
+}
+</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>We've covered how to read and write bytes with <code>TcpStream</code> but it could be easier for us. The <a href="../lines-codec">next article</a> will expand on the usage of <code>BufRead</code> to build a Lines Codec to abstract away the read/write detail in the client and server code.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

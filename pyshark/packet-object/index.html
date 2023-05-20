@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Using the Packet Object</h2>
+  <h4 class="subtitle inline"></h4>
+  <div class="post-details">
+    Nov - 2014
+    <em>(~5 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>So far in this series we've done a lot with capturing packets and working with the capture object, but finally we're going to get to the fun part and finally start playing with some PACKETS!!!!</p>
+<p>When we have captured packets in a capture object, they are stored as a list of packet objects.  These packet objects will have methods and attributes that give us access to the header and payload info of each packet.  As stated in a previous post we have control for how much info about the packets we store in each packet option through the <code>only_summaries</code> argument in the LiveCapture and ReadCapture modules.</p>
+<span id="continue-reading"></span><h3 id="packet-summary-attributes">Packet Summary Attributes</h3>
+<p>Setting <code>only_summaries</code> to True during capture will give us a fixed set of attributes, regardless of the protocols present in the packet. The most useful attributes available are:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; cap = pyshark.FileCapture(&#x27;test.pcap&#x27;, only_summaries=True)
+&gt;&gt;&gt;
+&gt;&gt;&gt; dir(cap[0])
+[&#x27;delta&#x27;, &#x27;destination&#x27;, &#x27;info&#x27;, &#x27;ip id&#x27;, &#x27;length&#x27;, &#x27;no&#x27;, &#x27;protocol&#x27;, &#x27;source&#x27;, &#x27;stream&#x27;, &#x27;summary_line&#x27;, &#x27;time&#x27;, &#x27;window&#x27;]
+</code></pre>
+<ul>
+<li><strong>delta</strong>: Delta (difference) time between the current packet and the previous captured packet</li>
+<li><strong>destination</strong>: The Layer 3 (IP, IPv6) destination address</li>
+<li><strong>info</strong>: A brief application layer summary (e.g. ‘HTTP GET /resource_folder/page.html')</li>
+<li><strong>ip id</strong>: IP Identification field used for uniquely identifying packets from a host</li>
+<li><strong>length</strong>: Length of the packet in bytes</li>
+<li><strong>no</strong>: Index number of the packet in the list</li>
+<li><strong>protocol</strong>: The highest layer protocol recognized in the packet</li>
+<li><strong>source</strong>:  Layer 3 (IP, IPV6) source address</li>
+<li><strong>stream</strong>: Index of the TCP stream this packet is a part of (TCP packets only)</li>
+<li><strong>summary_line</strong>: All the summary attributes in one tab-delimited string</li>
+<li><strong>time</strong>: Absolute time between the current packet and the first packet</li>
+<li><strong>window</strong>: The TCP window size (TCP packets only)</li>
+</ul>
+<p>There's a lot that you can do with just these items; printing out packet summaries is just the beginning! Great visual charts can be made to illustrate IP conversations, bandwidth usage, protocol breakdowns, and application performance measurements (round-trip-times in the same TCP stream). Wow, that's a lot of useful analysis.. but wait, there's more?!?</p>
+<h3 id="full-packet-attributes">Full Packet Attributes</h3>
+<p>If you're wanting to get more than just the summary info out of the capture packets then you're in the right place. Using the dissectors available in Wireshark and tshark, PyShark is able to break out all packet details by layer. For example, let's dig into this DNS packet first by looking at the attributes of the parent packet object:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; cap = pyshark.LiveCapture(interface=&#x27;en0&#x27;, bpf_filter=&#x27;udp port 53&#x27;)
+&gt;&gt;&gt; cap.sniff(packet_count=50)
+
+&gt;&gt;&gt; dns_1 = cap[0]
+&gt;&gt;&gt; dns_2 = cap[1]
+&gt;&gt;&gt; dns_1.      #(tab auto-complete)
+dns_1.captured_length     dns_1.highest_layer       dns_1.length              dns_1.transport_layer
+dns_1.dns                 dns_1.interface_captured  dns_1.pretty_print        dns_1.udp
+dns_1.eth                 dns_1.ip                  dns_1.sniff_time
+dns_1.frame_info          dns_1.layers              dns_1.sniff_timestamp
+</code></pre>
+<p>There are several generic packet info attributes for length, frame_info, and time, and a <code>pretty_print()</code> method for displaying the packet in a very readable format (similar to Wireshark's packet detail view). If you look close though you'll see attributes that represent absolute layers (eth and ip) as well as attributes that change based on the protocols present in each packet (transport_layer, highest_layer, dns).  If you're looking for  specific traffic, these attributes make it very easy to locate the packets containing interesting information, like this script that will print out all DNS query and response names:</p>
+<pre data-lang="py" class="language-py "><code class="language-py" data-lang="py">import pyshark
+
+cap = pyshark.LiveCapture(interface=&#x27;en0&#x27;, bpf_filter=&#x27;udp port 53&#x27;)
+
+cap.sniff(packet_count=10)
+
+def print_dns_info(pkt):
+    if pkt.dns.qry_name:
+        print &#x27;DNS Request from %s: %s&#x27; % (pkt.ip.src, pkt.dns.qry_name)
+    elif pkt.dns.resp_name:
+        print &#x27;DNS Response from %s: %s&#x27; % (pkt.ip.src, pkt.dns.resp_name)
+
+cap.apply_on_packets(print_dns_info, timeout=100)
+</code></pre>
+<p>Which gives the output:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">DNS Request from 10.10.10.40: apple.com
+DNS Request from 10.10.10.1: apple.com
+DNS Request from 10.10.10.40: ipv6.icanhazip.com
+DNS Request from 10.10.10.1: ipv6.icanhazip.com
+DNS Request from 10.10.10.40: ipv4.icanhazip.com
+DNS Request from 10.10.10.1: ipv4.icanhazip.com
+</code></pre>
+<h3 id="dynamic-layer-references"> Dynamic Layer References</h3>
+<p>Using the dynamic layer attributes I mentioned earlier gives us some flexibility when analyzing packets. If you try to access the <code>pkt.dns.qry_resp</code> attribute of every packet, you will receive an <code>AttributeError</code> if the packet doesn't have DNS info. This also applies to transport layer, since each packet will have either a TCP or UDP layer. We can print out the source and destination addresses and ports (for IP conversation mapping) and use a <code>try/except</code> loop to protect against the <code>AttributeError</code> if the packet is neither TCP nor UDP:</p>
+<pre data-lang="py" class="language-py "><code class="language-py" data-lang="py">import pyshark
+
+cap = pyshark.FileCapture(&#x27;test.pcap&#x27;)
+
+def print_conversation_header(pkt):
+    try:
+        protocol =  pkt.transport_layer
+        src_addr = pkt.ip.src
+        src_port = pkt[pkt.transport_layer].srcport
+        dst_addr = pkt.ip.dst
+        dst_port = pkt[pkt.transport_layer].dstport
+        print &#x27;%s  %s:%s --&gt; %s:%s&#x27; % (protocol, src_addr, src_port, dst_addr, dst_port)
+    except AttributeError as e:
+        #ignore packets that aren&#x27;t TCP&#x2F;UDP or IPv4
+        pass
+
+cap.apply_on_packets(print_conversation_header, timeout=100)
+</code></pre>
+<p>Which gives the output:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">UDP  10.10.10.12:51554 --&gt; 239.255.255.250:1900
+UDP  10.10.10.12:51554 --&gt; 239.255.255.250:1900
+UDP  10.10.10.15:58803 --&gt; 8.8.8.8:53
+UDP  8.8.8.8:53 --&gt; 10.10.10.15:58803
+TCP  10.10.10.15:58632 --&gt; 192.168.20.197:80
+TCP  192.168.20.197:80 --&gt; 10.10.10.15:58632
+TCP  10.10.10.15:58632 --&gt; 192.168.20.197:80
+</code></pre>
+<h3 id="endless-possibilities"> Endless Possibilities</h3>
+<p>As you can see from just these few examples is that PyShark gives access to all packet details with ease. Conditional statements could be used to create dynamic logic for categorizing and working with many different protocols, or you can search for certain types of traffic that have a specific attribute (make sure to protect for <code>AttributeErrors</code>).</p>
+<p>I hope you've enjoyed these last few posts. I'd love to hear about projects that you come up with using PyShark, so feel free to share! If you'd like to see one example of PyShark out in the wild, check out my project <a title="GitHub: Cloud-Pcap" href="https://github.com/thepacketgeek/cloud-pcap" target="_blank">Cloud-Pcap</a>.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

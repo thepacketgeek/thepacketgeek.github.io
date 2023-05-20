@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Scapy p.07</h2>
+  <h4 class="subtitle inline">Monitoring ARP</h4>
+  <div class="post-details">
+    May - 2019
+    <em>(~4 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <h4 id="using-scapy-in-a-python-script">Using Scapy in a Python Script</h4>
+<p>So far we've been working with Scapy in interactive mode. It's very powerful but there are times when it would be easier to work with a Python script instead. In order to use Scapy, we have to import the Scapy module like this:</p>
+<pre data-lang="py" class="language-py "><code class="language-py" data-lang="py">from scapy.all import *
+</code></pre>
+<p>This will import all Scapy functions, but if you know that you will only need a few of the functions, you can import them individually as well like this:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">from scapy.all import sr1,IP,ICMP
+</code></pre>
+<span id="continue-reading"></span>
+<p>The biggest different with running Scapy in a script is that the output may not be as verbose as interactive mode. If you're not getting all the output you need, make sure to try using the </p>
+<p><code>print</code> command. Here's an example with our previous ping example:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+from scapy.all import ICMP, sr1
+
+print(sr1(IP(dst=&quot;4.2.2.1&quot;)&#x2F;ICMP()).summary())
+</code></pre>
+<p>Console Output:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">Begin emission:
+..Finished to send 1 packets.
+.*
+Received 4 packets, got 1 answers, remaining 0 packets
+IP &#x2F; ICMP 4.2.2.1 &gt; 172.16.20.40 echo-reply 0 &#x2F; Padding
+</code></pre>
+<h4 id="using-scapy-to-monitor-arp-traffic">Using Scapy to monitor ARP traffic</h4>
+<p>Let's pretend that there is concern about someone potentially trying to use an ARP poisoning attack on our network. Using Scapy, we want to write a script that will listen to packets and print out all ARP requests and responses. We can do that very simply using the Scapy <code>sniff()</code> function and the <code>filter</code> argument like this:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+from scapy.all import sniff
+
+pkts = sniff(filter=&quot;arp&quot;, count=10)
+print(pkts.summary())
+</code></pre>
+<p>Console Output:</p>
+<pre><code>Ether &#x2F; ARP who has 172.16.20.10 says 172.16.20.40 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.92 says 172.16.20.2 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.2 says 172.16.20.92 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.203 says 172.16.20.200 &#x2F; Padding
+Ether &#x2F; ARP is at 00:11:22:29:a6:85 says 172.16.20.203
+Ether &#x2F; ARP who has 172.16.20.2 says 172.16.20.103 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.103 says 172.16.20.2 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.150 says 172.16.20.15 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.2 says 172.16.20.19 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.19 says 172.16.20.2 &#x2F; Padding
+</code></pre>
+<p>This is a very simple script that gives us some good visibility to what's happening with ARP on our network. But what if we wanted to customize the output a little bit? Maybe we can get it in a format that would be easy to write to a file or send to some type of external monitoring server.</p>
+<h4 id="using-the-prn-argument-to-customize-sniff-output">Using the prn Argument to Customize sniff() Output</h4>
+<p>I'm going to introduce the <code>prn</code> argument and show you how to do change what Scapy prints out for each packet:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+from scapy.all import ARP, sniff
+
+def arp_display(pkt):
+    if pkt[ARP].op == 1:  # who-has (request)
+        return f&quot;Request: {pkt[ARP].psrc} is asking about {pkt[ARP].pdst}&quot;
+    if pkt[ARP].op == 2:  # is-at (response)
+        return f&quot;*Response: {pkt[ARP].hwsrc} has address {pkt[ARP].psrc}&quot;
+
+sniff(prn=arp_display, filter=&quot;arp&quot;, store=0, count=10)
+</code></pre>
+<p>Console Output:</p>
+<pre><code>Request: 172.16.20.168 is asking about 172.16.20.85
+Request: 172.16.20.168 is asking about 172.16.20.229
+Request: 172.16.20.2 is asking about 172.16.20.203
+*Response: aa:bb:cc:29:a6:85 has address 172.16.20.203
+Request: 172.16.20.200 is asking about 172.16.20.82
+Request: 172.16.20.51 is asking about 172.16.20.254
+Request: 172.16.20.15 is asking about 172.16.20.58
+Request: 172.16.20.15 is asking about 172.16.20.58
+Request: 172.16.20.200 is asking about 172.16.20.44
+*Response: dd:ee:ff:a2:02:bf has address 172.16.20.44
+</code></pre>
+<p>Basically, what the <code>prn</code> argument lets us do is replace the default Scapy printout of the packet summary and run our own function to determine how Scapy prints out. That's really cool! It works by passing the packet object to the defined function, in this case <code>arp_display()</code>, each time a packet is sniffed that matches the specified filter.</p>
+<p>We can do a lot more with that <code>prn</code> argument and passing more than just the packet object to the custom defined function using nested functions. That's outside the scope of this guide but feel free to read about it here: <a href="https://thepacketgeek.com/scapy/sniffing-custom-actions/part-2/">Scapy Sniffing with Custom Actions</a></p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

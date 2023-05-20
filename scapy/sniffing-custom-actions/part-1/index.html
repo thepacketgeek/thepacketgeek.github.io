@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Scapy Sniffing with Custom Actions</h2>
+  <h4 class="subtitle inline">Part 1</h4>
+  <div class="post-details">
+    May - 2019
+    <em>(~4 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>Scapy has a <code>sniff</code> function that is great for getting packets off the wire, but there's much more to show off how great this function really is! <code>sniff</code> has  an argument <code>prn</code> that allows you to pass a function that executes with each packet sniffed. The intended purpose of this function is to control how the packet prints out in the console allowing you to replace the default packet printing display with a format of your choice.</p>
+<p>The <code>prn</code> argument is defined as:</p>
+<blockquote>
+<p>prn: function to apply to each packet. If something is returned, it is displayed. For instance you can use prn = lambda x: x.summary().</p>
+</blockquote>
+<span id="continue-reading"></span>
+<p>In order for your program/script to format and return the packet info as you wish, the <code>sniff</code> function passes the packet object as the one and only argument into the function you specify in the sniff's <code>prn</code> argument. This gives us the option to do some fun stuff (not just formatting) with each packet sniffed 🙂</p>
+<p>For example, we can now perform custom actions with each sniffed packet. This can be anything from incrementing a packet count somewhere in the program, to doing some advanced packet parsing or manipulation, or even shipping that packet off into some sort of storage (.pcap appending or API POSTing anyone??).</p>
+<h2 id="here-s-a-simple-example-for-keeping-track-of-the-number-of-packets-sniffed">Here's a simple example for keeping track of the number of packets sniffed</h2>
+<p>This script keeps a Counter with an A/Z pair of IP addresses, displays the total packet count with each packet <code>print()</code>, and then prints out the conversation counts at the end.</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+from collections import Counter
+from scapy.all import sniff
+
+## Create a Packet Counter
+packet_counts = Counter()
+
+## Define our Custom Action function
+def custom_action(packet):
+    # Create tuple of Src&#x2F;Dst in sorted order
+    key = tuple(sorted([packet[0][1].src, packet[0][1].dst]))
+    packet_counts.update([key])
+    return f&quot;Packet #{sum(packet_counts.values())}: {packet[0][1].src} ==&gt; {packet[0][1].dst}&quot;
+
+## Setup sniff, filtering for IP traffic
+sniff(filter=&quot;ip&quot;, prn=custom_action, count=10)
+
+## Print out packet count per A &lt;--&gt; Z address pair
+print(&quot;\n&quot;.join(f&quot;{f&#x27;{key[0]} &lt;--&gt; {key[1]}&#x27;}: {count}&quot; for key, count in packet_counts.items()))
+</code></pre>
+<p>Console Output:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">Packet #1: 172.16.200.88 ==&gt; 255.255.255.255
+Packet #2: 172.16.200.88 ==&gt; 172.16.98.255
+Packet #3: 172.16.200.88 ==&gt; 255.255.255.255
+Packet #4: 172.16.200.88 ==&gt; 255.255.255.255
+Packet #5: 172.16.72.72 ==&gt; 172.16.98.203
+Packet #6: 172.16.98.203 ==&gt; 172.16.72.72
+Packet #7: 172.16.98.203 ==&gt; 172.16.72.72
+Packet #8: 172.16.72.72 ==&gt; 172.16.98.203
+Packet #9: 172.16.72.72 ==&gt; 172.16.98.203
+Packet #10: 172.16.98.203 ==&gt; 172.16.72.72
+172.16.200.88 &lt;--&gt; 255.255.255.255: 3
+172.16.200.88 &lt;--&gt; 172.16.98.255: 1
+172.16.72.72 &lt;--&gt; 172.16.98.203: 6
+</code></pre>
+<h2 id="custom-formatted-arp-monitor">Custom Formatted ARP Monitor</h2>
+<p>Here I use the same <code>prn</code> function and some conditional statements to very clearly tell me what ARP traffic my computer is seeing.</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#! &#x2F;usr&#x2F;bin&#x2F;env python3
+
+from collections import Counter
+from scapy.all import ARP, sniff
+
+def arp_display(pkt):
+    if pkt[ARP].op == 1: #who-has (request)
+        return f&quot;Request: {pkt[ARP].psrc} is asking about {pkt[ARP].pdst}&quot;
+    if pkt[ARP].op == 2: #is-at (response)
+        return f&quot;*Response: {pkt[ARP].hwsrc} has address {pkt[ARP].psrc}&quot;
+
+sniff(prn=arp_display, filter=&quot;arp&quot;, store=0, count=10)
+</code></pre>
+<p>Console Output:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">Request: 172.16.20.168 is asking about 172.16.20.85
+Request: 172.16.20.168 is asking about 172.16.20.229
+Request: 172.16.20.2 is asking about 172.16.20.203
+*Response: aa:bb:cc:29:a6:85 has address 172.16.20.203
+Request: 172.16.20.200 is asking about 172.16.20.82
+Request: 172.16.20.51 is asking about 172.16.20.254
+Request: 172.16.20.15 is asking about 172.16.20.58
+Request: 172.16.20.15 is asking about 172.16.20.58
+Request: 172.16.20.200 is asking about 172.16.20.44
+*Response: dd:ee:ff:a2:02:bf has address 172.16.20.44
+</code></pre>
+<h3 id="an-important-thing-to-keep-in-mind-when-using-the-prn-argument">An important thing to keep in mind when using the <code>prn</code> argument</h3>
+<p>In the case of the example above, you are passing the <code>custom_action</code> function <strong>into</strong> the <code>sniff</code> function. If you used <code>sniff(prn=custom_action())</code> instead, you would be passing the function's returned value to the sniff function. This will generate the returned text before the function has a packet to parse and will not give you the results you want.</p>
+<p>If you want to pass parameters into the <code>custom_action</code> function for additional control or the ability to modularize out the <code>customAction</code> function, you will have to use a nested function. I cover how to do that in the next article.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

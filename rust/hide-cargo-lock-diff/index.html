@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Hide Cargo.lock in git Diff</h2>
+  <h4 class="subtitle inline"></h4>
+  <div class="post-details">
+    Jun - 2020
+    <em>(~3 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>Whenever you add or update dependencies in <code>Cargo.toml</code>, the diff output in <code>Cargo.lock</code> can be verbose and distracting when I'm looking at <code>git diff</code> output:</p>
+<pre data-lang="diff" class="language-diff "><code class="language-diff" data-lang="diff">$ git diff --stat
+ Cargo.lock | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Cargo.toml |  3 +++
+ 2 files changed, 57 insertions(+)
+</code></pre>
+<pre data-lang="diff" class="language-diff "><code class="language-diff" data-lang="diff">$ git diff
+diff --git a&#x2F;Cargo.lock b&#x2F;Cargo.lock
+index c287579..a41401e 100644
+--- a&#x2F;Cargo.lock
++++ b&#x2F;Cargo.lock
+@@ -151,6 +151,7 @@ dependencies = [
+  &quot;jsonrpsee&quot;,
+  &quot;log&quot;,
+  &quot;net2&quot;,
++ &quot;pcap-file&quot;,
+  &quot;prettytable-rs&quot;,
+  &quot;serde&quot;,
+  &quot;serde_json&quot;,
+@@ -344,6 +345,16 @@ dependencies = [
+  &quot;memchr&quot;,
+ ]
+
++[[package]]
++ ... pages of [[package]] updates
+</code></pre>
+<span id="continue-reading"></span><h1 id="hiding-via-git-cli">Hiding via Git CLI</h1>
+<p>You can temporarily hide the <code>Cargo.lock</code> diff output by adding a path filter to the <code>git diff</code> command:</p>
+<pre data-lang="diff" class="language-diff "><code class="language-diff" data-lang="diff">$ git diff &#x27;:!*lock&#x27;
+diff --git a&#x2F;Cargo.toml b&#x2F;Cargo.toml
+index a3cd170..3d68210 100644
+--- a&#x2F;Cargo.toml
++++ b&#x2F;Cargo.toml
+@@ -41,3 +41,6 @@ tokio = {version = &quot;^0.2.11&quot;, features=[&quot;macros&quot;, &quot;tcp&quot;, &quot;time&quot;, &quot;stream&quot;]}
+ tokio-util = { version = &quot;^0.2&quot;, features=[&quot;codec&quot;]}
+ toml = &quot;0.5&quot;
+ twoway = &quot;0.2.0&quot;
++
++[dev-dependencies]
++pcap-file = &quot;*&quot;
+</code></pre>
+<p>You can also add this as an alias in your Git configuration for quick recall:</p>
+<h4 id="gitconfig"><strong><code>~/.gitconfig</code></strong></h4>
+<pre><code>...
+[alias]
+    diff-no-lock = &quot;!git diff &#x27;:!*lock&#x27;&quot;
+</code></pre>
+<h1 id="hiding-via-a-custom-hunk-header">Hiding via a Custom Hunk Header</h1>
+<p>For a more permanent per-project or global fix, you can add special handling for <code>*.lock</code> (or any file you want) when using <code>git diff</code> by adding a <a href="https://git-scm.com/docs/gitattributes#_defining_a_custom_hunk_header">hunk header</a> to customize the output.</p>
+<h2 id="add-a-hunk-header">Add a Hunk Header</h2>
+<p>Since our goal is to not show any output for <code>Cargo.lock</code> files, our hunk header command will be <code>/bin/true</code> (or <code>/usr/bin/true</code> for MacOS):</p>
+<h4 id="gitconfig-1"><strong><code>~/.gitconfig</code></strong></h4>
+<pre><code>...
+[diff &quot;hidden&quot;]
+     command = &#x2F;bin&#x2F;true
+</code></pre>
+<h2 id="target-lock-files-in-git-attributes">Target .lock Files in Git Attributes</h2>
+<p>Now we need to associate <code>.lock</code> files to use our custom hunk header. Create or edit your <code>.gitattributes</code> file:</p>
+<h4 id="gitattributes"><strong><code>~/.gitattributes</code></strong></h4>
+<pre><code>*.lock  diff=hidden
+</code></pre>
+<p>If you don't already have a <code>.gitattributes</code> file, you will also need to point your Git config at this new file:</p>
+<h4 id="gitconfig-2"><strong><code>~/.gitconfig</code></strong></h4>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">...
+[core]
+    attributesfile = ~&#x2F;.gitattributes
+</code></pre>
+<h2 id="success">Success!</h2>
+<p>Now enjoy your <code>Cargo.update</code> free diff output:</p>
+<pre data-lang="diff" class="language-diff "><code class="language-diff" data-lang="diff">$ git diff --stat
+ Cargo.lock | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Cargo.toml |  3 +++
+ 2 files changed, 57 insertions(+)
+$ git diff
+diff --git a&#x2F;Cargo.toml b&#x2F;Cargo.toml
+index a3cd170..3d68210 100644
+--- a&#x2F;Cargo.toml
++++ b&#x2F;Cargo.toml
+@@ -41,3 +41,6 @@ tokio = {version = &quot;^0.2.11&quot;, features=[&quot;macros&quot;, &quot;tcp&quot;, &quot;time&quot;, &quot;stream&quot;]}
+ tokio-util = { version = &quot;^0.2&quot;, features=[&quot;codec&quot;]}
+ toml = &quot;0.5&quot;
+ twoway = &quot;0.2.0&quot;
++
++[dev-dependencies]
++pcap-file = &quot;*&quot;
+</code></pre>
+<h2 id="caveat">Caveat</h2>
+<p>Adding a hunk header will affect Git patches (E.g. <code>git diff &gt; ~/mychange.patch</code>) since it will not include any of the <code>Cargo.lock</code> changes. If you send someone a patch, that person can run <code>cargo update</code> to re-build the <code>Cargo.lock</code> file, or you can temporarily disable the hunk header in your <code>.gitconfig</code>.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Create a Custom Protocol</h2>
+  <h4 class="subtitle inline">for Rust&#x27;s TcpStream</h4>
+  <div class="post-details">
+    Jun - 2020
+    <em>(~8 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>In this series so far we've learned how to <a href="../reading-and-writing">read &amp; write bytes</a> with <code>TcpStream</code> and then how to <a href="../lines-codec">abstract over that with a <code>LinesCodec</code></a> for sending and receiving <code>String</code> messages. In this post we'll look into what it takes to build a custom protocol for message passing more than a single type of thing (like a <code>String</code>).</p>
+<h2 id="defining-our-message-structs">Defining our Message Structs</h2>
+<p>To give our client and server more options for communicating we'll create:</p>
+<ul>
+<li>A <code>Request</code> message that allow the client to request <em>either</em>:
+<ul>
+<li>Echo a string</li>
+<li>Jumble a string with a specified amount of jumbling entropy</li>
+</ul>
+</li>
+<li>A <code>Response</code> message for the server to respond with the successfully echo/jumbled <code>String</code></li>
+</ul>
+<span id="continue-reading"></span><h4 id="lib-rs"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F;&#x2F; Request object (client -&gt; server)
+#[derive(Debug)]
+pub enum Request {
+    &#x2F;&#x2F;&#x2F; Echo a message back
+    Echo(String),
+    &#x2F;&#x2F;&#x2F; Jumble up a message with given amount of entropy before returning
+    Jumble { message: String, amount: u16 },
+}
+
+&#x2F;&#x2F;&#x2F; Response object from server
+&#x2F;&#x2F;&#x2F;
+&#x2F;&#x2F;&#x2F; In the real-world, this would likely be an enum as well to signal Success vs. Error
+&#x2F;&#x2F;&#x2F; But since we&#x27;re showing that capability with the `Request` struct, we&#x27;ll keep this one simple
+#[derive(Debug)]
+pub struct Response(pub String);
+</code></pre>
+<h2 id="serialization">Serialization</h2>
+<p>In the previous demos, we relied on <code>String::as_bytes()</code> to serialize the <code>String</code> characters to the byte slice (<code>&amp;[u8]</code>) we pass to <code>TcpStream::write_all()</code>. The structs defined above don't have any default serialization capabilities so this example focuses on how to implement that ourselves.</p>
+<h3 id="serialization-deserialization-libraries">Serialization/Deserialization Libraries</h3>
+<p><strong>Quick detour</strong>: As you'll soon find out, serializing our custom structs is a lot of work. The good news is that there are some really incredible, performant, and battle-tested libraries to make doing this easier! It's fun to study how this can be implemented, but I highly recommend checking out these libraries for your actual serialization needs:</p>
+<ul>
+<li><a href="https://docs.rs/serde/1.0.114/serde/index.html">Serde</a></li>
+<li><a href="https://docs.rs/tokio-util/0.3.1/tokio_util/codec/index.html">tokio_util::codec</a></li>
+<li><a href="https://github.com/servo/bincode">bincode</a></li>
+</ul>
+<h3 id="serializing-the-request-struct">Serializing the Request struct</h3>
+<p>Serialization &amp; Deserialization needs to be <strong>symmetric</strong> (i.e., it round-trips) so that the struct serialized by the client is deserialized by the server back into an identical struct.</p>
+<p>Serializing Symmetry (round-trip) pseudo-code:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let message = Request { ... };
+
+&#x2F;&#x2F; Equivalent to std::str::from_utf8(&quot;Hello&quot;.as_bytes())
+let roundtripped_message = deserialize_message(serialize_message(&amp;message));
+
+&#x2F;&#x2F; Symmetric serialization means these will match (given the struct has `Eq`)
+assert_eq!(message, roundtripped_message);
+</code></pre>
+<p>In order to serialize <code>Request</code> we need to decide what it looks like on the wire (as a <code>[u8]</code>). Since <code>Request</code> has two &quot;types&quot; (Echo and Jumble), we'll need to encode that type info to instruct the deserialization code correctly. Here is an approach for the <code>Request</code> byte layout:</p>
+<pre><code>|    u8    |     u16     |     [u8]      | ... u16    |   ... [u8]       |
+|   type   |    length   |    bytes      | ... length |   ... bytes      |
+           ^---    struct field        --^--   possibly more fields?   --^-- ...
+</code></pre>
+<ul>
+<li><strong>type</strong>: A codified representation of the <code>Request</code> type
+<ul>
+<li>E.g. Echo == 1, Jumble == 2</li>
+</ul>
+</li>
+<li><strong>length</strong>/<strong>bytes</strong>: The <strong>L</strong>ength and <strong>V</strong>alue from <strong>T</strong>ype-Length-Value [TLV]
+<ul>
+<li>Each message struct has specific field types so we can get away with only LV, but TLV is useful when fields are variadic and not derivable otherwise</li>
+</ul>
+</li>
+<li><strong>possibly more fields</strong>:
+<ul>
+<li>Again, each message struct knows it's fields for deserialization, so these length/byte groups can repeat for each member field when needed (like in the case of Jumble)</li>
+</ul>
+</li>
+</ul>
+<p>We know how to serialize a <code>String</code> with <code>as_bytes()</code>, but for number values we can use <a href="https://crates.io/crates/byteorder">byteorder</a> to serialize with the correct <a href="https://en.wikipedia.org/wiki/Endianness">Endianness</a> (spoiler: <code>BigEndian</code>, aliased as <code>NetworkEndian</code>). Let's walk through the serialization steps:</p>
+<h4 id="request-type">Request Type</h4>
+<p>As we can see above we need to codify our <code>Request</code> types (Echo and Jumble) into a number (<code>u8</code>, which allows us up to 255 types!). To make this definition clear we can implement <code>From</code> for <code>Request</code> -&gt; <code>u8</code> to have a consistent way of serializing the type:</p>
+<h4 id="lib-rs-1"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::convert::From;
+
+&#x2F;&#x2F;&#x2F; Encode the Request type as a single byte (as long as we don&#x27;t exceed 255 types)
+&#x2F;&#x2F;&#x2F;
+&#x2F;&#x2F;&#x2F; We use `&amp;Request` since we don&#x27;t actually need to own or mutate the request fields
+impl From&lt;&amp;Request&gt; for u8 {
+    fn from(req: &amp;Request) -&gt; Self {
+        match req {
+            Request::Echo(_) =&gt; 1,
+            Request::Jumble { .. } =&gt; 2,
+        }
+    }
+}
+</code></pre>
+<h4 id="request-fields">Request Fields</h4>
+<p>Let's finish the building blocks for serializing the <code>Request</code> with examples for writing the <strong>length</strong>/<strong>value</strong> for <code>String</code> and numbers:</p>
+<p><code>String</code> is straightforward and we've used <code>as_bytes()</code> in previous demos, and <code>byteorder</code> adds extension methods to <code>Write</code> for numbers:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io::{self, Write};
+use byteorder::{NetworkEndian, WriteBytesExt};
+
+let mut bytes: Vec&lt;u8&gt; = vec![];  &#x2F;&#x2F; Just an example buffer that supports `Write`
+
+let message = String::from(&quot;Hello&quot;);
+&#x2F;&#x2F; byteorder in action
+bytes.write_u16::&lt;NetworkEndian&gt;(message.len()).unwrap();
+bytes.write_all(message.as_bytes()).unwrap();
+</code></pre>
+<h4 id="write-request">Write Request</h4>
+<p>We now have all the pieces to add a method for <code>Request</code> that receives a mutable reference to some buffer that implements <code>Write</code> (like our <code>TcpStream</code> :)), and serialize a <code>Request::Echo</code>:</p>
+<h4 id="lib-rs-2"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F;&#x2F; Starts with a type, and then is an arbitrary length of (length&#x2F;bytes) tuples
+impl Request {
+    &#x2F;&#x2F;&#x2F; Serialize Request to bytes (to send to server)
+    pub fn serialize(&amp;self, buf: &amp;mut impl Write) -&gt; io::Result&lt;()&gt; {
+        &#x2F;&#x2F; Derive the u8 Type field from `impl From&lt;&amp;Request&gt; for u8`
+        buf.write_u8(self.into())?;
+
+        &#x2F;&#x2F; Select the serialization based on our `Request` type
+        match self {
+            Request::Echo(message) =&gt; {
+                &#x2F;&#x2F; Write the variable length message string, preceded by it&#x27;s length
+                let message = message.as_bytes();
+                buf.write_u16::&lt;NetworkEndian&gt;(message.len() as u16)?;
+                buf.write_all(&amp;message)?;
+            }
+            Request::Jumble { message, amount } =&gt; {
+                todo!()
+            }
+        }
+        Ok(())
+    }
+}
+</code></pre>
+<p>Now the <code>Request::Jumble</code> serialization is just a slight variation (adding the <code>amount</code> field after the <code>message</code>):</p>
+<h4 id="lib-rs-3"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; ...
+        match self {
+            &#x2F;&#x2F; ... 
+            Request::Jumble { message, amount } =&gt; {
+                &#x2F;&#x2F; Write the variable length message string, preceded by it&#x27;s length
+                let message_bytes = message.as_bytes();
+                buf.write_u16::&lt;NetworkEndian&gt;(message_bytes.len() as u16)?;
+                buf.write_all(&amp;message_bytes)?;
+
+                &#x2F;&#x2F; We know that `amount` is always 2 bytes long
+                buf.write_u16::&lt;NetworkEndian&gt;(2)?;
+                &#x2F;&#x2F; followed by the amount value
+                buf.write_u16::&lt;NetworkEndian&gt;(*amount)?;
+            }
+        }
+&#x2F;&#x2F;&#x2F; ...
+</code></pre>
+<p>Tada! A serialized <code>Request</code> in the bank! The <code>Response</code> struct is even simpler with its single <code>String</code> value, so you can review the serialization code in the <a href="https://github.com/thepacketgeek/rust-tcpstream-demo/blob/861f5f467f681ddbafcbba75197895697ec329b8/protocol/src/lib.rs#L150">demo lib.rs</a></p>
+<h3 id="deserializing-the-request-struct">Deserializing the Request struct</h3>
+<p>We already have the byte layout figured out so deserializing should essentially be the reverse of our <code>Request::serialize()</code> method above. <code>byteorder</code> also gives us <code>ReadBytesExt</code> to add extensions to <code>Read</code> that <code>TcpStream</code> implements. The trickiest part is reading the variable length <code>String</code> and this will happen in a few places for <code>Request::Echo</code>, <code>Request::Jumble</code>, and <code>Response</code> so let's break out this logic into a function:</p>
+<h4 id="lib-rs-4"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F;&#x2F; From a given readable buffer (TcpStream), read the next length (u16) and extract the string bytes ([u8])
+fn extract_string(buf: &amp;mut impl Read) -&gt; io::Result&lt;String&gt; {
+    &#x2F;&#x2F; byteorder ReadBytesExt
+    let length = buf.read_u16::&lt;NetworkEndian&gt;()?;
+
+    &#x2F;&#x2F; Given the length of our string, only read in that quantity of bytes
+    let mut bytes = vec![0u8; length as usize];
+    buf.read_exact(&amp;mut bytes)?;
+
+    &#x2F;&#x2F; And attempt to decode it as UTF8
+    String::from_utf8(bytes).map_err(|_| io::Error::new(io::ErrorKind::InvalidData, &quot;Invalid utf8&quot;))
+}
+</code></pre>
+<p>Our <code>deserialize()</code> method should be straight-forward to read now especially with <code>extract_string</code> at our disposal:</p>
+<h4 id="lib-rs-5"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io::{self, Read};
+use byteorder::{NetworkEndian, ReadBytesExt};
+
+
+impl Request {
+    &#x2F;&#x2F;&#x2F; Deserialize Request from bytes (to receive from TcpStream)
+    &#x2F;&#x2F;&#x2F; returning a `Request` struct
+    pub fn deserialize(mut buf: &amp;mut impl Read) -&gt; io::Result&lt;Request&gt; {
+        &#x2F;&#x2F;&#x2F; We&#x27;ll match the same `u8` that is used to recognize which request type this is
+        match buf.read_u8()? {
+            &#x2F;&#x2F; Echo
+            1 =&gt; Ok(Request::Echo(extract_string(&amp;mut buf)?)),
+            &#x2F;&#x2F; Jumble
+            2 =&gt; {
+                let message = extract_string(&amp;mut buf)?;
+                &#x2F;&#x2F; amount length is not used since we know it&#x27;s 2 bytes
+                let _amount_len = buf.read_u16::&lt;NetworkEndian&gt;()?;
+                let amount = buf.read_u16::&lt;NetworkEndian&gt;()?;
+                Ok(Request::Jumble { message, amount })
+            }
+            _ =&gt; Err(io::Error::new(
+                io::ErrorKind::InvalidData,
+                &quot;Invalid Request Type&quot;,
+            )),
+        }
+    }
+
+}
+</code></pre>
+<p>Wow! We now have the ability to test round-tripping of our structs!</p>
+<h4 id="lib-rs-6"><strong><code>lib.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use crate::*;
+use std::io::Cursor;
+
+#[test]
+fn test_request_roundtrip() {
+    let req = Request::Echo(String::from(&quot;Hello&quot;));
+
+    let mut bytes: Vec&lt;u8&gt; = vec![];
+    req.serialize(&amp;mut bytes).unwrap();
+
+    let mut reader = Cursor::new(bytes); &#x2F;&#x2F; Simulating our TcpStream
+    let roundtrip_req = Request::deserialize(&amp;mut reader).unwrap();
+
+    assert!(matches!(roundtrip_req, Request::Echo(_)));
+    assert_eq!(roundtrip_req.message(), &quot;Hello&quot;);
+}
+</code></pre>
+<h2 id="using-our-new-protocol">Using our new Protocol</h2>
+<p>If you're still with me here, congrats! That was a lot of work and you're about to see how it all pays off when we use the message structs in our client and server.</p>
+<p>I'll leave it up as an exercise to check out the <a href="https://github.com/thepacketgeek/rust-tcpstream-demo/blob/master/protocol/src/lib.rs">full protocol implementation</a> where we add <code>Serialize</code> and <code>Deserialize</code> traits for our methods above and make using our protocol as easy as:</p>
+<h4 id="client-rs"><strong><code>client.rs</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io;
+
+fn main() -&gt; io::Request&lt;()&gt; {
+    let req = Request::Jumble {
+        message: &quot;Hello&quot;,
+        amount: 80,
+    };
+    
+    Protocol::connect(&quot;127.0.0.1:4000&quot;)
+        .and_then(|mut client| {
+            client.send_message(&amp;req)?;
+            Ok(client)
+        })
+        .and_then(|mut client| client.read_message::&lt;Response&gt;())
+        .map(|resp| println!(&quot;{}&quot;, resp.message()))
+}
+</code></pre>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

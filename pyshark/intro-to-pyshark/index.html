@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Intro to PyShark</h2>
+  <h4 class="subtitle inline">for Programmatic Packet Analysis</h4>
+  <div class="post-details">
+    Nov - 2014
+    <em>(~3 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>I can hardly believe it took me this long to find PyShark, but I am very glad I did! PyShark is a wrapper for the Wireshark CLI interface, tshark, so all of the Wireshark decoders are available to PyShark! It is so amazing that I started a new project just so I could use this amazing new tool: <a title="Cloud-Pcap" href="https://github.com/thepacketgeek/cloud-pcap" target="_blank">Cloud-Pcap</a>.</p>
+<p>You can use PyShark to sniff from a interface or open a saved capture file, as the docs show on the <a title="PyShark" href="http://kiminewt.github.io/pyshark/" target="_blank">overview page here</a>:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">import pyshark
+
+# Open saved trace file 
+cap = pyshark.FileCapture(&#x27;&#x2F;tmp&#x2F;mycapture.cap&#x27;)
+
+# Sniff from interface
+capture = pyshark.LiveCapture(interface=&#x27;eth0&#x27;)
+capture.sniff(timeout=10)
+&lt;LiveCapture (5 packets)&gt;
+</code></pre>
+<span id="continue-reading"></span>
+<p>Once a capture object is created, either from a LiveCapture or FileCapture method, several methods and attributes are available at both the capture and packet level.  The power of PyShark is the access to all of the packet decoders built into tshark.  I'm going to just give a sneak peek of some of the things you can do in this post and there will be a few accompanying posts that follow to go more in depth.</p>
+<ol>
+<li>Getting packet summaries (similar to tshark capture output):</li>
+</ol>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; for pkt in cap:
+...:     print pkt
+...:
+2 0.512323 0.512323 fe80::f141:48a9:9a2c:73e5 ff02::c SSDP 208 M-SEARCH * HTTP&#x2F;
+3 1.331469 0.819146 fe80::159a:5c9f:529c:f1eb ff02::c SSDP 208 M-SEARCH * HTTP&#x2F;
+4 2.093188 0.761719 192.168.1.1 239.255.255.250 SSDP 395 NOTIFY * HTTP&#x2F;1.  0x0000 (0)
+5 2.096287 0.003099 192.168.1.1 239.255.255.250 SSDP 332 NOTIFY * HTTP&#x2F;1.  0x0000 (0)
+</code></pre>
+<p>This will give access to attributes like packet number, relative and delta times, IP addresses, protocol, and a brief info line.</p>
+<ol start="2">
+<li>Drilling down into packet attributes by layer:</li>
+</ol>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkt.   #(tab auto-complete)
+pkt.captured_length     pkt.highest_layer       pkt.ip                  pkt.pretty_print        pkt.transport_layer
+pkt.eth                 pkt.http                pkt.layers              pkt.sniff_time          pkt.udp
+pkt.frame_info          pkt.interface_captured  pkt.length              pkt.sniff_timestamp
+&gt;&gt;&gt;
+&gt;&gt;&gt; pkt[pkt.highest_layer].    #(tab auto-complete)
+pkt_app.                 pkt_app.get_field_value  pkt_app.raw_mode         pkt_app.request_version
+pkt_app.DATA_LAYER       pkt_app.get_raw_value    pkt_app.request
+pkt_app.chat             pkt_app.layer_name       pkt_app.request_method
+pkt_app.get_field        pkt_app.pretty_print     pkt_app.request_uri
+</code></pre>
+<ol start="3">
+<li>Iterating through the packets and applying a function to each:</li>
+</ol>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; cap = pyshark.FileCapture(&#x27;test.pcap&#x27;, keep_packets=False)
+&gt;&gt;&gt; def print_highest_layer(pkt)
+...: print pkt.highest_layer
+&gt;&gt;&gt; cap.apply_on_packets(print_highest_layer)
+HTTP
+HTTP
+HTTP
+HTTP
+HTTP
+... (truncated)
+</code></pre>
+<p>and this is just the sneak peak!!  Who knew that the getting the power of tshark &amp; Wireshark in your python scripts and applications would be this easy!  The only caveat that I've found so far is the performance. I've thrown a lot of packets at PyShark and it can really slow down once you start running through captures of a couple thousand packets. Some things have been done to preserve memory that will be covered in the following posts.</p>
+<p>I certainly hope you're as excited as I am at this point. There's plenty more to come, so check back soon!</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Give ExaBGP an HTTP API</h2>
+  <h4 class="subtitle inline"></h4>
+  <div class="post-details">
+    May - 2015
+    <em>(~5 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>We've covered how to setup ExaBGP and peer with a router, and then how to use python to add  and remove advertised routes in BGP either with static definitions or dynamically through health checking. There may be some of you out there with some sort of application that is already monitoring routes and you're trying to figure out how to connect it with ExaBGP for the actual interaction part? Well, what if we add an HTTP API to ExaBGP to give programmatic access to ExaBGP from some external utility? I'll go over two ways to do this using the Python built-in <code>SimpleHTTPServer</code> or <a href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">Flask</a>.</p>
+<span id="continue-reading"></span><h3 id="using-simplehttpserver">Using SimpleHTTPServer</h3>
+<p>This option is great since you don't need to install any extra modules. It seems to be pretty lightweight and should be enough for some basic HTTP interaction with ExaBGP. The basic functions that we need this API to do are receive a form via HTTP POST and print that to STDOUT. Since ExaBGP is executing the python script, the STDOUT output will be visible to the ExaBGP process. After the ExaBGP command is printed, we'll return the command to the browser as confirmation that the call was successful. Here's the example:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">import cgi
+import SimpleHTTPServer
+import SocketServer
+from sys import stdout
+
+PORT = 5001
+
+class ServerHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+
+    def createResponse(self, command):
+        &quot;&quot;&quot; Send command string back as confirmation &quot;&quot;&quot;
+        self.send_response(200)
+        self.send_header(&#x27;Content-Type&#x27;, &#x27;application&#x2F;text&#x27;)
+        self.end_headers()
+        self.wfile.write(command)
+        self.wfile.close()
+
+    def do_POST(self):
+        &quot;&quot;&quot; Process command from POST and output to STDOUT &quot;&quot;&quot;
+        form = cgi.FieldStorage(
+            fp=self.rfile,
+            headers=self.headers,
+            environ={&#x27;REQUEST_METHOD&#x27;:&#x27;POST&#x27;})
+        command = form.getvalue(&#x27;command&#x27;)
+        stdout.write(&#x27;%s\n&#x27; % command)
+        stdout.flush()
+        self.createResponse(&#x27;Success: %s&#x27; % command)
+
+handler = ServerHandler
+httpd = SocketServer.TCPServer((&#x27;&#x27;, PORT), handler)
+stdout.write(&#x27;serving at port %s\n&#x27; % PORT)
+stdout.flush()
+httpd.serve_forever()
+</code></pre>
+<h3 id="using-flask">Using Flask</h3>
+<p>If you have bigger plans for the HTTP side of things and want to work with a web framework like Flask, this example is for you. The biggest difference is that you will have to install <a href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">Flask</a> and its dependencies, although that's easy:</p>
+<p><code>$ pip install flask</code></p>
+<p>Now we'll create a Flask <code>http_api.py</code> file to listen for prefix commands via HTTP POST calls and print them to STDOUT so ExaBGP can do its magic:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">from flask import Flask, request
+from sys import stdout
+
+app = Flask(__name__)
+
+# Setup a command route to listen for prefix advertisements 
+@app.route(&#x27;&#x2F;&#x27;, methods=[&#x27;POST&#x27;])
+def command():
+
+	command = request.form[&#x27;command&#x27;]
+	stdout.write(&#x27;%s\n&#x27; % command)
+	stdout.flush()
+
+	return &#x27;%s\n&#x27; % command
+
+if __name__ == &#x27;__main__&#x27;:
+    app.run()
+</code></pre>
+<p>Before you run off and put this on your production systems I have a couple disclaimers:</p>
+<ul>
+<li>This script uses the built-in Flask debug HTTP server. It's fine for lab use, but I would use gunicorn and nginx for real heavy lifting.</li>
+<li>The script doesn't do any validation of the command. A better script would make sure it's a valid command and prefix.</li>
+<li>Flask defaults to listening on the localhost address on TCP port 5000. You can change this though and I highly recommend reading <a href="https://flask.palletsprojects.com/en/1.1.x/quickstart/" target="_blank">Flask's Quickstart</a> to familiarize yourself with the many options.</li>
+</ul>
+<h3 id="hooking-the-http-api-up-to-the-exabgp-process">Hooking the HTTP API up to the ExaBGP process</h3>
+<p>Update the <code>conf.ini</code> file to run this script instead of our previous health check example:</p>
+<pre data-lang="ini" class="language-ini "><code class="language-ini" data-lang="ini">group test {                         # An arbitrary group name
+    router-id 172.16.2.1;            # Our local router-id
+    
+    neighbor 172.16.2.128 {          # Remote neighbor to peer with
+        local-address 172.16.2.1;    # Our local update-source
+        local-as 65000;              # Our local AS
+        peer-as 65000;               # Peer&#x27;s AS
+    }
+ 
+    process http-api {
+        run \path\to\python \path\to\http_api.py;
+    }
+}
+</code></pre>
+<p>And now when we run <code>$ exabgp conf.ini</code>, you'll see the confirmation of running the python script at the end of the output, along with the debug output of both Flask or SimpleHTTPServer:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">... | INFO     | 20432  | reactor       | New peer setup: neighbor 172.16.2.128 local-ip 172.16.2.1 local-as 65000 peer-as 65000 router-id 172.16.2.1 family-allowed in-open
+... | WARNING  | 20432  | configuration | Loaded new configuration successfully
+... | INFO     | 20432  | processes     | Forked process http-api
+ * Running on http:&#x2F;&#x2F;127.0.0.1:5000&#x2F; (Press CTRL+C to quit)
+</code></pre>
+<p>Once either HTTP service is running (somewhat wrapped by the ExaBGP process), we can make HTTP POST calls via command line (curl, wget) or via a GUI HTTP tool (Postman). I'll show a quick example of both:</p>
+<p>Curl:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">packetgeek:~ mat$ curl --form &quot;command=announce route 100.10.0.0&#x2F;24 next-hop self&quot; http:&#x2F;&#x2F;localhost:5000&#x2F; 
+announce route 100.10.0.0&#x2F;24 next-hop self
+</code></pre>
+<p>Postman:
+~<a href="https://thepacketgeek.com/exabgp/http-api/exabgp-postman.png"></a></p>
+<p>When we run <code>show bgp</code> on the router, we can see our advertised network:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">CRS1#sh bgp | b Network
+     Network          Next Hop            Metric LocPrf Weight Path
+ *&gt;  10.10.0.0&#x2F;24     0.0.0.0                  0         32768 i
+ *&gt;i 100.10.0.0&#x2F;24    172.16.2.1                    100      0 i
+</code></pre>
+<p>So, there's a real quick and dirty way to allow external calls to ExaBGP for your RIB manipulation. The next post will cover more advanced peering and advertising options with ExaBGP.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

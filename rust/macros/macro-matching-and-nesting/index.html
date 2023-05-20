@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">retry! Macro with Repetitive Matching and Nesting</h2>
+  <h4 class="subtitle inline"></h4>
+  <div class="post-details">
+    Jul - 2020
+    <em>(~8 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>We <a href="https://thepacketgeek.com/rust/macros/intro/">previously</a> covered a very basic declarative macro that wrapped some timing logic around a function to be run. This article expands on that with some additional matching techinques to build a <code>retry!</code> macro to be used like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let res = retry!(|| { sometimes_fail(10) });
+assert!(res.is_ok());
+
+let res = retry!(sometimes_fail, 10; retries = 3);
+assert!(res.is_ok());
+</code></pre>
+<span id="continue-reading"></span><h2 id="retrying-functions">Retrying Functions</h2>
+<p>Functions can fail. Some failures are persistent, like trying to open an invalid file path or parsing numeric values out of a string that doesn't contain numbers. Other failures are intermittent, like attempting to read data from a remote server. In the intermittent case it can be useful to have some logic to retry the attempted call in hopes for a successful result. This is exactly what our <code>retry!</code> macro will do!</p>
+<p>Here's a function that fails with a given failure rate that we'll use to illustrate the retry functionality:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use rand::Rng;
+
+&#x2F;&#x2F;&#x2F; Given a failure rate percentage (0..=100),
+&#x2F;&#x2F;&#x2F; fail with that probability
+fn sometimes_fail(failure_rate: u8) -&gt; Result&lt;(), ()&gt; {
+    assert!(failure_rate &lt;= 100, &quot;Failure rate is a % (0..=100)&quot;);
+    let mut rng = rand::thread_rng();
+    let val = rng.gen_range(0u8, 100u8);
+    if val &gt; failure_rate {
+        Ok(())
+    } else {
+        Err(())
+    }
+}
+</code></pre>
+<h1 id="retry-logic">Retry Logic</h1>
+<p>Before we dive into writing our <code>retry!</code> macro, let's look at what retrying a fallible function looks like in Rust. A helpful way to approach writing macros is to:</p>
+<ul>
+<li>Write the code in non-macro form</li>
+<li>Look at what parts should/could be parameterized</li>
+<li>Build a macro for a specific use case</li>
+<li>Expand to include additional use cases when it makes sense</li>
+</ul>
+<p>A pre-req for our retryable logic is that the function or closure the code is retrying should return <code>Result</code>. This allows us to check the <code>Result</code> variant (<code>Ok</code>/<code>Err</code>) and retry accordingly. A <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=1d7273b8ce7ac487ca5e1e23127c4c42">example of this is</a>:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let mut retries = 3;  &#x2F;&#x2F; How many times to retry on error
+
+let func = || { sometimes_fail(10) };
+&#x2F;&#x2F; Loop until we hit # of retries or success
+let res = loop {
+    &#x2F;&#x2F; Run our function, capturing the Result in `res`
+    let res = func();
+    &#x2F;&#x2F; Upon success, break out the loop and return the `Result::Ok`
+    if res.is_ok() {
+        break res;
+    }
+    &#x2F;&#x2F; Otherwise, decrement retries and loop around again
+    if retries &gt; 0 {
+        retries -= 1;
+        continue;
+    }
+    &#x2F;&#x2F; When retries have been exhausted, finally return the `Result::Err`
+    break res;
+};
+
+assert!(res.is_ok());
+</code></pre>
+<p>The first thing to parameterize for this macro is the function that's being called (in this case, <code>sometimes_fail</code>). Turning our logic into macro form would look something like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! retry {
+    ($f:expr) =&gt; {{
+        let mut retries = 3;
+        loop {
+            let res = $f();
+            if res.is_ok() {
+                break res;
+            }
+            if retries &gt; 0 {
+                retries -= 1;
+                continue;
+            }
+            break res;
+        }
+    }};
+}
+</code></pre>
+<p>This mostly looks similar to our non-macro code above, but I'll explain the match rule <code>($f:expr)</code> a bit. This rule will only allow a single expression to be passed into the macro. Additionally, since we're eventually calling the <code>expr</code> like <code>$f()</code>, the expression must be something that results in a function. So a closure seems like a perfect fit and this macro can be used like (<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=4c42053cf00e6affb9e26ab5acb163d9">playground</a>):</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let res = retry!(|| sometimes_fail(10));
+assert!res.is_ok());
+</code></pre>
+<p>Currently, we can't pass a function directly (E.g. <code>retry!(sometimes_fail(10)</code>) as the macro expansion would end up like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; ...
+    let res = sometimes_fail(10)();
+&#x2F;&#x2F; ...
+</code></pre>
+<p>And we can't call the <code>Result</code> that <code>sometimes_fail(10)</code> returns. To make this work we should look at using yet another macro to coerce closures &amp; functions into a common form for the <code>retry!</code> macro.</p>
+<h2 id="nesting-macros">Nesting Macros</h2>
+<p>To keep the <code>retry!</code> macro_rules implementation clean, we'll create another macro (<code>_wrapper!</code>) to faciliate the passing of closures <strong>or</strong> functions with arguments which will add this additional use case to our examples above:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; Alternate func + args invocation
+let res = retry!(sometimes_fail(10));
+assert!(res.is_ok());
+</code></pre>
+<p>Let's implement the case covered in <code>retry!</code> already:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! _wrapper {
+    &#x2F;&#x2F; Single expression (like a function name or closure)
+    ($f:expr) =&gt; {{
+        $f()
+    }};
+}
+</code></pre>
+<p>I'm using <code>_wrapper</code> as the name here to signal that it's intended to be use internally by the <code>retry!</code> macro and won't be exported by this library (perhaps a bad habit coming from Python). We can now use this example to get the same functionality as the prior <code>retry!</code> macro example:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! retry {
+    ($f:expr) =&gt; {{
+        let mut retries = 3;
+        loop {
+            let res = _wrapper!($f);
+            if res.is_ok() {
+                break res;
+            }
+            if retries &gt; 0 {
+                retries -= 1;
+                continue;
+            }
+            break res;
+        }
+    }};
+}
+</code></pre>
+<p>As far as functionality goes, nothing has been added here, but this will enable us to build matching logic for our multiple use-cases within <code>_wrapper!</code> instead of duplicating code in <code>retry!</code> for different match rules.</p>
+<h3 id="repeating-matches">Repeating matches</h3>
+<p>Something we learned with the <code>timeit!</code> macro was that we can match on repeating items, and then add code-expansion for each item. We'll use that same trick here to match on multiple arguments for the case of a function &amp; args being passed into <code>retry!</code>:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! _wrapper {
+    ($f:expr) =&gt; {{ &#x2F;* code from previous section *&#x2F; }};
+    &#x2F;&#x2F; Variadic number of args (Allowing trailing comma)
+    ($f:expr, $( $args:expr $(,)? )* ) =&gt; {{
+        $f( $($args,)* )
+    }};
+}
+</code></pre>
+<p>There's a lot going on in this single line so let's break it down:</p>
+<ul>
+<li><code>$f:expr</code>: The function passed in for retrying</li>
+<li><code>,</code>: Comma separator before the function arguments</li>
+<li><code>$( .. )*</code>: Anything in these parentheses can repeat (zero or more times, like <code>*</code> in regex)</li>
+<li><code>$args:expr</code>: Capture each repeating expr into <code>$args</code></li>
+<li><code>$(,)?</code>: Allow optional commas (? == 0 or 1 times, like <code>regex</code> )</li>
+</ul>
+<p>This match rule will capture something like <code>_wrapper!(my_func, 10, 20)</code> into something that resembles:</p>
+<ul>
+<li><code>$f</code> == <code>my_func</code></li>
+<li><code>$args</code> == <code>[10, 20]</code></li>
+</ul>
+<p>And let's break down the expansion: <code>$f( $( $args, )* )</code>:</p>
+<ul>
+<li><code>$f( ... )</code>: Function name, with literal parenthesis wrapping whatever is inside</li>
+<li><code>$( ... )*</code>: Repeat what's inside per expr in <code>$args</code></li>
+<li><code>$args,</code>: Write out an expr, followed by a literal comma</li>
+</ul>
+<p>Which expands to:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">my_func(10, 20,)
+</code></pre>
+<p>With these two match rules inside <code>_wrapper!</code>, we can now successfully use <code>retry!</code> with all of the use cases! Check out the <a href="https://github.com/thepacketgeek/rust-macros-demo/blob/master/retryable/src/lib.rs#L39">final implementation of <code>_wrapper!</code></a> and <a href="https://github.com/thepacketgeek/rust-macros-demo/blob/master/retryable/src/lib.rs#L326">accompanying tests here</a>.</p>
+<p>We'll need to update the <code>retry!</code> macro to accept a variable number of args to use <code>_wrapper!</code> correctly, which looks like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! retry {
+    ($( $args:expr$(,)? )+) =&gt; {{
+        let mut retries = 3;
+        loop {
+            let res = _wrapper!($( $args, )*);
+            if res.is_ok() {
+                break res;
+            }
+            if retries &gt; 0 {
+                retries -= 1;
+                continue;
+            }
+            break res;
+        }
+    }};
+}
+</code></pre>
+<p>The match rule for <code>retry!</code> should now be a bit more familiar, and what this rule is doing is passing along whatever <code>$args</code> are passed in <code>retry!</code> along to <code>_wrapper!</code>.</p>
+<h2 id="recursive-macros">Recursive Macros</h2>
+<p>The next item in the macro that makes sense for parameterization is the number of retries. We've been using 3 as a default, but should allow that to be specified where <code>retry!</code> is used. For the purpose of <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a>, I'll show you how macros can be used recursively to allow multiple match rules using the same code expansion.</p>
+<p>Let's consider how one might specify the number of retries to use. The <code>retry!</code> macro currently takes an arbitrary number of arguments separated by commas, so we'll need a new separator to prevent ambiguity. A possible future of this macro might support additional parameters like delay time, so we should make the retries parameter explicit to avoid confusion and allow macro changes down the road.</p>
+<p>Here's the macro with a <code>;</code> separator, and note that we are matching <code>retries=</code> which will be explicity used in the macro call.</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! retry {
+    ($( $args:expr$(,)? )+; retries=$r:literal) =&gt; {{
+        let mut retries = 3;
+        loop {
+            let res = _wrapper!($( $args, )*);
+            if res.is_ok() {
+                break res;
+            }
+            if retries &gt; 0 {
+                retries -= 1;
+                continue;
+            }
+            break res;
+        }
+    }};
+}
+</code></pre>
+<p>For which usage looks like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let res = retry!(sometimes_fail, 10; retries = 3);
+assert!(res.is_ok());
+</code></pre>
+<p>With this addition of <code>; retries=$r:literal</code>, we're now requiring this syntax to exist in the macro call. But what if 3 is a good default and we want to give the user an option to not specify retries? We could duplicate the match rules and use the same retry logic in each, but this isn't <strong>DRY</strong> and there must be a better way! Fortunately for us there is! We can provide a match rule that doesn't require <code>; retries=X</code> and provide a default value like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! retry {
+    ($( $args:expr$(,)? )+; retries=$r:literal) =&gt; {{
+        &#x2F;* existing retry logic *&#x2F;
+    }};
+    &#x2F;&#x2F; Function &amp; args only, use default of 3 retries
+    ($( $args:expr$(,)? )+) =&gt; {{
+        retry!($( $args, )*; retries = 3)
+    }};
+}
+</code></pre>
+<p>This works just like you think it would, a usage of <code>retry!(my_func, 10)</code> skips the first rule and matches the second rule, where <code>; retries = 3</code> is added to a recursive call that now matches the first rule.</p>
+<hr />
+<p>We've greatly progressed in macro_rules abilities from the previous <code>timeit!</code> macro and these techniques will get you far! A future article will dive further into retry logic, using macros to instantiate some structs to allow for more flexible retry options.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

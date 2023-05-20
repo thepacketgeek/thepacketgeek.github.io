@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="section">
+  <h1 class="section-title">Intro to Rust Macros</h1>
+  <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;rust&#x2F;macros&#x2F;intro&#x2F;">First Macro: timeit!</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      Jul - 2020
+      <em>(~7 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>This series serves as a practical (<em>but not-exhaustive</em>) introduction to declarative <code>macro_rules!</code>. I've put together some <a href="https://github.com/thepacketgeek/rust-macros-demo">Rust macro examples</a> to show how macros can be helpful for improving ergonomics around repetitive or error-prone tasks. The examples cover some great scenarios for macros like:</p>
+<ul>
+<li>Print out the time a block of code takes to execute</li>
+<li>Adding retries around intermittently fallible code</li>
+<li>Making data structure initialization easier for common options</li>
+</ul>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;rust&#x2F;macros&#x2F;macro-matching-and-nesting&#x2F;">retry! Macro with Repetitive Matching and Nesting</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      Jul - 2020
+      <em>(~8 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>We <a href="https://thepacketgeek.com/rust/macros/intro/">previously</a> covered a very basic declarative macro that wrapped some timing logic around a function to be run. This article expands on that with some additional matching techinques to build a <code>retry!</code> macro to be used like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let res = retry!(|| { sometimes_fail(10) });
+assert!(res.is_ok());
+
+let res = retry!(sometimes_fail, 10; retries = 3);
+assert!(res.is_ok());
+</code></pre>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;rust&#x2F;macros&#x2F;improved-retry-macro-setup&#x2F;">Improved Retryable Logic with Macro Setup</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      Aug - 2020
+      <em>(~3 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>We've now <a href="https://thepacketgeek.com/rust/macros/macro-matching-and-nesting/">built a simple <code>retry!</code> macro</a> where the <em>limited</em> logic is contained in the macro_rules. This article will focus on an improved <code>Retryable</code> struct (with <code>RetryStrategy</code>) that we'll then build a new macro to simplify instantation for.</p>
+<h2 id="retryable-retrystrategy">Retryable &amp; RetryStrategy</h2>
+<p>Forgoing macros for a bit, let's setup some retry structs and implementations. First is a <code>Retryable</code> struct to contain our function/closure to retry, and a <code>RetryStrategy</code> with options for retrying (number of retries, delay, etc.):</p>
+</div>
+    <hr class="lead" />
+  
+</div>
+
+        </div>
+
+    </body>
+
+</html>

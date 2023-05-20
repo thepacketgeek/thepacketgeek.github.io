@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">FileCapture and LiveCapture modules</h2>
+  <h4 class="subtitle inline"></h4>
+  <div class="post-details">
+    Nov - 2014
+    <em>(~4 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>The two typical ways to start analyzing packets are via PyShark's FileCapture and LiveCapture modules. The first will import packets from a saved capture file, and the latter will sniff from a network interface on the local machine. Running these modules will return a capture object which I will cover in depth in the next post. For now, let's see what we can do with these two modules.</p>
+<span id="continue-reading"></span>
+<p>Both modules offer similar parameters that affect packets returned in the capture object. These definitions are taken directly out of the docstrings for these modules:</p>
+<ul>
+<li><strong>interface</strong>: <strong>[LiveCapture only]</strong> <strong>Name of the interface to sniff on. If not given, takes the first available.</strong></li>
+<li><strong>bpf_filter</strong>: [LiveCapture only] A BPF (tcpdump) filter to apply on the cap before reading.</li>
+<li><strong>input_file</strong>: [FileCapture only] File path of the capture (PCAP, PCAPNG)</li>
+<li><strong>keep_packets</strong>: Whether to keep packets after reading them via next(). Used to conserve memory when reading large caps.</li>
+<li><strong>display_filter:</strong> A display (wireshark) filter to apply on the cap before reading it.</li>
+<li><strong>only_summaries</strong>: Only produce packet summaries, much faster but includes very little information.</li>
+<li><strong>decryption_key</strong>: Optional key used to encrypt and decrypt captured traffic.</li>
+<li><strong>encryption_type</strong>: Standard of encryption used in captured traffic (must be either 'WEP', 'WPA-PWD', or 'WPA-PWK'. Defaults to WPA-PWK).</li>
+</ul>
+<h3 id="only-summaries">Only_Summaries</h3>
+<p>Using <code>only_summaries</code> will return packets in the capture object with just the summary info of each packet (similar to the default output of tshark):</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; cap = pyshark.FileCapture(&#x27;test.pcap&#x27;, only_summaries=True)
+&gt;&gt;&gt; print cap[0]
+2 0.512323 0.512323 fe80::f141:48a9:9a2c:73e5 ff02::c SSDP 208 M-SEARCH * HTTP&#x2F;
+</code></pre>
+<p>This option makes the capture file reading much faster, although each packet will only have the attributes shown below available. This info can be plenty if you're just wanting to get the IP addresses to build a conversation list in the sniff, or maybe some bandwidth statistics with the time and packet lengths:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkt.     #(tab auto-complete)
+pkt.delta         pkt.info          pkt.no            pkt.stream        pkt.window
+pkt.destination   pkt.ip id         pkt.protocol      pkt.summary_line
+pkt.host          pkt.length        pkt.source        pkt.time
+</code></pre>
+<h3 id="keep-packets"><strong>Keep_Packets</strong></h3>
+<p>PyShark only reads packets into memory when it's about to do something with the packets. As you work through the packets, PyShark appends each packet to a list attribute of the capture object named <code>_packet</code>. When working with a large amount of packets this list can take up a lot of memory so PyShark gives us the option to only keep one packet in memory at a time. If <code>keep_packets</code> is set to False (default is True), PyShark will read in a packet and then flush it from memory when it moves on to read in the next packet. I have found that this speeds up the processing time of packet iteration a bit, and every second helps!</p>
+<h3 id="display-filter-and-bpf-filter">Display_Filter and BPF_Filter</h3>
+<p>The filters available in these modules can be helpful in keeping your application focused on the traffic you're wanting to analyze. Similar to Wireshark or tshark sniffing, a BPF filter can be used to specify interesting traffic that makes it into the returned capture object. BPF filters don't offer as much flexibility as Wireshark's display filters, but you'd be surprised how creative you can be with the available keywords and offset filters. For help with BPF filters used in capturing packets, check out <a title="Wireshark Capture Filters" href="http://wiki.wireshark.org/CaptureFilters" target="_blank">Wireshark's guide here</a>. Here's an example of using a BPF filter when sniffing to target HTTP traffic:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; cap = pyshark.LiveCapture(interface=&#x27;en0&#x27;, bpf_filter=&#x27;ip and tcp port 80&#x27;)
+&gt;&gt;&gt; cap.sniff(timeout=5)
+&gt;&gt;&gt; cap
+   &amp;lt;LiveCapture (21 packets)&amp;gt;
+&gt;&gt;&gt; print cap[5].highest_layer
+HTTP
+</code></pre>
+<p>When reading in a saved capture file, you can use the <code>display_filter</code> option to harness Wireshark's amazing dissectors to limit the packets returned. Here's the first few packets in my test.pcap file without a filter:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; cap = pyshark.FileCapture(&#x27;test.pcap&#x27;)
+&gt;&gt;&gt; for pkt in cap:
+...:    print pkt.highest_layer
+...:
+HTTP
+HTTP
+HTTP
+TCP
+HTTP
+... (truncated)
+</code></pre>
+<p>And with a display filter for DNS traffic only:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; cap = pyshark.FileCapture(&#x27;test.pcap&#x27;, display_filter=&quot;dns&quot;)
+&gt;&gt;&gt; for pkt in cap:
+...:    print pkt.highest_layer
+...:
+DNS
+DNS
+DNS
+DNS
+DNS
+... (truncated)
+</code></pre>
+<h3 id="caveats-with-livecapture"> Caveats with LiveCapture</h3>
+<p>I discovered a strange behavior when trying to iterate through a LiveCapture returned capture object. It appears that when you try to iterate through the list, it starts the sniff over again and iterates in real time (as packets are received on the interface). There's no way (that I've found yet) to store the packets, the LiveCapture is meant to process packets in real time only.</p>
+<p>There are some powerful options for opening and sniffing packets for processing. Check out the next article <a href="https://thepacketgeek.com/pyshark/capture-object/" title="PyShark – Using the capture Object">here</a> where I explain what can be done with the capture object that is returned from these modules.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

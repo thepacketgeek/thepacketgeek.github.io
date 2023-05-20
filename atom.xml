@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>thePacketGeek</title>
+    <subtitle>a developing networker</subtitle>
+    <link href="https://thepacketgeek.com/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://thepacketgeek.com"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-08-12T00:00:00+00:00</updated>
+    <id>https://thepacketgeek.com/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Improved Retryable Logic with Macro Setup</title>
+        <published>2020-08-12T00:00:00+00:00</published>
+        <updated>2020-08-12T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/rust/macros/improved-retry-macro-setup/" type="text/html"/>
+        <id>https://thepacketgeek.com/rust/macros/improved-retry-macro-setup/</id>
+        
+        <summary type="html">&lt;p&gt;We&#x27;ve now &lt;a href=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;rust&#x2F;macros&#x2F;macro-matching-and-nesting&#x2F;&quot;&gt;built a simple &lt;code&gt;retry!&lt;&#x2F;code&gt; macro&lt;&#x2F;a&gt; where the &lt;em&gt;limited&lt;&#x2F;em&gt; logic is contained in the macro_rules. This article will focus on an improved &lt;code&gt;Retryable&lt;&#x2F;code&gt; struct (with &lt;code&gt;RetryStrategy&lt;&#x2F;code&gt;) that we&#x27;ll then build a new macro to simplify instantation for.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;retryable-retrystrategy&quot;&gt;Retryable &amp;amp; RetryStrategy&lt;&#x2F;h2&gt;
+&lt;p&gt;Forgoing macros for a bit, let&#x27;s setup some retry structs and implementations. First is a &lt;code&gt;Retryable&lt;&#x2F;code&gt; struct to contain our function&#x2F;closure to retry, and a &lt;code&gt;RetryStrategy&lt;&#x2F;code&gt; with options for retrying (number of retries, delay, etc.):&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>retry! Macro with Repetitive Matching and Nesting</title>
+        <published>2020-07-19T00:00:00+00:00</published>
+        <updated>2020-07-19T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/rust/macros/macro-matching-and-nesting/" type="text/html"/>
+        <id>https://thepacketgeek.com/rust/macros/macro-matching-and-nesting/</id>
+        
+        <summary type="html">&lt;p&gt;We &lt;a href=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;rust&#x2F;macros&#x2F;intro&#x2F;&quot;&gt;previously&lt;&#x2F;a&gt; covered a very basic declarative macro that wrapped some timing logic around a function to be run. This article expands on that with some additional matching techinques to build a &lt;code&gt;retry!&lt;&#x2F;code&gt; macro to be used like:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let res = retry!(|| { sometimes_fail(10) });
+assert!(res.is_ok());
+
+let res = retry!(sometimes_fail, 10; retries = 3);
+assert!(res.is_ok());
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>First Macro: timeit!</title>
+        <published>2020-07-03T00:00:00+00:00</published>
+        <updated>2020-07-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/rust/macros/intro/" type="text/html"/>
+        <id>https://thepacketgeek.com/rust/macros/intro/</id>
+        
+        <summary type="html">&lt;p&gt;This series serves as a practical (&lt;em&gt;but not-exhaustive&lt;&#x2F;em&gt;) introduction to declarative &lt;code&gt;macro_rules!&lt;&#x2F;code&gt;. I&#x27;ve put together some &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek&#x2F;rust-macros-demo&quot;&gt;Rust macro examples&lt;&#x2F;a&gt; to show how macros can be helpful for improving ergonomics around repetitive or error-prone tasks. The examples cover some great scenarios for macros like:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Print out the time a block of code takes to execute&lt;&#x2F;li&gt;
+&lt;li&gt;Adding retries around intermittently fallible code&lt;&#x2F;li&gt;
+&lt;li&gt;Making data structure initialization easier for common options&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Hide Cargo.lock in git Diff</title>
+        <published>2020-06-28T00:00:00+00:00</published>
+        <updated>2020-06-28T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/rust/hide-cargo-lock-diff/" type="text/html"/>
+        <id>https://thepacketgeek.com/rust/hide-cargo-lock-diff/</id>
+        
+        <summary type="html">&lt;p&gt;Whenever you add or update dependencies in &lt;code&gt;Cargo.toml&lt;&#x2F;code&gt;, the diff output in &lt;code&gt;Cargo.lock&lt;&#x2F;code&gt; can be verbose and distracting when I&#x27;m looking at &lt;code&gt;git diff&lt;&#x2F;code&gt; output:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff &quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;$ git diff --stat
+ Cargo.lock | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Cargo.toml |  3 +++
+ 2 files changed, 57 insertions(+)
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;diff&quot; class=&quot;language-diff &quot;&gt;&lt;code class=&quot;language-diff&quot; data-lang=&quot;diff&quot;&gt;$ git diff
+diff --git a&amp;#x2F;Cargo.lock b&amp;#x2F;Cargo.lock
+index c287579..a41401e 100644
+--- a&amp;#x2F;Cargo.lock
++++ b&amp;#x2F;Cargo.lock
+@@ -151,6 +151,7 @@ dependencies = [
+  &amp;quot;jsonrpsee&amp;quot;,
+  &amp;quot;log&amp;quot;,
+  &amp;quot;net2&amp;quot;,
++ &amp;quot;pcap-file&amp;quot;,
+  &amp;quot;prettytable-rs&amp;quot;,
+  &amp;quot;serde&amp;quot;,
+  &amp;quot;serde_json&amp;quot;,
+@@ -344,6 +345,16 @@ dependencies = [
+  &amp;quot;memchr&amp;quot;,
+ ]
+
++[[package]]
++ ... pages of [[package]] updates
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Create a Custom Protocol</title>
+        <published>2020-06-27T00:00:00+00:00</published>
+        <updated>2020-06-27T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/rust/tcpstream/create-a-protocol/" type="text/html"/>
+        <id>https://thepacketgeek.com/rust/tcpstream/create-a-protocol/</id>
+        
+        <summary type="html">&lt;p&gt;In this series so far we&#x27;ve learned how to &lt;a href=&quot;..&#x2F;reading-and-writing&quot;&gt;read &amp;amp; write bytes&lt;&#x2F;a&gt; with &lt;code&gt;TcpStream&lt;&#x2F;code&gt; and then how to &lt;a href=&quot;..&#x2F;lines-codec&quot;&gt;abstract over that with a &lt;code&gt;LinesCodec&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; for sending and receiving &lt;code&gt;String&lt;&#x2F;code&gt; messages. In this post we&#x27;ll look into what it takes to build a custom protocol for message passing more than a single type of thing (like a &lt;code&gt;String&lt;&#x2F;code&gt;).&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;defining-our-message-structs&quot;&gt;Defining our Message Structs&lt;&#x2F;h2&gt;
+&lt;p&gt;To give our client and server more options for communicating we&#x27;ll create:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;code&gt;Request&lt;&#x2F;code&gt; message that allow the client to request &lt;em&gt;either&lt;&#x2F;em&gt;:
+&lt;ul&gt;
+&lt;li&gt;Echo a string&lt;&#x2F;li&gt;
+&lt;li&gt;Jumble a string with a specified amount of jumbling entropy&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;A &lt;code&gt;Response&lt;&#x2F;code&gt; message for the server to respond with the successfully echo&#x2F;jumbled &lt;code&gt;String&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Building a LinesCodec</title>
+        <published>2020-06-27T00:00:00+00:00</published>
+        <updated>2020-06-27T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/rust/tcpstream/lines-codec/" type="text/html"/>
+        <id>https://thepacketgeek.com/rust/tcpstream/lines-codec/</id>
+        
+        <summary type="html">&lt;p&gt;In the &lt;a href=&quot;..&#x2F;reading-and-writing&quot;&gt;previous post&lt;&#x2F;a&gt; we learned how to read &amp;amp; write bytes with &lt;code&gt;TcpStream&lt;&#x2F;code&gt;, but the calling code had to be aware of that and do the serialization&#x2F;deserialization.  In this demo, we&#x27;ll continue using &lt;code&gt;BufRead&lt;&#x2F;code&gt; and &lt;code&gt;BufReader&lt;&#x2F;code&gt; to build:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;code&gt;LinesCodec&lt;&#x2F;code&gt; that abstracts away &lt;code&gt;String&lt;&#x2F;code&gt; serialization&#x2F;deserialization &amp;amp; TcpStream I&#x2F;O&lt;&#x2F;li&gt;
+&lt;li&gt;A client that uses the &lt;code&gt;LinesCodec&lt;&#x2F;code&gt; to send and print returned &lt;code&gt;String&lt;&#x2F;code&gt;s&lt;&#x2F;li&gt;
+&lt;li&gt;A server that also uses the &lt;code&gt;LinesCodec&lt;&#x2F;code&gt; and reverses &lt;code&gt;String&lt;&#x2F;code&gt;s before echoing them back&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Reading and Writing Data</title>
+        <published>2020-06-27T00:00:00+00:00</published>
+        <updated>2020-06-27T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/rust/tcpstream/reading-and-writing/" type="text/html"/>
+        <id>https://thepacketgeek.com/rust/tcpstream/reading-and-writing/</id>
+        
+        <summary type="html">&lt;p&gt;For the start of our journey with &lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;stable&#x2F;std&#x2F;net&#x2F;struct.TcpStream.html&quot;&gt;TcpStream&lt;&#x2F;a&gt; we&#x27;ll take a look at what it takes to send and receive raw bytes.&lt;&#x2F;p&gt;
+&lt;p&gt;This demo is going to build up some concepts that result in a &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek&#x2F;rust-tcpstream-demo&#x2F;tree&#x2F;master&#x2F;raw&quot;&gt;demo found here&lt;&#x2F;a&gt;. The working concept is that we want to have a client send some data (a &lt;code&gt;String&lt;&#x2F;code&gt;) to a server that will echo the message back to the client. In further demos, we&#x27;ll progress this concept to do slightly more interesting things with the data on the server before sending back.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.01</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-01/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-01/</id>
+        
+        <summary type="html">&lt;h3 id=&quot;what-is-scapy&quot;&gt;What is Scapy?&lt;&#x2F;h3&gt;
+&lt;p&gt;No one can introduce Scapy better than the creator of the project himself:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Scapy is a powerful interactive packet manipulation program. It is able to forge or decode packets of a wide number of protocols, send them on the wire, capture them, match requests and replies, and much more. It can easily handle most classical tasks like scanning, tracerouting, probing, unit tests, attacks or network discovery&lt;&#x2F;p&gt;
+&lt;p&gt;It also performs very well at a lot of other specific tasks that most other tools can&#x27;t handle, like sending invalid frames, injecting your own 802.11 frames, combining technics (VLAN hopping+ARP cache poisoning, VOIP decoding on WEP encrypted channel, ...), etc.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Phil @  &lt;a href=&quot;http:&#x2F;&#x2F;www.secdev.org&#x2F;projects&#x2F;scapy&#x2F;&quot; target=&quot;_blank&quot;&gt;secdev.org&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.02</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-02/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-02/</id>
+        
+        <summary type="html">&lt;h4 id=&quot;installing-python&quot;&gt;Installing Python&lt;&#x2F;h4&gt;
+&lt;p&gt;Scapy was originally written for Python 2, but since the 2.4 release (March 2018), you can now use Scapy with Python 3.4+! I will prefer Python 3 in examples but will also include notes about big differences between each python version and Scapy if they exist.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.03</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-03/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-03/</id>
+        
+        <summary type="html">&lt;h4 id=&quot;running-scapy&quot;&gt;Running Scapy&lt;&#x2F;h4&gt;
+&lt;p&gt;Scapy can be run in two different modes, interactively from a terminal window and programmatically from a Python script. Let&#x27;s start getting familiar with Scapy using the interactive mode.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.04</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-04/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-04/</id>
+        
+        <summary type="html">&lt;h4 id=&quot;packets-layers-and-fields-oh-my&quot;&gt;Packets, Layers, and Fields. Oh My!&lt;&#x2F;h4&gt;
+&lt;p&gt;Scapy uses Python dictionaries as the data structure for packets. Each packet is a collection of nested dictionaries with each layer being a child dictionary of the previous layer, built from the lowest layer up. Visualizing the nested packet layers would look something like this:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-04&#x2F;scapy-packet-layers.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.05</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-05/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-05/</id>
+        
+        <summary type="html">&lt;p&gt;With a good understanding of how to view our packets we can now move onto some packet generation. Let&#x27;s talk a bit about sniffing first and how existing packets are our best tool for creating new ones.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.07</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-07/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-07/</id>
+        
+        <summary type="html">&lt;h4 id=&quot;using-scapy-in-a-python-script&quot;&gt;Using Scapy in a Python Script&lt;&#x2F;h4&gt;
+&lt;p&gt;So far we&#x27;ve been working with Scapy in interactive mode. It&#x27;s very powerful but there are times when it would be easier to work with a Python script instead. In order to use Scapy, we have to import the Scapy module like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;from scapy.all import *
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This will import all Scapy functions, but if you know that you will only need a few of the functions, you can import them individually as well like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;from scapy.all import sr1,IP,ICMP
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.08</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-08/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-08/</id>
+        
+        <summary type="html">&lt;p&gt;We&#x27;ve doing a lot of packet sniffing, analysis, and even some basic packet crafting of our own. With the ICMP packets we created, we only set the destination we wanted to use and let Scapy take care of the rest.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.09</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-09/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-09/</id>
+        
+        <summary type="html">&lt;p&gt;We&#x27;ve been able to work with Ethernet, ARP, IP, ICMP, and TCP pretty easily so far thanks to Scapy&#x27;s built in protocol support. Next on our list of protocols to work with are UDP and DNS.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;dns-request-and-response&quot;&gt;DNS Request and Response&lt;&#x2F;h4&gt;
+&lt;p&gt;Using the &lt;code&gt;sr1()&lt;&#x2F;code&gt; function, we can craft a DNS request and capture the returned DNS response. </summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.10</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-10/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-10/</id>
+        
+        <summary type="html">&lt;p&gt;We&#x27;ve seen a lot of cool applications for scapy in your network tools, but a good inspiration for new tools is to look at existing tools to figure out how they do their job. We will be emulating some nmap &amp;amp; Angry IP Scanner type features and creating the following tools:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-10&#x2F;#port-scanner&quot;&gt;TCP Port Range Scanner&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-10&#x2F;#ping-sweep&quot;&gt;ICMP Ping Sweep&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;building-network-tools&#x2F;part-10&#x2F;#sweep-and-scan&quot;&gt;Combining the Two&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.11</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-11/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-11/</id>
+        
+        <summary type="html">&lt;p&gt;I hope you had as much fun as I did getting started with Scapy. These are all starter ideas, but we&#x27;ve barely uncovered the tip of the iceberg. I&#x27;ll continue to write articles about cool Scapy tools I come up with but you should dig into the docs below and see what you find. If you have any questions or comments about this guide, feel free to contact me.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy Sniffing with Custom Actions</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/sniffing-custom-actions/part-1/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/sniffing-custom-actions/part-1/</id>
+        
+        <summary type="html">&lt;p&gt;Scapy has a &lt;code&gt;sniff&lt;&#x2F;code&gt; function that is great for getting packets off the wire, but there&#x27;s much more to show off how great this function really is! &lt;code&gt;sniff&lt;&#x2F;code&gt; has  an argument &lt;code&gt;prn&lt;&#x2F;code&gt; that allows you to pass a function that executes with each packet sniffed. The intended purpose of this function is to control how the packet prints out in the console allowing you to replace the default packet printing display with a format of your choice.&lt;&#x2F;p&gt;
+&lt;p&gt;The &lt;code&gt;prn&lt;&#x2F;code&gt; argument is defined as:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;prn: function to apply to each packet. If something is returned, it is displayed. For instance you can use prn = lambda x: x.summary().&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy Sniffing with Custom Actions</title>
+        <published>2019-05-11T00:00:00+00:00</published>
+        <updated>2019-05-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/sniffing-custom-actions/part-2/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/sniffing-custom-actions/part-2/</id>
+        
+        <summary type="html">&lt;p&gt;In the previous article I demonstrated how to add a custom function to change the formatting of the packet output in the console or do some sort of custom action with each packet. That example passed the function (a Callable) without any additional args. When the prn passed function is called (with each packet), it receives a single argument of the packet that was just sniffed.&lt;&#x2F;p&gt;
+&lt;p&gt;Using nested functions to harness the power of closure, you can bind any number of arguments to the function that is executed on each packet by Scapy. In order to bind additional arguments to the prn function, we have to use nested functions (similar to a decorator). Check out this example, created to upload the scapy packet info to an API via the Python Requests module:&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Processing and Storing BGP Messages in MongoDB</title>
+        <published>2015-06-27T00:00:00+00:00</published>
+        <updated>2015-06-27T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/exabgp/storing-in-mongo-db/" type="text/html"/>
+        <id>https://thepacketgeek.com/exabgp/storing-in-mongo-db/</id>
+        
+        <summary type="html">&lt;p&gt;Now that you know how to advertise prefixes to BGP peers with ExaBGP and are familiar with how to use this to influence traffic in your network, let&#x27;s change gears and look at processing BGP messages between ExaBGP and its peers. Since ExaBGP uses JSON for message data, I figured it would be a good opportunity to use &lt;a href=&quot;https:&#x2F;&#x2F;www.mongodb.org&#x2F;&quot; target=&quot;_blank&quot;&gt;MongoDB&lt;&#x2F;a&gt; so the message information can easily be stored into a database for data collection and analysis.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;storing-in-mongo-db&#x2F;exabgp-mongo-db.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Control BGP Advertisements</title>
+        <published>2015-06-23T00:00:00+00:00</published>
+        <updated>2015-06-23T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/exabgp/control-bgp-advertisements/" type="text/html"/>
+        <id>https://thepacketgeek.com/exabgp/control-bgp-advertisements/</id>
+        
+        <summary type="html">&lt;p&gt;We know that ExaBGP can be used to inject BGP routes into an AS that you control. It&#x27;s a very helpful feature that allows you to automate reachability and traffic flows within your network. But what if you want to you ExaBGP to influence what is advertised, or in this case, not advertised to external peers that are not willing to peer with your ExaBGP service?&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;control-bgp-advertisements&#x2F;exabgp-advertisements.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Advanced Route Announcement</title>
+        <published>2015-05-24T00:00:00+00:00</published>
+        <updated>2015-05-24T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/exabgp/advanced-route-announcement/" type="text/html"/>
+        <id>https://thepacketgeek.com/exabgp/advanced-route-announcement/</id>
+        
+        <summary type="html">&lt;p&gt;Now that you&#x27;re familiar with the basics of setting up a peer with ExaBGP and advertising routes, let&#x27;s look at expanding those concepts towards something that might actually be used in production.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;peering-with-multiple-bgp-routers&quot;&gt;Peering with Multiple BGP Routers&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;advanced-route-announcement&#x2F;exabgp-multi-peer.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Give ExaBGP an HTTP API</title>
+        <published>2015-05-22T00:00:00+00:00</published>
+        <updated>2015-05-22T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/exabgp/http-api/" type="text/html"/>
+        <id>https://thepacketgeek.com/exabgp/http-api/</id>
+        
+        <summary type="html">&lt;p&gt;We&#x27;ve covered how to setup ExaBGP and peer with a router, and then how to use python to add  and remove advertised routes in BGP either with static definitions or dynamically through health checking. There may be some of you out there with some sort of application that is already monitoring routes and you&#x27;re trying to figure out how to connect it with ExaBGP for the actual interaction part? Well, what if we add an HTTP API to ExaBGP to give programmatic access to ExaBGP from some external utility? I&#x27;ll go over two ways to do this using the Python built-in &lt;code&gt;SimpleHTTPServer&lt;&#x2F;code&gt; or &lt;a href=&quot;https:&#x2F;&#x2F;flask.palletsprojects.com&#x2F;en&#x2F;1.1.x&#x2F;&quot; target=&quot;_blank&quot;&gt;Flask&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Using service health checks to automate ExaBGP</title>
+        <published>2015-05-21T00:00:00+00:00</published>
+        <updated>2015-05-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/exabgp/automate-exabgp/" type="text/html"/>
+        <id>https://thepacketgeek.com/exabgp/automate-exabgp/</id>
+        
+        <summary type="html">&lt;p&gt;If you haven&#x27;t read the intro post to this series, &lt;a href=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;exabgp&#x2F;getting-started&#x2F;&quot;&gt;Getting Started with ExaBGP&lt;&#x2F;a&gt;, check that article out first as this post will be expanding on the previous example to show how to use python for more automated interaction with ExaBGP.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>ExaBGP and Python</title>
+        <published>2015-05-20T00:00:00+00:00</published>
+        <updated>2015-05-20T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/exabgp/getting-started/" type="text/html"/>
+        <id>https://thepacketgeek.com/exabgp/getting-started/</id>
+        
+        <summary type="html">&lt;p&gt;I&#x27;m really excited about these next few posts. I&#x27;ve been doing some research on BGP and automating routing decisions with python, which led to my discovery of &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Exa-Networks&#x2F;exabgp&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ExaBGP&lt;&#x2F;a&gt;. ExaBGP is dubbed &amp;quot;The BGP swiss army knife&amp;quot;, and I&#x27;m early in my experimentation with this tool, but it seems to be a very easy way to peer with your BGP routers and control the advertisement of networks.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Writing Packets to Trace File with Scapy</title>
+        <published>2015-05-20T00:00:00+00:00</published>
+        <updated>2015-05-20T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/writing-packets/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/writing-packets/</id>
+        
+        <summary type="html">&lt;p&gt;This is a follow-up post to accompany the previous &lt;a href=&quot;https:&#x2F;&#x2F;thepacketgeek.com&#x2F;scapy&#x2F;importing-pcaps&#x2F;&quot;&gt;importing packets from trace files with scapy&lt;&#x2F;a&gt; post. So you&#x27;ve sniffed or generated some packets with scapy and it&#x27;s time to write them to file to analyze and double-check your work. Here&#x27;s a simple example of how to save those packets.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;localhost:~ packetgeek$ scapy
+&amp;gt;&amp;gt;&amp;gt; packets = sniff(count=10)
+&amp;gt;&amp;gt;&amp;gt; packets
+&amp;lt;Sniffed: TCP:0 UDP:3 ICMP:0 Other:7&amp;gt;
+&amp;gt;&amp;gt;&amp;gt; wrpcap(&amp;#x27;sniffed.pcap&amp;#x27;, packets)
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Using the Packet Object</title>
+        <published>2014-11-12T00:00:00+00:00</published>
+        <updated>2014-11-12T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/pyshark/packet-object/" type="text/html"/>
+        <id>https://thepacketgeek.com/pyshark/packet-object/</id>
+        
+        <summary type="html">&lt;p&gt;So far in this series we&#x27;ve done a lot with capturing packets and working with the capture object, but finally we&#x27;re going to get to the fun part and finally start playing with some PACKETS!!!!&lt;&#x2F;p&gt;
+&lt;p&gt;When we have captured packets in a capture object, they are stored as a list of packet objects.  These packet objects will have methods and attributes that give us access to the header and payload info of each packet.  As stated in a previous post we have control for how much info about the packets we store in each packet option through the &lt;code&gt;only_summaries&lt;&#x2F;code&gt; argument in the LiveCapture and ReadCapture modules.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Using the Capture Object</title>
+        <published>2014-11-11T00:00:00+00:00</published>
+        <updated>2014-11-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/pyshark/capture-object/" type="text/html"/>
+        <id>https://thepacketgeek.com/pyshark/capture-object/</id>
+        
+        <summary type="html">&lt;p&gt;Now that we know how to use the FileCapture and LiveCapture modules to capture some packets, let&#x27;s see what options we have with the returned capture object (truncated list for brevity):&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;sh&quot; class=&quot;language-sh &quot;&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&amp;gt;&amp;gt;&amp;gt; dir(cap)
+Out[3]:
+[&amp;#x27;apply_on_packets&amp;#x27;,
+ &amp;#x27;close&amp;#x27;,
+ &amp;#x27;current_packet&amp;#x27;,
+ &amp;#x27;display_filter&amp;#x27;,
+ &amp;#x27;encryption&amp;#x27;,
+ &amp;#x27;input_filename&amp;#x27;,
+ &amp;#x27;next&amp;#x27;,
+ &amp;#x27;next_packet&amp;#x27;]
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>FileCapture and LiveCapture modules</title>
+        <published>2014-11-10T00:00:00+00:00</published>
+        <updated>2014-11-10T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/pyshark/capture-modules/" type="text/html"/>
+        <id>https://thepacketgeek.com/pyshark/capture-modules/</id>
+        
+        <summary type="html">&lt;p&gt;The two typical ways to start analyzing packets are via PyShark&#x27;s FileCapture and LiveCapture modules. The first will import packets from a saved capture file, and the latter will sniff from a network interface on the local machine. Running these modules will return a capture object which I will cover in depth in the next post. For now, let&#x27;s see what we can do with these two modules.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Intro to PyShark</title>
+        <published>2014-11-08T00:00:00+00:00</published>
+        <updated>2014-11-08T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/pyshark/intro-to-pyshark/" type="text/html"/>
+        <id>https://thepacketgeek.com/pyshark/intro-to-pyshark/</id>
+        
+        <summary type="html">&lt;p&gt;I can hardly believe it took me this long to find PyShark, but I am very glad I did! PyShark is a wrapper for the Wireshark CLI interface, tshark, so all of the Wireshark decoders are available to PyShark! It is so amazing that I started a new project just so I could use this amazing new tool: &lt;a title=&quot;Cloud-Pcap&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek&#x2F;cloud-pcap&quot; target=&quot;_blank&quot;&gt;Cloud-Pcap&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;You can use PyShark to sniff from a interface or open a saved capture file, as the docs show on the &lt;a title=&quot;PyShark&quot; href=&quot;http:&#x2F;&#x2F;kiminewt.github.io&#x2F;pyshark&#x2F;&quot; target=&quot;_blank&quot;&gt;overview page here&lt;&#x2F;a&gt;:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;import pyshark
+
+# Open saved trace file 
+cap = pyshark.FileCapture(&amp;#x27;&amp;#x2F;tmp&amp;#x2F;mycapture.cap&amp;#x27;)
+
+# Sniff from interface
+capture = pyshark.LiveCapture(interface=&amp;#x27;eth0&amp;#x27;)
+capture.sniff(timeout=10)
+&amp;lt;LiveCapture (5 packets)&amp;gt;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Importing packets from trace files with Scapy</title>
+        <published>2014-09-25T00:00:00+00:00</published>
+        <updated>2014-09-25T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/importing-pcaps/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/importing-pcaps/</id>
+        
+        <summary type="html">&lt;p&gt;Scapy is amazingly flexible when it comes to creating packets, but in some cases you may want to mangle or change packets that you&#x27;ve sniffed and saved in a trace file. Scapy currently supports .cap, .pcap, and .pcapng files.  Reading these files are possible through the &lt;code&gt;rdpcap()&lt;&#x2F;code&gt; function:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;sh&quot; class=&quot;language-sh &quot;&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;localhost:~ packetgeek$ scapy
+&amp;gt;&amp;gt;&amp;gt; packets = rdpcap(&amp;#x27;IBGP_adjacency.cap&amp;#x27;)
+&amp;gt;&amp;gt;&amp;gt; packets
+&amp;lt;IBGP_adjacency.cap: TCP:17 UDP:0 ICMP:0 Other:0&amp;gt;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Scapy p.06</title>
+        <published>2013-10-29T00:00:00+00:00</published>
+        <updated>2013-10-29T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://thepacketgeek.com/scapy/building-network-tools/part-06/" type="text/html"/>
+        <id>https://thepacketgeek.com/scapy/building-network-tools/part-06/</id>
+        
+        <summary type="html">&lt;p&gt;We&#x27;ve sniffed some packets, dig down into packet layers and fields, and even sent some packets. Great job! It&#x27;s time to step up our game with Scapy and start really using some of the power Scapy contains. Please Note: this next example is for education and example only. Please be responsible on your network, especially at work!&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

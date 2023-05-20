@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Scapy p.05</h2>
+  <h4 class="subtitle inline">Sending our First Packet; ARP Response</h4>
+  <div class="post-details">
+    May - 2019
+    <em>(~5 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>With a good understanding of how to view our packets we can now move onto some packet generation. Let's talk a bit about sniffing first and how existing packets are our best tool for creating new ones.</p>
+<span id="continue-reading"></span><h4 id="sniff-function-arguments">Sniff() function arguments</h4>
+<p>We've used the <code>sniff()</code> function a couple times already to capture some packets for viewing. I'm going to explain a little bit more about the <code>sniff()</code> function and its arguments. The arguments we will be talking about are:</p>
+<ul>
+<li><strong>count:</strong> Number of packets to capture. 0 means infinity.</li>
+<li><strong>iface:</strong> Sniff for packets only on the provided interface.</li>
+<li><strong>prn:</strong> Function to apply to each packet. If something is returned, it is displayed. For instance you can use prn = lambda x: x.summary().</li>
+<li><strong>store:</strong> Whether to store sniffed packets or discard them. When you only want to monitor your network forever, set store to 0.</li>
+<li><strong>timeout:</strong> Stop sniffing after a given time (default: None).</li>
+</ul>
+<p>These should all be self-explanatory except for the <code>filter</code> and <code>prn</code> arguments. The <code>filter</code> argument takes <a href="http://biot.com/capstats/bpf.html" target="_blank" rel="noopener noreferrer">BPF syntax filters</a>, just like Wireshark or tcpdump capture filters. The <code>prn</code> argument is a very cool capability of the <code>sniff()</code> function and you can read more about it here: <a href="https://thepacketgeek.com/scapy/sniffing-custom-actions/part-1/">Scapy and custom actions</a>.</a></p>
+<p>Since we want to generate our first ARP packet we should go ahead and sniff one to see what it takes to recreate one using the <code>.show()</code> and <code>.command()</code> method. Here's a sniff using the <code>count</code> and <code>filter</code> arguments:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts = sniff(count=5, filter=&quot;arp&quot;)
+&gt;&gt;&gt; pkts.summary()
+Ether &#x2F; ARP who has 172.16.20.255 says 172.16.20.40 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.244 says 172.16.20.40 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.252 says 172.16.20.40 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.253 says 172.16.20.40 &#x2F; Padding
+Ether &#x2F; ARP who has 172.16.20.80 says 172.16.20.74 &#x2F; Padding
+&gt;&gt;&gt; pkts[0].show()
+###[ Ethernet ]###
+  dst= ff:ff:ff:ff:ff:ff
+  src= 00:11:22:aa:bb:cc
+  type= 0x806
+###[ ARP ]###
+     hwtype= 0x1
+     ptype= 0x800
+     hwlen= 6
+     plen= 4
+     op= who-has
+     hwsrc= 00:11:22:aa:bb:cc
+     psrc= 172.16.20.40
+     hwdst= 00:00:00:00:00:00
+     pdst= 172.16.20.255
+###[ Padding ]###
+&gt;&gt;&gt; pkts[0].command()
+&quot;Ether(src=&#x27;00:11:22:aa:bb:cc&#x27;, dst=&#x27;ff:ff:ff:ff:ff:ff&#x27;, type=2054)&#x2F;ARP(hwdst=&#x27;00:00:00:00:00:00&#x27;, ptype=2048, hwtype=1, psrc=&#x27;172.16.20.40&#x27;, hwlen=6, plen=4, pdst=&#x27;172.16.20.255&#x27;, hwsrc=&#x27;00:11:22:aa:bb:cc&#x27;, op=2)&quot;
+</code></pre>
+<h4 id="building-a-packet">Building a Packet</h4>
+<p>It looks like ARP packets only have 2 layers plus padding that we have to worry about. We can use the <code>ls()</code> function on the Ether and ARP layers to see what options are available to us:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; ls(Ether)
+dst        : DestMACField         = (None)
+src        : SourceMACField       = (None)
+type       : XShortEnumField      = (0)
+&gt;&gt;&gt; ls(ARP)
+hwtype     : XShortField          = (1)
+ptype      : XShortEnumField      = (2048)
+hwlen      : ByteField            = (6)
+plen       : ByteField            = (4)
+op         : ShortEnumField       = (1)
+hwsrc      : ARPSourceMACField    = (None)
+psrc       : SourceIPField        = (None)
+hwdst      : MACField             = (&#x27;00:00:00:00:00:00&#x27;)
+pdst       : IPField              = (&#x27;0.0.0.0&#x27;)
+</code></pre>
+<p>Let's create our ARP packet and start assigning some values. We construct a new ARP packet, and use the assignment operator customize specific fields of our packet:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; arppkt = Ether()&#x2F;ARP()
+&gt;&gt;&gt; arppkt[ARP].hwsrc = &quot;00:11:22:aa:bb:cc&quot;
+&gt;&gt;&gt; arppkt[ARP].pdst = &quot;172.16.20.1&quot;
+&gt;&gt;&gt; arppkt[Ether].dst = &quot;ff:ff:ff:ff:ff:ff&quot;
+&gt;&gt;&gt; arppkt
+&lt;Ether  dst=ff:ff:ff:ff:ff:ff type=0x806 |&lt;ARP  hwsrc=00:11:22:aa:bb:cc pdst=172.16.20.1 |&gt;&gt;
+</code></pre>
+<p>The layers we want are defined with the with the <code>Layer()</code> notation. This will work for any layer in the <code>ls()</code> command output. That's a lot of options! You can also define the packet from scratch with all the options in one statement by passing in the fields as arguments to the related layer.</p>
+<p>Note that the special glue holding these packets together is the <code>/</code> operator. If you happen to forget a layer when you're first defining the packet, you can add on a layer very easily using the existing packet and the <code>/</code> operator like this:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; tcppkt = Ether()&#x2F;IP()
+&gt;&gt;&gt; tcppkt
+&lt;Ether  type=0x800 |&lt;IP  |&gt;&gt;
+&gt;&gt;&gt; tcppkt = tcppkt&#x2F;TCP()
+&gt;&gt;&gt; tcppkt
+&lt;Ether  type=0x800 |&lt;IP  frag=0 proto=tcp |&lt;TCP  |&gt;&gt;&gt;
+</code></pre>
+<h4 id="sending-a-packet">Sending a packet</h4>
+<p>Yup, you guessed it, its finally time to send this ARP packet out on the wire! Since ARP is a L2 protocol we're going to use the <code>sendp()</code> function as the <code>send()</code> function only works with L3 Packets (IP or IPv6 headers):</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; arppkt
+&lt;Ether  dst=ff:ff:ff:ff:ff:ff src=00:11:22:aa:bb:cc type=0x806 |&lt;ARP  hwsrc=00:11:22:aa:bb:cc pdst=172.16.20.1 |&gt;&gt;
+&gt;&gt;&gt; sendp(arppkt)
+.
+Sent 1 packets.
+</code></pre>
+<p><img src="https://thepacketgeek.com/scapy/building-network-tools/part-05/scapy-sent-arp-packet.png" alt="" /></p>
+<blockquote>
+<p>Screenshot of capture packet in Wireshark</p>
+</blockquote>
+<p>What, what! Check that out! Our packet out from the scapy console and in the wire! Pretty cool, right? Well, here's a fun fact. We don't need to create and build the packet before sending it, we can define the packet right there in the <code>send()</code> or <code>sendp()</code> function like this:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; sendp(Ether(dst=&quot;ff:ff:ff:ff:ff:ff&quot;,src=&quot;00:11:22:aa:bb:cc&quot;)&#x2F;ARP(hwsrc=&quot;00:11:22:aa:bb:cc&quot;,pdst=&quot;172.16.20.1&quot;))
+.
+Sent 1 packets.
+</code></pre>
+<p>In fact, we can do some other cool things with these send functions. If we had an array of packets (such as one created with Python loops and some random or incrementing values for IP address/TCP port), the send function would send each packet in that array:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; pkts
+&lt;Sniffed: TCP:0 UDP:5 ICMP:4 Other:1&gt;
+&gt;&gt;&gt; send(pkts)
+..........
+Sent 10 packets.
+</code></pre>
+<p>The send commands have some arguments to control the packet sending, here's the main ones you might consider using:</p>
+<p><strong>send(pkts, inter=0, loop=0)<br />
+sendp(pkts, inter=0, loop=0)</strong></p>
+<ul>
+<li><strong>iface:</strong> The interface to send the packets out from.</li>
+<li><strong>inter:</strong> Time in seconds to wait between 2 packets.</li>
+<li><strong>loop:</strong> Send the packets endlessly if not 0.</li>
+<li><strong>pkts:</strong> Can be a packet, an implicit packet or a list of them.</li>
+</ul>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">Using service health checks to automate ExaBGP</h2>
+  <h4 class="subtitle inline"></h4>
+  <div class="post-details">
+    May - 2015
+    <em>(~4 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>If you haven't read the intro post to this series, <a href="https://thepacketgeek.com/exabgp/getting-started/">Getting Started with ExaBGP</a>, check that article out first as this post will be expanding on the previous example to show how to use python for more automated interaction with ExaBGP.</p>
+<span id="continue-reading"></span>
+<p>The first example I'll cover is using a basic health check test to determine if a route should be announced or withdrawn from BGP. Here is our python script <code>healthcheck.py</code> with comments inline:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#!&#x2F;usr&#x2F;bin&#x2F;env python3
+
+import socket
+from sys import stdout
+from time import sleep
+
+
+def is_alive(address, port):
+    &quot;&quot;&quot; This is a function that will test TCP connectivity of a given
+    address and port. If a domain name is passed in instead of an address,
+    the socket.connect() method will resolve.
+ 
+    address (str): An IP address or FQDN of a host
+    port (int): TCP destination port to use
+ 
+    returns (bool): True if alive, False if not
+    &quot;&quot;&quot;
+ 
+    # Create a socket object to connect with
+    s = socket.socket()
+    
+    # Now try connecting, passing in a tuple with address &amp; port
+    try:
+        s.connect((address, port))
+        return True
+    except socket.error:
+        return False
+    finally:
+        s.close()
+
+while True:
+    if is_alive(&#x27;thepacketgeek.com&#x27;, 80):
+        stdout.write(&#x27;announce route 100.10.10.0&#x2F;24 next-hop self&#x27; + &#x27;\n&#x27;)
+        stdout.flush()
+    else:
+        stdout.write(&#x27;withdraw route 100.10.10.0&#x2F;24 next-hop self&#x27; + &#x27;\n&#x27;)
+        stdout.flush()
+    sleep(10)
+</code></pre>
+<p>Let's update our ExaBGP's <code>conf.ini</code> to run this python script:</p>
+<pre data-lang="ini" class="language-ini "><code class="language-ini" data-lang="ini">process healthcheck {
+    run &#x2F;path&#x2F;to&#x2F;python3 &#x2F;path&#x2F;to&#x2F;healthcheck.py;
+    encoder json;
+}
+
+neighbor 172.16.2.10 {
+    router-id 172.16.2.1;
+    local-address 172.16.2.1;
+    local-as 65000;
+    peer-as 65000;
+
+    api {
+        processes [healthcheck];
+    }
+}
+</code></pre>
+<p>Now when we run ExaBGP with <code>$ exabgp conf.ini</code>, the health check python script will also run and push either 'announce' or 'withdraw' commands depending on the service availability. It doesn't matter that we're sending BGP UPDATE messages with the same route over and over again, but we may want to increase the delay if it's causing high CPU on the device. Here's what we see in the ExaBGP output about every 10 seconds:</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">... | INFO | 1095 | processes | Command from process healthcheck : announce route 100.10.10.0&#x2F;24 next-hop self
+... | INFO | 1095 | reactor | Route added to neighbor 172.16.2.128 local-ip 172.16.2.1 local-as 65000 peer-as 65000 router-id 172.16.2.1 family-allowed in-open : 100.10.10.0&#x2F;24 next-hop 172.16.2.1
+... | INFO | 1095 | reactor | Performing dynamic route update
+... | INFO | 1095 | reactor | Updated peers dynamic routes successfully
+</code></pre>
+<p>Very cool, right? Ok, but now what if we block/kill the TCP check?</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">... | INFO     | 1095   | processes     | Command from process healthcheck : withdraw route 100.10.10.0&#x2F;24 next-hop self
+... | INFO     | 1095   | reactor       | Route removed : 100.10.10.0&#x2F;24 next-hop 172.16.2.1
+... | INFO     | 1095   | reactor       | Performing dynamic route update
+... | INFO     | 1095   | reactor       | Updated peers dynamic routes successfully
+</code></pre>
+<p>Boom, routes removed. That's fantastic. What if we want to check multiple end hosts and automate different prefix advertisements? Well, that could entail an entire application to manage and monitor the end host and prefix objects, but here's a quick and dirty modification of our <code>healthcheck.py</code> script:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">#!&#x2F;usr&#x2F;bin&#x2F;env python3
+
+import socket
+from collections import namedtuple
+from sys import stdout
+from time import sleep
+
+ 
+def is_alive(address, port):
+    &quot;&quot;&quot; same as above, removed for brevity &quot;&quot;&quot;
+
+# Add namedtuple object for easy reference below
+TrackedObject = namedtuple(&#x27;EndHost&#x27;, [&#x27;address&#x27;,&#x27;port&#x27;,&#x27;prefix&#x27;, &#x27;nexthop&#x27;])
+
+
+# Make a list of these tracked objects
+tracked_objects = [
+    TrackedObject(&#x27;thepacketgeek.com&#x27;, 80, &#x27;100.10.10.0&#x2F;24&#x27;, &#x27;self&#x27;),
+    TrackedObject(&#x27;8.8.8.8&#x27;, 53, &#x27;200.20.20.0&#x2F;24&#x27;, &#x27;self&#x27;),
+]
+
+
+while True:
+    for host in tracked_objects:
+        if is_alive(host.address, host.port):
+            stdout.write(&#x27;announce route {} next-hop {}\n&#x27;.format(host.prefix, host.nexthop))
+            stdout.flush()
+        else:
+            stdout.write(&#x27;withdraw route {} next-hop {}\n&#x27;.format(host.prefix, host.nexthop))
+            stdout.flush()
+    sleep(10)
+</code></pre>
+<p>We can create a list of tracked objects to iterate through every 10 seconds or so (depending on timeouts and availability of the services we're checking). Just picture the flexibility possible if we were to read from a database for each tracked object and do some real threading to get the timing of the checks more precise.</p>
+<p>The next post in this series will expand on the automation of ExaBGP using python by providing an API to control routes from an external system.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="section">
+  <h1 class="section-title">PyShark</h1>
+  <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;pyshark&#x2F;intro-to-pyshark&#x2F;">Intro to PyShark</a></h2>
+    <h4 class="subtitle inline">for Programmatic Packet Analysis</h4>
+    <div class="post-details post-indent">
+      Nov - 2014
+      <em>(~3 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>I can hardly believe it took me this long to find PyShark, but I am very glad I did! PyShark is a wrapper for the Wireshark CLI interface, tshark, so all of the Wireshark decoders are available to PyShark! It is so amazing that I started a new project just so I could use this amazing new tool: <a title="Cloud-Pcap" href="https://github.com/thepacketgeek/cloud-pcap" target="_blank">Cloud-Pcap</a>.</p>
+<p>You can use PyShark to sniff from a interface or open a saved capture file, as the docs show on the <a title="PyShark" href="http://kiminewt.github.io/pyshark/" target="_blank">overview page here</a>:</p>
+<pre data-lang="python" class="language-python "><code class="language-python" data-lang="python">import pyshark
+
+# Open saved trace file 
+cap = pyshark.FileCapture(&#x27;&#x2F;tmp&#x2F;mycapture.cap&#x27;)
+
+# Sniff from interface
+capture = pyshark.LiveCapture(interface=&#x27;eth0&#x27;)
+capture.sniff(timeout=10)
+&lt;LiveCapture (5 packets)&gt;
+</code></pre>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;pyshark&#x2F;capture-object&#x2F;">Using the Capture Object</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      Nov - 2014
+      <em>(~2 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>Now that we know how to use the FileCapture and LiveCapture modules to capture some packets, let's see what options we have with the returned capture object (truncated list for brevity):</p>
+<pre data-lang="sh" class="language-sh "><code class="language-sh" data-lang="sh">&gt;&gt;&gt; dir(cap)
+Out[3]:
+[&#x27;apply_on_packets&#x27;,
+ &#x27;close&#x27;,
+ &#x27;current_packet&#x27;,
+ &#x27;display_filter&#x27;,
+ &#x27;encryption&#x27;,
+ &#x27;input_filename&#x27;,
+ &#x27;next&#x27;,
+ &#x27;next_packet&#x27;]
+</code></pre>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;pyshark&#x2F;capture-modules&#x2F;">FileCapture and LiveCapture modules</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      Nov - 2014
+      <em>(~4 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>The two typical ways to start analyzing packets are via PyShark's FileCapture and LiveCapture modules. The first will import packets from a saved capture file, and the latter will sniff from a network interface on the local machine. Running these modules will return a capture object which I will cover in depth in the next post. For now, let's see what we can do with these two modules.</p>
+</div>
+    <hr class="lead" />
+  
+    <h2 class="title inline"><a href="https:&#x2F;&#x2F;thepacketgeek.com&#x2F;pyshark&#x2F;packet-object&#x2F;">Using the Packet Object</a></h2>
+    <h4 class="subtitle inline"></h4>
+    <div class="post-details post-indent">
+      Nov - 2014
+      <em>(~5 minutes read time)</em>
+    </div>
+    <div class="post-indent"><p>So far in this series we've done a lot with capturing packets and working with the capture object, but finally we're going to get to the fun part and finally start playing with some PACKETS!!!!</p>
+<p>When we have captured packets in a capture object, they are stored as a list of packet objects.  These packet objects will have methods and attributes that give us access to the header and payload info of each packet.  As stated in a previous post we have control for how much info about the packets we store in each packet option through the <code>only_summaries</code> argument in the LiveCapture and ReadCapture modules.</p>
+</div>
+    <hr class="lead" />
+  
+</div>
+
+        </div>
+
+    </body>
+
+</html>

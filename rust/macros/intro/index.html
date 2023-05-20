@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title>thePacketGeek</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://thepacketgeek.com/print.css" media="print">
+      <link rel="stylesheet" href="https://thepacketgeek.com/poole.css">
+      <link rel="stylesheet" href="https://thepacketgeek.com/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://thepacketgeek.com/atom.xml">
+      
+
+      
+<link rel="shortcut icon" type="image/jpg" href="https://thepacketgeek.com/favicon.ico"/>
+
+<script>
+(function (i, s, o, g, r, a, m) {
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', "UA-44238008-1", 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JCBHFFH3Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0JCBHFFH3Q');
+</script>
+
+<link rel="stylesheet" href="https://thepacketgeek.com/css/fontawesome.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/css/brands.min.css">
+<link rel="stylesheet" href="https://thepacketgeek.com/site.css">
+<script type="text/javascript" src="https://thepacketgeek.com/elasticlunr.min.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/search_index.en.js"></script>
+<script type="text/javascript" src="https://thepacketgeek.com/js/search.js"></script>
+
+    </head>
+
+    <body class="theme-base-0d ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+    <div class="title-box">
+        <a href="https:&#x2F;&#x2F;thepacketgeek.com"><h2>thePacketGeek</h2></a>
+    </div>
+    
+    <p class="lead">a developing networker</p>
+    
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;github.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-github"></i>
+            
+        </a>
+    
+        <a class="pad-right-6" href="https:&#x2F;&#x2F;twitter.com&#x2F;thepacketgeek">
+            
+            <i class="fab fa-twitter"></i>
+            
+        </a>
+    
+
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+<hr class="lead" />
+<li class="pad-bottom-12"> Categories </li>
+<li class="sidebar-nav-item">
+    <a href="/rust/">Rust</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/exabgp/">Exabgp</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/scapy/">Scapy</a>
+</li>
+<li class="sidebar-nav-item">
+    <a href="/pyshark/">PyShark</a>
+</li>
+<hr class="lead" />
+<div class="search-container">
+    <input id="search" type="search" placeholder="🔎 Search">
+
+    <div class="search-results">
+        <div class="search-results__items"></div>
+    </div>
+</div>
+
+                    </ul>
+                    
+                    <ul class="sidebar-footer">
+                        
+
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h2 class="title inline">First Macro: timeit!</h2>
+  <h4 class="subtitle inline"></h4>
+  <div class="post-details">
+    Jul - 2020
+    <em>(~7 minutes read time)</em>
+  </div>
+  <hr class="lead divider" />
+  <p>This series serves as a practical (<em>but not-exhaustive</em>) introduction to declarative <code>macro_rules!</code>. I've put together some <a href="https://github.com/thepacketgeek/rust-macros-demo">Rust macro examples</a> to show how macros can be helpful for improving ergonomics around repetitive or error-prone tasks. The examples cover some great scenarios for macros like:</p>
+<ul>
+<li>Print out the time a block of code takes to execute</li>
+<li>Adding retries around intermittently fallible code</li>
+<li>Making data structure initialization easier for common options</li>
+</ul>
+<span id="continue-reading"></span><h2 id="what-are-macros">What are macros?</h2>
+<p>To introduce macros, I'll take a direct quote from the <a href="https://doc.rust-lang.org/1.7.0/book/macros.html">Macro chapter in the Rust Book</a>:</p>
+<blockquote>
+<p>Macros allow us to abstract at a syntactic level. A macro invocation is shorthand for an &quot;expanded&quot; syntactic form. This expansion happens early in compilation, before any static checking. As a result, macros can capture many patterns of code reuse that Rust’s core abstractions cannot.</p>
+</blockquote>
+<p>The example given shows how <code>vec![]</code>, which you're likely used, is a shorthand alternative to a tedious <code>Vec</code> instantiation:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let my_values: Vec&lt;u3&gt; = vec![10, 20, 30, 40];
+</code></pre>
+<p>becomes:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let my_values = {
+    let mut temp_vec: Vec&lt;u32&gt; = Vec::new();
+    temp_vec.push(10);
+    temp_vec.push(20);
+    temp_vec.push(30);
+    temp_vec.push(40);
+    temp_vec
+}
+</code></pre>
+<p>What we'll cover in this post is how we can use <code>macro_rules!</code> to create our own shorthand abstractions.</p>
+<h3 id="viewing-macro-output">Viewing macro output</h3>
+<p>As we start building some macros I'll be showing output of the generated Rust code using <a href="https://crates.io/crates/cargo-expand">cargo-expand</a>. It's an invaluable tool to see what the <code>macro_rules!</code> code is generating. I recommend installing <code>cargo-expand</code> to be able to follow along and test out your own macros.</p>
+<h3 id="defining-macros-with-macro-rules">Defining Macros with macro_rules!</h3>
+<p>Rust has a special syntax for declaring macros via <code>macro_rules!</code> blocks. Macros will have one or more match rules, to allow the macro to match &amp; parse the tokens &amp; expressions withing the invoking call. In that way, you'll see some similarities to Rust's <code>match</code> blocks and value destructuring. Let's look at how the syntax is laid out:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;* |--- Tell Rust compiler: this is a macro definition
+   v           v-- macro name (how it will be called)  *&#x2F;
+macro_rules! macro_name {
+&#x2F;*   |--- Match rule
+     v          v -- macro name (how it will be called)  *&#x2F;
+    (...) =&gt; { ... }
+    &#x2F;&#x2F; more match rules
+}
+</code></pre>
+<p>To see the full details on macro syntax, check out the <a href="https://doc.rust-lang.org/1.7.0/book/macros.html#syntactic-requirements">Rust Book's Syntax section</a>. The rest of this post will cover just a subset of topics.</p>
+<h2 id="building-timeit">Building timeit!()</h2>
+<p>The rest of this artcle will focus on a building a <code>timeit!</code> macro, inspired by Python's <a href="https://docs.python.org/3.8/library/timeit.html"><code>timeit</code> module</a>. It will allow us to log the execution time for closures &amp; functions; here's a usage example:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn wait_for_it() -&gt; String {
+    std::thread::sleep(std::time::Duration::from_secs(2));
+    return String::from(&quot;...Legendary!&quot;);
+}
+
+fn main() {
+    eprintln!(&quot;This is going to be...&quot;);
+    let res = timeit!(wait_for_it());
+    eprintln!(&quot;{}&quot;, res);
+}
+</code></pre>
+<h4 id="output"><strong><code>output</code></strong></h4>
+<pre><code>This is going to be...
+&#x27;wait_for_it&#x27; took 2002 ms
+...Legendary!
+</code></pre>
+<h3 id="implementing-timeit">Implementing timeit!</h3>
+<p>The essence of the syntax <code>timeit!</code> is trying to create shorthand for is:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">{
+    let start_time = std::time::Instant::now();
+    &#x2F;&#x2F; Code to time goes here
+    eprintln!(&quot;Took {:.3} ms&quot;, start_time.elapsed().as_millis());
+}
+</code></pre>
+<h2 id="wrapping-a-closure-via-matching-and-expanding">Wrapping a Closure via Matching and Expanding</h2>
+<p>The first use case has the most straight-forward since the closere is matched in <code>macro_rules!</code> as a single <code>expr</code> match type:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! timeit {
+    &#x2F;&#x2F; This match captures the `expr` passed in as `$e`,
+    &#x2F;&#x2F; which the macro will assume is callable (E.g. a closure or function)
+    ($e:expr) =&gt; {{
+        &#x2F;&#x2F; Before calling `$e`, track the current instant
+        let _start = std::time::Instant::now();
+        &#x2F;&#x2F; `$e` could return something (or the implied unit struct `()`), so capture that in `_res`
+        let _res = $e();
+        &#x2F;&#x2F; Log the elapsed time
+        eprintln!(&quot;Took {:.3} ms&quot;, _start.elapsed().as_millis());
+        &#x2F;&#x2F; and return whatever our closure returned
+        _res
+    }};
+}
+</code></pre>
+<p>Which allows us to use the macro like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use std::io;
+use std::fs::read_to_string;
+
+fn main() -&gt; io::Result&lt;()&gt; {
+    let file_contents = read_to_string(&quot;path&#x2F;to&#x2F;file.txt&quot;)?;
+    let result = timeit!(|| {
+        my_lib::process_file(&amp;file_contents)
+    });
+    println!(&quot;{}&quot;, results);
+    Ok(())
+}
+</code></pre>
+<h4 id="output-1"><strong><code>output</code></strong></h4>
+<pre><code>Took 0.150 ms
+Results: ...
+</code></pre>
+<h2 id="wrapping-a-function-call">Wrapping a Function Call</h2>
+<p>Much like Rust's <code>match</code> blocks, ordering of rules is significant and the first pattern that matches will get executed. We can use this to our advantage and have a match rule that will attempt to match on function calls so that we can automatically include the function name in the logging output (to reduce ambiguity in code with multiple <code>timeit!</code> calls).</p>
+<h3 id="repetitive-matches-and-expansion">Repetitive Matches and Expansion</h3>
+<p>Match rules can match an arbitrary number of homegenious items, much like the values passed into <code>vec![...]</code>. There isn't a match rule setup for each possibility of passed arguments, but rather the variadic arguments are captured in a match and the macro rule block can repeat syntax for each arg (like the <code>temp_vec.push(...);</code> lines in <code>vec![]</code>).</p>
+<p>Given a macro call like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">vec![10, 20, 30]
+</code></pre>
+<p>The match rule could look like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">( $($args:expr),*) )
+&#x2F;&#x2F;     ^--- A repeating series of `expr` with non-captured comma separators
+</code></pre>
+<p>After capturing, a representation of the matches might look something like:</p>
+<pre><code>$args = [10, 20, 30]
+</code></pre>
+<p>When using the captured <code>$args</code> in the macro block, they can be re-assembled with comma separators like:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">let mut temp_vec = Vec::new();
+&#x2F;*
+ v-- things inside $( .. )* are repeated per item *&#x2F;
+$(
+   temp_vec.push($args);
+)*
+</code></pre>
+<h3 id="exploding-and-re-assembling-a-function-call">Exploding and Re-assembling a Function Call</h3>
+<p>In order to attempt matching a function call, we'll place a new match rule at the beginning of our <code>macro_rules!</code> block, so when it doesn't match the rule the macro will proceed to the next rule to find a match:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">macro_rules! timeit {
+    &#x2F;*  |--- function name (in this case: slow_sum)
+        v     v--- the open paren before the function args   *&#x2F;
+    ($n:ident ( $($args:expr),*)) =&gt; {{
+    &#x2F;*                ^          ^--- the closing paren after the function args)
+                      |--- A repeating series of `arg` with non-captured comma separators *&#x2F;
+        let _start = std::time::Instant::now();
+
+        &#x2F;&#x2F;              v--------v -&gt; repeat each arg with following comma
+        let _res = $n( $( $args, )* );
+        &#x2F;&#x2F;          ^--- our captured function name
+
+        &#x2F;&#x2F; Use the function name (ident) in the log
+        eprintln!(&quot;&#x27;{}&#x27; took {:.3} ms&quot;, stringify!($n), _start.elapsed().as_millis());
+
+        &#x2F;&#x2F; return whatever the result of our function is (pass-through, like `dbg!()`)
+        _res
+    }};
+    ($e:expr) =&gt; {{ .. }}  &#x2F;&#x2F; &lt;-- our existing rule
+}
+</code></pre>
+<p>And we can see the effect of our macro via <code>cargo-expand</code>, targeted at our macro tests:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">#[test]
+fn test_simple() {
+    timeit!(|| { std::thread::sleep(std::time::Duration::from_secs(1)) });
+}
+</code></pre>
+<p>Becomes (comments added by me):</p>
+<h4 id="cargo-expand-lib-tests-tests-test-simple"><strong>`$ cargo expand --lib --tests tests::test_simple</strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn test_simple() {
+&#x2F;&#x2F;  v-- Start of our macro block
+    {
+        &#x2F;&#x2F; This you should recognize
+        let _start = std::time::Instant::now();
+        &#x2F;&#x2F; And this is `$e();` expanded
+        let _res = (|| std::thread::sleep(std::time::Duration::from_secs(1)))();
+        &#x2F;&#x2F; Followed by the expansion of `eprintln!()`
+        {
+            ::std::io::_eprint(::core::fmt::Arguments::new_v1_formatted(
+                &amp;[&quot;Took &quot;, &quot; ms\n&quot;], &#x2F;&#x2F; &lt;-- This is us!
+                &amp;match (&amp;_start.elapsed().as_millis(),) {
+                    (arg0,) =&gt; [::core::fmt::ArgumentV1::new(
+                        arg0,
+                        ::core::fmt::Display::fmt,
+                    )],
+                },
+                &amp;[::core::fmt::rt::v1::Argument {
+                    position: 0usize,
+                    format: ::core::fmt::rt::v1::FormatSpec {
+                        fill: &#x27; &#x27;,
+                        align: ::core::fmt::rt::v1::Alignment::Unknown,
+                        flags: 0u32,
+                        precision: ::core::fmt::rt::v1::Count::Is(3usize),
+                        width: ::core::fmt::rt::v1::Count::Implied,
+                    },
+                }],
+            ));
+        };
+        _res
+    };
+}
+</code></pre>
+<p>And our function call example:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">#[test]
+fn test_ext_multiple_args() {
+    fn slow_sum(a: u32, b: u32) -&gt; u32 {
+        std::thread::sleep(std::time::Duration::from_secs(2));
+        a + b
+    }
+    let res = timeit!(slow_sum(5, 9));
+    eprintln!(&quot;Slow sum result: {}&quot;, res);
+}
+</code></pre>
+<p>Becomes (comments added by me):</p>
+<h4 id="cargo-expand-lib-tests-tests-test-ext-multiple-args"><strong><code>$ cargo expand --lib --tests tests::test_ext_multiple_args</code></strong></h4>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn test_ext_multiple_args() {
+    fn slow_sum(a: u32, b: u32) -&gt; u32 {
+        std::thread::sleep(std::time::Duration::from_secs(2));
+        a + b
+    }
+    &#x2F;&#x2F;        v-- Start of our macro block
+    let res = {
+        let _start = std::time::Instant::now();
+        let _res = slow_sum(5, 9);
+        {
+            ::std::io::_eprint(::core::fmt::Arguments::new_v1_formatted(
+                &amp;[&quot;\&#x27;&quot;, &quot;\&#x27; took &quot;, &quot; ms\n&quot;],
+                &#x2F;&#x2F;        v-- The function name, after `stringify!()`
+                &amp;match (&amp;&quot;slow_sum&quot;, &amp;_start.elapsed().as_millis()) {
+                    (arg0, arg1) =&gt; [
+                        ::core::fmt::ArgumentV1::new(arg0, ::core::fmt::Display::fmt),
+                        ::core::fmt::ArgumentV1::new(arg1, ::core::fmt::Display::fmt),
+                    ],
+                },
+                &#x2F;&#x2F;.. truncated for brevity
+            ));
+        };
+        _res  &#x2F;&#x2F; &lt;-- returning the function result
+    };  &#x2F;&#x2F; &lt;-- end of the macro block
+    {
+        ::std::io::_eprint(::core::fmt::Arguments::new_v1(
+            &amp;[&quot;Slow sum result: &quot;, &quot;\n&quot;],
+            &amp;match (&amp;res,) {
+                (arg0,) =&gt; [::core::fmt::ArgumentV1::new(
+                    arg0,
+                    ::core::fmt::Display::fmt,
+                )],
+            },
+        ));
+    };
+}
+</code></pre>
+<p>There we have it! Hopefully the macro syntax is a little more clear with this example. Check out <a href="https://github.com/thepacketgeek/rust-macros-demo/blob/master/timeit/src/lib.rs">the full example</a> for even more details, along with some tests to show usage.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>
